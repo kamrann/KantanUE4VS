@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  
+  <Type Name="UObject">
+    <CustomVisualizer VisualizerId="7802FE3A-0F30-4114-B701-65A33DD04133"/>
+  </Type>
+
+</AutoVisualizer>

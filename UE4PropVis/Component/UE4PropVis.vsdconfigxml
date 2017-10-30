@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (c) Microsoft. All rights reserved.
+Licensed under the MIT license. See LICENSE file in the project root for full license information.
+-->
+
+<!--
+This file is used to describe the HelloWorld component. This file is run through 
+vsdconfigtool.exe as part of the build, which generates HelloWorld.vsdconfig. HelloWorld.vsdconfig 
+is a binary version of this file which is deployed along with HelloWorld.dll. HelloWorld.vsdconfig 
+is then read by he component loading system at runtime.
+
+For more information about this file, see https://github.com/Microsoft/ConcordExtensibilitySamples/wiki/Component-discovery-and-configuration
+-->
+
+<Configuration xmlns="http://schemas.microsoft.com/vstudio/vsdconfig/2008">
+
+  <DefineGuid Name="guidUE4VisualizerComponentId" Value="7C9480F6-7D8C-470B-9FE5-108BAD428ADC"/>
+
+  <DefineGuid Name="guidUObjectVisualizerId" Value="7802FE3A-0F30-4114-B701-65A33DD04133"/>
+  <DefineGuid Name="guidPropertyListVisualizerId" Value="C52D5C78-D82C-411D-B5A0-E8B1C7C6B57A"/>
+
+  <ManagedComponent
+    ComponentId="guidUE4VisualizerComponentId"
+    ComponentLevel="9992000"
+    AssemblyName="UE4PropVis">
+
+    <Class Name="UE4PropVis.UE4PropVisComponent">
+      <Implements>
+        <InterfaceGroup>
+          <Filter>
+            <VisualizerId RequiredValue="guidUObjectVisualizerId"/>
+            <VisualizerId RequiredValue="guidPropertyListVisualizerId"/>
+            <!-- Testing -->
+            <VisualizerId RequiredValue="4B57B038-C96A-4F9D-BBA9-481485F3E53E"/>
+          </Filter>
+          <Interface Name="IDkmCustomVisualizer"/>
+        </InterfaceGroup>
+      </Implements>
+    </Class>
+  </ManagedComponent>
+</Configuration>
