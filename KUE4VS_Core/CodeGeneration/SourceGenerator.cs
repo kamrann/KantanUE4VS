@@ -39,12 +39,61 @@ namespace KUE4VS.CodeGeneration
             return result;
         }
 
+        public static string GenerateHeader(
+            string file_title,
+            string file_header,
+            IEnumerable<string> default_includes,
+            bool reflected,
+            List<string> nspace,
+            string body
+            )
+        {
+            string result = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.hdr_file
+            {
+                file_title = file_title,
+                file_header = file_header,
+                default_includes = default_includes,
+                reflected = reflected,
+                nspace = nspace,
+                body = body
+            }.TransformText();
+
+            return result;
+        }
+
+        public static string GenerateCpp(
+            string file_title,
+            string file_header,
+            IEnumerable<string> default_includes,
+            bool matching_header,
+            List<string> nspace,
+            string body,
+            string loctext_ns = null,
+            string footer = null
+            )
+        {
+            string result = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.cpp_file
+            {
+                file_title = file_title,
+                file_header = file_header,
+                default_includes = default_includes,
+                matching_header = matching_header,
+                loctext_ns = loctext_ns,
+                nspace = nspace,
+                body = body,
+                footer_content = footer
+            }.TransformText();
+
+            return result;
+        }
+
         public static string GenerateTypeHeader(
             string file_title,
             string file_header,
             IEnumerable<string> default_includes,
             string class_keyword,
             bool reflected,
+            List<string> nspace,
             string classname,
             string baseclass,
             string modulename,
@@ -52,15 +101,6 @@ namespace KUE4VS.CodeGeneration
             )
         {
             string reflected_macro = class_keyword == "class" ? "UCLASS()" : "USTRUCT()";
-
-            Dictionary<string, Object> parameters = new Dictionary<string, object>();
-            parameters["item_name"] = classname;
-            parameters["base_class"] = baseclass;
-            parameters["module_name"] = modulename;
-            parameters["export"] = export;
-            parameters["class_keyword"] = class_keyword;
-            parameters["reflected"] = reflected;
-            parameters["reflection_macro"] = reflected_macro;
 
             string decl = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.class_type_decl
             {
@@ -73,46 +113,22 @@ namespace KUE4VS.CodeGeneration
                 reflection_macro = reflected_macro
             }.TransformText();
 
-            // todo
-            var namespace_defn = new List<string> { "foo", "bar", "baz" };
-
-            parameters["file_title"] = file_title;
-            parameters["file_header"] = file_header;
-            parameters["default_includes"] = default_includes;
-            parameters["namespace"] = namespace_defn;
-            parameters["body"] = decl;
-
-            string result = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.hdr_file
-            {
-                file_title = file_title,
-                file_header = file_header,
-                default_includes = default_includes,
-                nspace = namespace_defn,
-                body = decl
-            }.TransformText();
-
-            return result;
+            return GenerateHeader(file_title, file_header, default_includes, reflected, nspace, decl);
         }
 
         public static string GenerateTypeCpp(
             string file_title,
             string file_header,
             IEnumerable<string> default_includes,
+            List<string> nspace,
             string classname
             )
         {
+            // @TODO:
+            const bool matching_header = true;
             string body = "";
 
-            string cpp = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.cpp_file
-            {
-                file_title = file_title,
-                file_header = file_header,
-                matching_header = true,
-                default_includes = default_includes,
-                body = body
-            }.TransformText();
-
-            return cpp;
+            return GenerateCpp(file_title, file_header, default_includes, matching_header, nspace, body);
         }
 
         public static string GenerateBuildRulesFile(
@@ -137,6 +153,106 @@ namespace KUE4VS.CodeGeneration
             }.TransformText();
 
             return cpp;
+        }
+
+        public static string GenerateModuleInterfaceHeader(
+            string file_title,
+            string file_header,
+            string module_name,
+            string interface_class_name,
+            IEnumerable<string> additional_includes,
+            List<string> nspace
+            )
+        {
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_interface_decl
+            {
+                module_name = module_name,
+                interface_name = interface_class_name
+            }.TransformText();
+
+            List<string> includes = new List<string>();
+            includes.Add("ModuleManager.h");
+            includes.AddRange(additional_includes);
+
+            return GenerateHeader(file_title, file_header, includes, false, nspace, body);
+        }
+
+        public static string GenerateModuleImplHeader(
+            string file_title,
+            string file_header,
+            string module_name,
+            string custom_base,
+            string custom_base_header,
+            IEnumerable<string> additional_includes,
+            List<string> nspace
+            )
+        {
+            bool has_custom_base = !String.IsNullOrEmpty(custom_base);
+            string base_class = has_custom_base ? custom_base : "IModuleInterface";
+
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_impl_decl
+            {
+                module_name = module_name,
+                base_class = base_class,
+                custom_base = has_custom_base
+            }.TransformText();
+            
+            List<string> includes = new List<string>();
+            if (has_custom_base)
+            {
+                includes.Add(custom_base_header);
+            }
+            else
+            {
+                includes.Add("ModuleManager.h");
+            }
+            includes.AddRange(additional_includes);
+
+            return GenerateHeader(file_title, file_header, includes, false, nspace, body);
+        }
+
+        public static string GenerateModuleImplCpp(
+            string file_title,
+            string file_header,
+            string module_name,
+            bool custom_impl,
+            string custom_base,
+            IEnumerable<string> additional_includes,
+            List<string> nspace
+            )
+        {
+            string body = "";
+
+            if (custom_impl)
+            {
+                bool has_custom_base = !String.IsNullOrEmpty(custom_base);
+                string base_class = has_custom_base ? custom_base : "IModuleInterface";
+
+                body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_impl_implementation
+                {
+                    module_name = module_name,
+                    base_class = base_class,
+                    custom_base = has_custom_base
+                }.TransformText();
+            }
+
+            string footer = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_implementation_macro
+            {
+                module_name = module_name,
+                impl_class = custom_impl ? ("F" + module_name + "ModuleImpl") : "FDefaultModuleImpl"
+            }.TransformText();
+
+            bool matching_header = custom_impl;
+            string loctext_ns = module_name + "ModuleImpl";
+
+            List<string> includes = new List<string>();
+            if (!custom_impl)
+            {
+                includes.Add("ModuleManager.h");
+            }
+            includes.AddRange(additional_includes);
+
+            return GenerateCpp(file_title, file_header, includes, matching_header, nspace, body, loctext_ns, footer);
         }
     }
 }

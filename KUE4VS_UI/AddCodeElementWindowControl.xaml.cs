@@ -68,17 +68,20 @@
 
         private void OnAddElement(object sender, RoutedEventArgs e)
         {
-            TestAdd(TaskData as AddTypeTask);
+            PerformAdditionTask();
         }
 
         private void OnAddElementAndFinish(object sender, RoutedEventArgs e)
         {
-
+            PerformAdditionTask();
         }
 
-        private void TestAdd(AddTypeTask defn)
+        private void PerformAdditionTask()
         {
-            defn.Execute();
+            if (!TaskData.Execute())
+            {
+                // @todo: log output
+            }
         }
     }
 }

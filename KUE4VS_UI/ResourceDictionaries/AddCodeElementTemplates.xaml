@@ -2,7 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:KUE4VS_UI.ResourceDictionaries"
                     xmlns:core="clr-namespace:KUE4VS;assembly=KUE4VS_Core"
+                    xmlns:kue4vs_ui="clr-namespace:KUE4VS_UI"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+					xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+                    xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions" 
+                    xmlns:il="clr-namespace:Microsoft.Expression.Interactivity.Layout;assembly=Microsoft.Expression.Interactions"
                     >
 
 	<ObjectDataProvider x:Key="CodeElementTypeEnumData" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
@@ -22,6 +26,16 @@
 			<x:Type TypeName="core:AddableTypeVariant"/>
 		</ObjectDataProvider.MethodParameters>
 	</ObjectDataProvider>
+
+	<ObjectDataProvider x:Key="ModuleTypeEnumData" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+		<ObjectDataProvider.MethodParameters>
+			<x:Type TypeName="core:ModuleType"/>
+		</ObjectDataProvider.MethodParameters>
+	</ObjectDataProvider>
+
+
+<!--	<kue4vs_ui:PublicInterfaceCheckStateConverter x:Key="PublicInterfaceCheckStateConverter" /> -->
+	<kue4vs_ui:PublicInterfaceVisibilityConverter x:Key="PublicInterfaceVisibilityConverter" />
 
 
 	<DataTemplate x:Key="SourceRelativeLocationTemplate" DataType="{x:Type core:SourceRelativeLocation}">
@@ -131,6 +145,10 @@
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
@@ -139,9 +157,48 @@
 
 			<Label Grid.Row="0" Grid.Column="0" Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="1" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="2" Grid.Column="0" Content="Module Type" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="3" Grid.Column="0" Content="Custom Implementation?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="4" Grid.Column="0" Content="Public Interface?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="5" Grid.Column="0" Content="Enforce IWYU?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="6" Grid.Column="0" Content="Suppress Unity Build?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
 			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+
+			<ComboBox x:Name="ModuleTypeBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ModuleTypeEnumData}}" SelectedItem="{Binding Type}" >
+<!--				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="SelectionChanged">
+						<i:InvokeCommandAction Command="{Binding ModuleTypetriChangedCommand}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+				-->
+			</ComboBox>
+			<CheckBox x:Name="CustomImplementationCheckBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bCustomImplementation}" >
+<!--				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="Unchecked">
+						<i:InvokeCommandAction Command="{Binding CustomImplementationUncheckedCommand}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+-->			</CheckBox>
+			<DockPanel Grid.Row="4" Grid.Column="1" >
+				<CheckBox x:Name="PublicInterfaceCheckBox" VerticalAlignment="Center" IsEnabled="{Binding bCustomImplementation}" />
+				<TextBox Text="{Binding PublicInterfaceName}" Margin="5, 0, 0, 0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding ElementName=PublicInterfaceCheckBox, Path=IsChecked, Converter={StaticResource PublicInterfaceVisibilityConverter}}" />
+			</DockPanel>
+			<CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bEnforceIWYU}" />
+			<CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bSuppressUnity}" />
 		</Grid>
+
+		<DataTemplate.Triggers>
+			<DataTrigger Binding="{Binding Path=Type}" Value="{x:Static core:ModuleType.Editor}">
+				<DataTrigger.Setters>
+				</DataTrigger.Setters>
+			</DataTrigger>
+			<DataTrigger Binding="{Binding Path=bCustomImplementation}" Value="False">
+				<DataTrigger.Setters>
+					<Setter Property="IsChecked" Value="False" TargetName="PublicInterfaceCheckBox" />
+				</DataTrigger.Setters>
+			</DataTrigger>
+		</DataTemplate.Triggers>
 	</DataTemplate>
 
 	<DataTemplate x:Key="AddPluginTemplate" DataType="{x:Type core:AddPluginTask}">

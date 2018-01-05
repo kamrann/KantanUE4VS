@@ -18,9 +18,9 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_implementation_macro.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public partial class class_type_decl : class_type_declBase
+    public partial class module_implementation_macro : module_implementation_macroBase
     {
 #line hidden
         /// <summary>
@@ -28,53 +28,21 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("IMPLEMENT_MODULE(");
             
-            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.reflected ? this.reflection_macro + "\r\n" : ""));
-            
-            #line default
-            #line hidden
-            
-            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.type_keyword));
+            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_implementation_macro.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(impl_class));
             
             #line default
             #line hidden
-            this.Write(" ");
+            this.Write(", ");
             
-            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture((this.export ? this.module_name + "_API " : "") + this.type_name));
-            
-            #line default
-            #line hidden
-            
-            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.StringBefore(" : public ", this.base_class)));
+            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_implementation_macro.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(module_name));
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n");
-            
-            #line 9 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
- if (reflected) { 
-            
-            #line default
-            #line hidden
-            this.Write("\tGENERATED_BODY()\r\n\r\n");
-            
-            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("public:\r\n\t");
-            
-            #line 14 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(type_name));
-            
-            #line default
-            #line hidden
-            this.Write("();\r\n};\r\n");
+            this.Write(");\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -86,7 +54,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public class class_type_declBase
+    public class module_implementation_macroBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

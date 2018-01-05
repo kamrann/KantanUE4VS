@@ -4,7 +4,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#= this.reflected ? this.reflection_macro + "\r\n" : ""
-#><#= this.type_keyword #> <#= (this.export ? this.module_name + "_API " : "") + this.type_name #><#=this.StringBefore(" : public ", this.base_class) #>
+#><#= this.type_keyword #> <#= (this.export ? this.module_name + "_API " : "") + this.type_name #><#= TTHelpers.StringBefore(" : public ", this.base_class) #>
 {
 <# if (reflected) { #>
 	GENERATED_BODY()
@@ -13,15 +13,3 @@
 public:
 	<#= type_name #>();
 };
-
-<#+
-	private string StringBefore(string prepend, string value)
-	{
-		if (String.IsNullOrEmpty(value))
-        {
-            return String.Empty;
-        }
-
-        return prepend + value;
-	}
-#>

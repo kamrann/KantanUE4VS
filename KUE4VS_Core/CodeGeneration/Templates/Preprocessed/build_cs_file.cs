@@ -52,14 +52,14 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
                     "licitOrSharedPCHs;\r\n\r\n\t\tbEnforceIWYU = ");
             
             #line 16 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.enforce_iwyu));
+            this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.ConvertBool(this.enforce_iwyu)));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\tbFasterWithoutUnity = ");
             
             #line 17 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.suppress_unity));
+            this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.ConvertBool(this.suppress_unity)));
             
             #line default
             #line hidden

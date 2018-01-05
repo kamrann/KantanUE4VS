@@ -6,11 +6,24 @@
 <#= this.file_header #>
 
 <# if (this.matching_header) { #>
-#include "<#= file_title #>.h"
+#include "<#= this.file_title #>.h"
 <# } #>
 <# foreach (string include_path in this.default_includes) { #>
 #include "<#= include_path #>"
 <# } #>
 
 
+<# if (!String.IsNullOrEmpty(this.loctext_ns)) { #>
+#define LOCTEXT_NAMESPACE "<#= this.loctext_ns #>"
+
+<# } #>
 <#= this.body #>
+<# if (!String.IsNullOrEmpty(this.loctext_ns)) { #>
+
+#undef LOCTEXT_NAMESPACE
+<# } #>
+<# if (!String.IsNullOrEmpty(this.footer_content)) { #>
+
+
+<#= this.footer_content #>
+<# } #>

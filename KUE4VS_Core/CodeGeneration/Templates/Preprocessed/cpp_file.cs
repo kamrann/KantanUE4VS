@@ -44,7 +44,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
             this.Write("#include \"");
             
             #line 9 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(file_title));
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.file_title));
             
             #line default
             #line hidden
@@ -78,11 +78,64 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
             this.Write("\r\n\r\n");
             
             #line 16 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+ if (!String.IsNullOrEmpty(this.loctext_ns)) { 
+            
+            #line default
+            #line hidden
+            this.Write("#define LOCTEXT_NAMESPACE \"");
+            
+            #line 17 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.loctext_ns));
+            
+            #line default
+            #line hidden
+            this.Write("\"\r\n\r\n");
+            
+            #line 19 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 20 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.body));
             
             #line default
             #line hidden
             this.Write("\r\n");
+            
+            #line 21 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+ if (!String.IsNullOrEmpty(this.loctext_ns)) { 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n#undef LOCTEXT_NAMESPACE\r\n");
+            
+            #line 24 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 25 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+ if (!String.IsNullOrEmpty(this.footer_content)) { 
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\r\n");
+            
+            #line 28 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.footer_content));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 29 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\cpp_file.tt"
+ } 
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }

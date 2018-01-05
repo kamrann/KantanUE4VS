@@ -48,8 +48,14 @@
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,7 +67,32 @@
     <Compile Include="CodeElements\AddCodeElementTask.cs" />
     <Compile Include="CodeElements\CodeElementLocation.cs" />
     <Compile Include="CodeElements\CodeElementTypes.cs" />
-    <Compile Include="CodeElements\CoreUE4Types.cs" />
+    <Compile Include="CodeGeneration\Templates\Partial\part_module_implementation_macro.cs" />
+    <Compile Include="CodeGeneration\Templates\Partial\part_module_impl_decl.cs" />
+    <Compile Include="CodeGeneration\Templates\Partial\part_module_interface_decl.cs" />
+    <Compile Include="CodeGeneration\Templates\Partial\part_module_impl_implementation.cs" />
+    <Compile Include="CodeGeneration\Templates\Preprocessed\module_implementation_macro.cs">
+      <DependentUpon>module_implementation_macro.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Preprocessed\module_impl_implementation.cs">
+      <DependentUpon>module_impl_implementation.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Preprocessed\module_impl_decl.cs">
+      <DependentUpon>module_impl_decl.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Preprocessed\module_interface_decl.cs">
+      <DependentUpon>module_interface_decl.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\TTHelpers.cs" />
+    <Compile Include="CoreUE4Types.cs" />
     <Compile Include="CodeElements\Tasks\AddModuleTask.cs" />
     <Compile Include="CodeElements\Tasks\AddPluginTask.cs" />
     <Compile Include="CodeElements\Tasks\AddSourceFileTask.cs" />
@@ -108,6 +139,22 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>class_type_decl.cs</LastGenOutput>
     </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\module_implementation_macro.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>module_implementation_macro.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\module_impl_implementation.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>module_impl_implementation.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\module_impl_decl.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>module_impl_decl.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\module_interface_decl.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>module_interface_decl.cs</LastGenOutput>
+    </Content>
     <Content Include="CodeGeneration\Templates\Preprocessed\cpp_file.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>cpp_file.cs</LastGenOutput>
@@ -116,39 +163,41 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>hdr_file.cs</LastGenOutput>
     </Content>
-    <Content Include="CodeGeneration\Templates\type_decl.tt">
+    <Content Include="CodeGeneration\Legacy\type_decl.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>type_decl.weird</LastGenOutput>
     </Content>
-    <None Include="CodeGeneration\Templates\type_decl.weird">
+    <None Include="CodeGeneration\Legacy\type_decl.weird">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>type_decl.tt</DependentUpon>
     </None>
     <None Include="Key.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CodeGeneration\Templates\cpp_file.cpp">
+    <Content Include="CodeGeneration\Legacy\cpp_file.cpp">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>cpp_file.tt</DependentUpon>
     </Content>
-    <Content Include="CodeGeneration\Templates\cpp_file.tt">
+    <Content Include="CodeGeneration\Legacy\cpp_file.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>cpp_file.cpp</LastGenOutput>
     </Content>
-    <Content Include="CodeGeneration\Templates\hdr_file.h">
+    <Content Include="CodeGeneration\Legacy\hdr_file.h">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>hdr_file.tt</DependentUpon>
     </Content>
-    <Content Include="CodeGeneration\Templates\hdr_file.tt">
+    <Content Include="CodeGeneration\Legacy\hdr_file.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>hdr_file.h</LastGenOutput>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

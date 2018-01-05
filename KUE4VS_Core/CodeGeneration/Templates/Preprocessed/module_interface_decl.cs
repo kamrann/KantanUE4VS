@@ -18,9 +18,9 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public partial class class_type_decl : class_type_declBase
+    public partial class module_interface_decl : module_interface_declBase
     {
 #line hidden
         /// <summary>
@@ -28,53 +28,67 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("/**\r\n* The public interface to the ");
             
-            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.reflected ? this.reflection_macro + "\r\n" : ""));
-            
-            #line default
-            #line hidden
-            
-            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.type_keyword));
+            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(module_name));
             
             #line default
             #line hidden
-            this.Write(" ");
+            this.Write(" module.\r\n*/\r\nclass ");
             
-            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture((this.export ? this.module_name + "_API " : "") + this.type_name));
-            
-            #line default
-            #line hidden
-            
-            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.StringBefore(" : public ", this.base_class)));
+            #line 9 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(interface_name));
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n");
+            this.Write(@": public IModuleInterface
+{
+public:
+	/**
+	* Singleton-like access to this module's interface. This is just for convenience!
+	* Beware of calling this during the shutdown phase, though. Your module might have been unloaded already.
+	*
+	* @return Returns singleton instance, loading the module on demand if needed
+	*/
+	static inline ");
             
-            #line 9 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
- if (reflected) { 
-            
-            #line default
-            #line hidden
-            this.Write("\tGENERATED_BODY()\r\n\r\n");
-            
-            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("public:\r\n\t");
-            
-            #line 14 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(type_name));
+            #line 18 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(interface_name));
             
             #line default
             #line hidden
-            this.Write("();\r\n};\r\n");
+            this.Write("& Get()\r\n\t{\r\n\t\treturn FModuleManager::LoadModuleChecked< ");
+            
+            #line 20 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(interface_name));
+            
+            #line default
+            #line hidden
+            this.Write(" >(\"");
+            
+            #line 20 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(module_name));
+            
+            #line default
+            #line hidden
+            this.Write("\");\r\n\t}\r\n\r\n\t/**\r\n\t* Checks to see if this module is loaded and ready.\r\n\t*\r\n\t* @re" +
+                    "turn True if the module is loaded and ready to use\r\n\t*/\r\n\tstatic inline bool IsA" +
+                    "vailable()\r\n\t{\r\n\t\treturn FModuleManager::Get().IsModuleLoaded(\"");
+            
+            #line 30 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(module_name));
+            
+            #line default
+            #line hidden
+            this.Write("\");\r\n\t}\r\n\r\n\t/*\r\n\t");
+            
+            #line 34 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\module_interface_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(module_name));
+            
+            #line default
+            #line hidden
+            this.Write(" module public interface methods.\r\n\t*/\r\n\r\n};\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -86,7 +100,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public class class_type_declBase
+    public class module_interface_declBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

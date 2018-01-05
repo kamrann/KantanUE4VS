@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace KUE4VS
 {
@@ -41,6 +42,30 @@ namespace KUE4VS
             PostFileAdditions(proj);
             return true;
         }
+
+        // @todo: should put this into separate view model
+        public class CommandHandler : ICommand
+        {
+            private Action _action;
+            private bool _canExecute;
+            public CommandHandler(Action action, bool canExecute)
+            {
+                _action = action;
+                _canExecute = canExecute;
+            }
+
+            public bool CanExecute(object parameter)
+            {
+                return _canExecute;
+            }
+
+            public event EventHandler CanExecuteChanged;
+
+            public void Execute(object parameter)
+            {
+                _action();
+            }
+        }
     }
 
     public class GenericFileAdditionTask
@@ -63,7 +88,7 @@ namespace KUE4VS
 
         public static Results ProcessFileAdditions(IEnumerable< GenericFileAdditionTask> tasks, Project proj, bool all_or_nothing)
         {
-            List<string> created_files = new List<string>();
+            var created = new List<(string path, ProjectItem item)>();
 
             var results = new Results();
             foreach (var task in tasks)
@@ -71,21 +96,27 @@ namespace KUE4VS
                 // Create the required directories on disk
                 try
                 {
-                    var dir_info = Directory.CreateDirectory(task.FolderPath);
+                    var file_path = Path.Combine(task.FolderPath, task.FileTitle + task.Extension);
+
+                    if (File.Exists(file_path))
+                    {
+                        throw new IOException();
+                    }
+
+                    Directory.CreateDirectory(task.FolderPath);
 
                     // Create the file
-                    var file_path = Path.Combine(task.FolderPath, task.FileTitle + task.Extension);
                     {
                         var file = File.CreateText(file_path);
-                        created_files.Add(file_path);
+                        created.Add((file_path, null));
                         file.Write(task.Contents);
                         file.Close();
                     }
 
                     // Add corresponding project items
-                    bool add_ok = Utils.AddExistingFileItemToProject(proj, file_path);
+                    var item = Utils.AddExistingFileItemToProject(proj, file_path, false);
 
-                    if (!add_ok)
+                    if (item == null)
                     {
                         results.bItemAdditionFailure = true;
                         if (all_or_nothing)
@@ -96,6 +127,11 @@ namespace KUE4VS
                         {
                             continue;
                         }
+                    }
+                    else
+                    {
+                        created.RemoveAt(created.Count - 1);
+                        created.Add((file_path, item));
                     }
                 }
                 catch
@@ -114,14 +150,44 @@ namespace KUE4VS
 
             if (results.AnyFailure && all_or_nothing)
             {
-                foreach (var file_path in created_files)
+                // Cleanup
+
+                foreach (var addition in created)
                 {
-                    try
+                    if (addition.path != null)
                     {
-                        File.Delete(file_path);
+                        try
+                        {
+                            File.Delete(addition.path);
+                        }
+                        catch
+                        { }
                     }
-                    catch
-                    { }
+
+                    if (addition.item != null)
+                    {
+                        try
+                        {
+                            addition.item.Delete();
+                            // @TODO: Ideally also remove any added filters. Meh.
+                        }
+                        catch
+                        { }
+                    }
+                }
+            }
+            else
+            {
+                // We're keeping what we've added, so open them
+
+                foreach (var addition in created)
+                {
+                    if (addition.item != null)
+                    {
+                        addition.item.ExpandView();
+                        var wnd = addition.item.Open(EnvDTE.Constants.vsViewKindCode);
+                        wnd.Activate();
+                    }
                 }
             }
 

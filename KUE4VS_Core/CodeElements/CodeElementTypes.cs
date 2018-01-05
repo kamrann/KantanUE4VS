@@ -30,7 +30,7 @@ namespace KUE4VS
     };
 
 
-    public static class Constants
+    public static partial class Constants
     {
         public static readonly Dictionary<AddableTypeVariant, string> TypeKeywords
             = new Dictionary<AddableTypeVariant, string>

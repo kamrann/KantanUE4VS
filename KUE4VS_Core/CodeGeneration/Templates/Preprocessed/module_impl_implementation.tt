@@ -1,0 +1,24 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+/**
+* IModuleInterface implementation
+*/
+void F<#= module_name #>ModuleImpl::StartupModule()
+{
+
+}
+
+void F<#= module_name #>ModuleImpl::ShutdownModule()
+{
+
+}
+
+<# if (custom_base) { #>
+/**
+* <#= base_class #> implementation
+*/
+
+<# } #>

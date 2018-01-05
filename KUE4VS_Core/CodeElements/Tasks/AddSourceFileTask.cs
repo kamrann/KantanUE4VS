@@ -14,6 +14,9 @@ namespace KUE4VS
         public SourceRelativeLocation Location { get; set; }
         public bool bPrivateHeader { get; set; }
 
+        // Valid only for non-reflected types
+        public string Namespace { get; set; }
+
         public AddSourceFileTask()
         {
             Location = new SourceRelativeLocation();
@@ -27,7 +30,49 @@ namespace KUE4VS
             string file_header = "/** Some copyright stuff. */";
             bool is_reflected = false;  // @todo
 
+            List<string> nspace = Utils.SplitNamespaceDefinition(Namespace);
+
+            // Cpp file
+            if (Mode.In(SourceFileAdditionMode.HeaderAndCpp, SourceFileAdditionMode.CppOnly))
+            {
+                // Generate content
+
+                List<string> default_includes = new List<string>
+                {
+                };
+
+                string cpp_contents = CodeGeneration.SourceGenerator.GenerateCpp(
+                    file_title,
+                    file_header,
+                    default_includes,
+                    false,
+                    nspace,
+                    ""
+                    );
+                if (cpp_contents == null)
+                {
+                    return null;
+                }
+
+                var cpp_folder_path = Utils.GenerateSubfolderPath(
+                    proj,
+                    Location.ModuleName,
+                    ModuleFileLocationType.Private,
+                    Location.RelativePath
+                    // todo: plugin
+                    );
+
+                additions.Add(new GenericFileAdditionTask
+                {
+                    FileTitle = file_title,
+                    Extension = ".cpp",
+                    FolderPath = cpp_folder_path,
+                    Contents = cpp_contents
+                });
+            }
+
             // Header file
+            if (Mode.In(SourceFileAdditionMode.HeaderAndCpp, SourceFileAdditionMode.HeaderOnly))
             {
                 // Generate content
 
@@ -35,24 +80,19 @@ namespace KUE4VS
                     "CoreMinimal.h"
                 };
 
-                // @todo;
-                string hdr_contents = "";
-/*                    CodeGeneration.SourceGenerator.GenerateHeader(
+                string hdr_contents = CodeGeneration.SourceGenerator.GenerateHeader(
                     file_title,
                     file_header,
                     default_includes,
-                    type_keyword,
                     is_reflected,
-                    type_name,
-                    base_class,
-                    Location.ModuleName,
-                    should_export
+                    nspace,
+                    ""
                     );
                 if (hdr_contents == null)
                 {
                     return null;
                 }
-*/
+
                 // Now generate the path where we want to add the file
                 var hdr_folder_path = Utils.GenerateSubfolderPath(
                     proj,
@@ -68,43 +108,6 @@ namespace KUE4VS
                     Extension = ".h",
                     FolderPath = hdr_folder_path,
                     Contents = hdr_contents
-                });
-            }
-
-            // Cpp file
-            {
-                // Generate content
-
-                List<string> default_includes = new List<string>
-                {
-                };
-
-                string cpp_contents = "";
-/*                CodeGeneration.SourceGenerator.GenerateTypeCpp(
-                    file_title,
-                    file_header,
-                    default_includes,
-                    type_name
-                    );
-                if (cpp_contents == null)
-                {
-                    return null;
-                }
-*/
-                var cpp_folder_path = Utils.GenerateSubfolderPath(
-                    proj,
-                    Location.ModuleName,
-                    ModuleFileLocationType.Private,
-                    Location.RelativePath
-                    // todo: plugin
-                    );
-
-                additions.Add(new GenericFileAdditionTask
-                {
-                    FileTitle = file_title,
-                    Extension = ".cpp",
-                    FolderPath = cpp_folder_path,
-                    Contents = cpp_contents
                 });
             }
 

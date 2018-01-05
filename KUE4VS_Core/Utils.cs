@@ -8,16 +8,26 @@ using EnvDTE;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-//using VSLangProj;
 using System.IO;
 using EnvDTE80;
-using KUE4VS;
 
 namespace KUE4VS
 {
-	public class Utils
+	public static class Utils
 	{
-		public const string UProjectExtension = "uproject";
+        public static bool In<T>(this T x, params T[] set)
+        {
+            return set.Contains(x);
+        }
+
+        public static List<string> SplitNamespaceDefinition(string defn)
+        {
+            return String.IsNullOrEmpty(defn) ? new List<string>() : new List<string>(
+                defn.Split(new string[] { "::", "." }, StringSplitOptions.RemoveEmptyEntries)
+                );
+        }
+
+        public const string UProjectExtension = "uproject";
 
 		public class SafeProjectReference
 		{
@@ -625,11 +635,11 @@ namespace KUE4VS
                 );
         }
 
-        public static bool AddExistingFileItemToProject(Project proj, string item_path)
+        public static ProjectItem AddExistingFileItemToProject(Project proj, string item_path, bool open)
         {
             if (File.Exists(item_path) == false)
             {
-                return false;
+                return null;
             }
 
             // Ensure normalized
@@ -651,16 +661,17 @@ namespace KUE4VS
                 }
             }
 
-            var top_level_items = proj.ProjectItems;
-            var proj_items = top_level_items;
-            while (elements.Count > 0 && proj_items != null)
+            ProjectItem item = proj.ParentProjectItem;
+            while (elements.Count > 0 && item != null)
             {
+                var child_items = item.SubProject != null ? item.SubProject.ProjectItems : item.ProjectItems;
+
                 ProjectItem child = null;
                 var dir = elements.Pop();
                 try
                 {
                     // Already exists?
-                    child = proj_items.Item(dir.Name);
+                    child = child_items.Item(dir.Name);
                 }
                 catch (ArgumentException)
                 {
@@ -670,34 +681,53 @@ namespace KUE4VS
                 if (child == null)
                 {
                     // Add it
-                    child = proj_items.AddFolder(dir.Name, EnvDTE.Constants.vsProjectItemKindVirtualFolder);// vsProjectItemKindPhysicalFolder);
+                    child = child_items.AddFolder(dir.Name, EnvDTE.Constants.vsProjectItemKindVirtualFolder);// vsProjectItemKindPhysicalFolder);
 
                     // Sometimes the above randomly decides to return null even after successfully creating the filter...
+                    // @NOTE: Prob relates to https://developercommunity.visualstudio.com/content/problem/150239/envdteprojectitemsaddfolder-is-not-working-correct.html
                     if (child == null)
                     {
-                        child = proj_items.Item(dir.Name);
-                    }
+                        child = child_items.Item(dir.Name);
 
-                    if (child == null)
-                    {
-                        // Okay fuck it then
-                        return false;
+                        if (child == null)
+                        {
+                            // Okay fuck it then
+                            return null;
+                        }
                     }
                 }
 
-                proj_items = child.ProjectItems;
+                item = child;
             }
+
+            if (item == null)
+            {
+                // Debug.Assert
+                return null;
+            }
+
+            var proj_items = item.ProjectItems;
 
             if (proj_items == null)
             {
                 // Debug.Assert
-                return false;
+                return null;
             }
 
             // And add it to the project
             var new_item = proj_items.AddFromFile(item_path);
+            if (new_item == null)
+            {
+                return null;
+            }
 
-            return new_item != null;
+            if (open)
+            {
+                var wnd = new_item.Open(EnvDTE.Constants.vsViewKindCode);
+                wnd.Activate();
+            }
+
+            return new_item;
         }
 
         /*		private static string CachedUProjectRootFolder = string.Empty;

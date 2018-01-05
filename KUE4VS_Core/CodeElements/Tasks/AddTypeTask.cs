@@ -36,6 +36,44 @@ namespace KUE4VS
             string type_name = Utils.GetPrefixedTypeName(ElementName, base_class, Variant);
             bool should_export = false;
 
+            List<string> nspace = Utils.SplitNamespaceDefinition(Namespace);
+
+            // Cpp file
+            {
+                // Generate content
+
+                List<string> default_includes = new List<string>{
+                };
+
+                string cpp_contents = CodeGeneration.SourceGenerator.GenerateTypeCpp(
+                    file_title,
+                    file_header,
+                    default_includes,
+                    nspace,
+                    type_name
+                    );
+                if (cpp_contents == null)
+                {
+                    return null;
+                }
+
+                var cpp_folder_path = Utils.GenerateSubfolderPath(
+                    proj,
+                    Location.ModuleName,
+                    ModuleFileLocationType.Private,
+                    Location.RelativePath
+                    // todo: plugin
+                    );
+
+                additions.Add(new GenericFileAdditionTask
+                {
+                    FileTitle = file_title,
+                    Extension = ".cpp",
+                    FolderPath = cpp_folder_path,
+                    Contents = cpp_contents
+                });
+            }
+
             // Header file
             {
                 // Generate content
@@ -50,6 +88,7 @@ namespace KUE4VS
                     default_includes,
                     type_keyword,
                     is_reflected,
+                    nspace,
                     type_name,
                     base_class,
                     Location.ModuleName,
@@ -75,41 +114,6 @@ namespace KUE4VS
                     Extension = ".h",
                     FolderPath = hdr_folder_path,
                     Contents = hdr_contents
-                });
-            }
-
-            // Cpp file
-            {
-                // Generate content
-
-                List<string> default_includes = new List<string>{
-                };
-
-                string cpp_contents = CodeGeneration.SourceGenerator.GenerateTypeCpp(
-                    file_title,
-                    file_header,
-                    default_includes,
-                    type_name
-                    );
-                if (cpp_contents == null)
-                {
-                    return null;
-                }
-
-                var cpp_folder_path = Utils.GenerateSubfolderPath(
-                    proj,
-                    Location.ModuleName,
-                    ModuleFileLocationType.Private,
-                    Location.RelativePath
-                    // todo: plugin
-                    );
-
-                additions.Add(new GenericFileAdditionTask
-                {
-                    FileTitle = file_title,
-                    Extension = ".cpp",
-                    FolderPath = cpp_folder_path,
-                    Contents = cpp_contents
                 });
             }
 

@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="CodeElementTypeTemplateSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AddModuleUIConverters.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="AddCodeElementWindowControl.xaml">

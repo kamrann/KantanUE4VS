@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+using System.Windows.Input;
 
 namespace KUE4VS
 {
@@ -12,14 +14,32 @@ namespace KUE4VS
     {
         public ModuleLocation Location { get; set; }
         public ModuleType Type { get; set; }
+        public bool bCustomImplementation { get; set; }
+        public string PublicInterfaceName { get; set; }
         public bool bEnforceIWYU { get; set; }
         public bool bSuppressUnity { get; set; }
         // todo: extra dependency modules
+
+        private ICommand _custom_impl_unchecked_cmd;
+        public ICommand CustomImplUncheckedCommand
+        {
+            get
+            {
+                return _custom_impl_unchecked_cmd ?? (_custom_impl_unchecked_cmd = new CommandHandler(() => OnCustomImplementationUnchecked(), true));
+            }
+        }
+
+        void OnCustomImplementationUnchecked()
+        {
+            
+        }
 
         public AddModuleTask()
         {
             Location = new ModuleLocation();
             Type = ModuleType.Runtime;
+            bCustomImplementation = false;
+            PublicInterfaceName = null;
             bEnforceIWYU = true;
             bSuppressUnity = true;
         }
@@ -29,7 +49,11 @@ namespace KUE4VS
             List<GenericFileAdditionTask> additions = new List<GenericFileAdditionTask>();
 
             string module_name = ElementName;
+            string impl_file_title = module_name + "ModuleImpl";
             string file_header = "/** Some copyright stuff. */";
+            bool custom_impl = bCustomImplementation;
+            string custom_base = custom_impl ? PublicInterfaceName : null;
+            bool has_custom_base = !String.IsNullOrEmpty(custom_base);
 
             // Build.cs file
             {
@@ -54,7 +78,8 @@ namespace KUE4VS
                         "PropertyEditor",
                     });
                 }
-                List<string> dynamic_deps = new List<string>{
+                List<string> dynamic_deps = new List<string>
+                {
                 };
 
                 string contents = CodeGeneration.SourceGenerator.GenerateBuildRulesFile(
@@ -92,12 +117,169 @@ namespace KUE4VS
                 });
             }
 
+            // Module impl cpp
+            {
+                // Generate content
+
+                List<string> additional_includes = new List<string>{
+                };
+
+                // todo?
+                List<string> nspace = new List<string>();
+
+                string contents = CodeGeneration.SourceGenerator.GenerateModuleImplCpp(
+                    impl_file_title,
+                    file_header,
+                    module_name,
+                    custom_impl,
+                    custom_base,
+                    additional_includes,
+                    nspace
+                    );
+                if (contents == null)
+                {
+                    return null;
+                }
+
+                // Now generate the path where we want to add the file
+                var folder_path = Utils.GenerateSubfolderPath(
+                    proj,
+                    module_name,
+                    ModuleFileLocationType.Private,
+                    ""
+                    // todo: plugin
+                    );
+
+                additions.Add(new GenericFileAdditionTask
+                {
+                    FileTitle = impl_file_title,
+                    Extension = ".cpp",
+                    FolderPath = folder_path,
+                    Contents = contents
+                });
+            }
+
+            if (custom_impl)
+            {
+                string interface_file_title = custom_base; // @TODO: separately configurable?
+
+                // Module impl header
+                {
+                    // Generate content
+
+                    List<string> additional_includes = new List<string>
+                    {
+                    };
+
+                    // todo?
+                    List<string> nspace = new List<string>();
+
+                    string custom_base_header = has_custom_base ? (interface_file_title + ".h") : null;
+
+                    string contents = CodeGeneration.SourceGenerator.GenerateModuleImplHeader(
+                        impl_file_title,
+                        file_header,
+                        module_name,
+                        custom_base,
+                        custom_base_header,
+                        additional_includes,
+                        nspace
+                        );
+                    if (contents == null)
+                    {
+                        return null;
+                    }
+
+                    // Now generate the path where we want to add the file
+                    var folder_path = Utils.GenerateSubfolderPath(
+                        proj,
+                        module_name,
+                        ModuleFileLocationType.Private,
+                        ""
+                        // todo: plugin
+                        );
+
+                    additions.Add(new GenericFileAdditionTask
+                    {
+                        FileTitle = impl_file_title,
+                        Extension = ".h",
+                        FolderPath = folder_path,
+                        Contents = contents
+                    });
+                }
+
+                if (has_custom_base)
+                {
+                    // Module impl header
+                    {
+                        // Generate content
+
+                        List<string> additional_includes = new List<string>
+                        {
+                        };
+
+                        // todo?
+                        List<string> nspace = new List<string>();
+
+                        string contents = CodeGeneration.SourceGenerator.GenerateModuleInterfaceHeader(
+                            interface_file_title,
+                            file_header,
+                            module_name,
+                            custom_base,
+                            additional_includes,
+                            nspace
+                            );
+                        if (contents == null)
+                        {
+                            return null;
+                        }
+
+                        // Now generate the path where we want to add the file
+                        var folder_path = Utils.GenerateSubfolderPath(
+                            proj,
+                            module_name,
+                            ModuleFileLocationType.Public,
+                            ""
+                            // todo: plugin
+                            );
+
+                        additions.Add(new GenericFileAdditionTask
+                        {
+                            FileTitle = interface_file_title,
+                            Extension = ".h",
+                            FolderPath = folder_path,
+                            Contents = contents
+                        });
+                    }
+                }
+            }
+
             return additions;
         }
 
         public override void PostFileAdditions(Project proj)
         {
-            // @todo: modify uproject/uplugin
+            // @todo: plugin version
+
+            string module_name = ElementName;
+
+            // @todo: is it feasible to use some of the UBT assemblies for stuff like this?
+            var uproject_path = Utils.GetUProjectFilePath(proj);
+            var uproject_obj = JObject.Parse(File.ReadAllText(uproject_path));
+            var module_obj = new JObject();
+            module_obj["Name"] = module_name;
+            module_obj["Type"] = Constants.ModuleTypeJsonNames[Type];
+            module_obj["LoadingPhase"] = "Default"; // @TODO:
+                                                    // @TODO: whitelist plats (plugins only? not sure)
+
+            if (uproject_obj["Modules"] == null)
+            {
+                uproject_obj["Modules"] = new JArray();
+            }
+            var modules = uproject_obj["Modules"] as JArray;
+            modules.Add(module_obj);
+
+            File.WriteAllText(uproject_path, uproject_obj.ToString());
         }
     }
 }

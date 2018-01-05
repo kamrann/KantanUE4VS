@@ -13,8 +13,8 @@ public class <#= this.module_name #> : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		bEnforceIWYU = <#= this.enforce_iwyu #>;
-		bFasterWithoutUnity = <#= this.suppress_unity #>;
+		bEnforceIWYU = <#= TTHelpers.ConvertBool(this.enforce_iwyu) #>;
+		bFasterWithoutUnity = <#= TTHelpers.ConvertBool(this.suppress_unity) #>;
 
 		PublicIncludePaths.AddRange(
 			new string[] {
