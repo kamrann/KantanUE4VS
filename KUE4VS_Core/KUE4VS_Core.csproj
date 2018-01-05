@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4F4009AF-568A-438F-925A-93C9DB8CA74A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KUE4VS_Core</RootNamespace>
+    <AssemblyName>KUE4VS_Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="envdte80, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.Shell.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.11.0, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CodeElements\AddCodeElementTask.cs" />
+    <Compile Include="CodeElements\CodeElementLocation.cs" />
+    <Compile Include="CodeElements\CodeElementTypes.cs" />
+    <Compile Include="CodeElements\CoreUE4Types.cs" />
+    <Compile Include="CodeElements\Tasks\AddModuleTask.cs" />
+    <Compile Include="CodeElements\Tasks\AddPluginTask.cs" />
+    <Compile Include="CodeElements\Tasks\AddSourceFileTask.cs" />
+    <Compile Include="CodeElements\Tasks\AddTypeTask.cs" />
+    <Compile Include="CodeGeneration\SourceGenerator.cs" />
+    <Compile Include="CodeGeneration\Templates\Preprocessed\build_cs_file.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>build_cs_file.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Partial\part_build_cs_file.cs" />
+    <Compile Include="CodeGeneration\Templates\Partial\part_class_type_decl.cs" />
+    <Compile Include="CodeGeneration\Templates\Preprocessed\class_type_decl.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>class_type_decl.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Preprocessed\cpp_file.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cpp_file.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Preprocessed\hdr_file.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>hdr_file.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CodeGeneration\Templates\Partial\part_cpp_file.cs" />
+    <Compile Include="CodeGeneration\Templates\Partial\part_hdr_file.cs" />
+    <Compile Include="ExtContext.cs" />
+    <Compile Include="Guids.cs" />
+    <Compile Include="IExtContext.cs" />
+    <Compile Include="Logging.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolutionProjects.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeGeneration\Templates\Preprocessed\build_cs_file.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>build_cs_file.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\class_type_decl.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>class_type_decl.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\cpp_file.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>cpp_file.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\Preprocessed\hdr_file.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>hdr_file.cs</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\type_decl.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>type_decl.weird</LastGenOutput>
+    </Content>
+    <None Include="CodeGeneration\Templates\type_decl.weird">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>type_decl.tt</DependentUpon>
+    </None>
+    <None Include="Key.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeGeneration\Templates\cpp_file.cpp">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>cpp_file.tt</DependentUpon>
+    </Content>
+    <Content Include="CodeGeneration\Templates\cpp_file.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>cpp_file.cpp</LastGenOutput>
+    </Content>
+    <Content Include="CodeGeneration\Templates\hdr_file.h">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>hdr_file.tt</DependentUpon>
+    </Content>
+    <Content Include="CodeGeneration\Templates\hdr_file.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>hdr_file.h</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -40,7 +40,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UE4PropVis_VSIX</RootNamespace>
     <AssemblyName>UE4PropVis_VSIX</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
@@ -67,8 +67,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddNewModuleCmd.cs" />
+    <Compile Include="AddCodeElementWindow.cs" />
+    <Compile Include="AddCodeElementWindowCommand.cs" />
+    <Compile Include="Commands\AddNewClassCmd.cs" />
+    <Compile Include="Commands\AddNewModuleCmd.cs" />
+    <Compile Include="Commands\AddNewPluginCmd.cs" />
+    <Compile Include="Commands\AddNewSourceFileCmd.cs" />
     <Compile Include="KantanUE4VSPkg.cs" />
+    <Compile Include="PackageProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,7 +90,8 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
-    <Content Include="Resources\Command1.png" />
+    <Content Include="Resources\AddCodeElementWindowCommand.png" />
+    <Content Include="Resources\Toolbar.png" />
     <Content Include="Resources\KantanUE4VSPkg.ico" />
     <Content Include="stylesheet.css" />
     <Content Include="UE4Properties.natvis">
@@ -182,6 +189,8 @@
       <HintPath>..\packages\Microsoft.VisualStudio.Validation.15.3.15\lib\net45\Microsoft.VisualStudio.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
@@ -190,9 +199,19 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KUE4VS_Core\KUE4VS_Core.csproj">
+      <Project>{4f4009af-568a-438f-925a-93c9db8ca74a}</Project>
+      <Name>KUE4VS_Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KUE4VS_UI\KUE4VS_UI.csproj">
+      <Project>{3b565830-c8a4-44c2-8593-7e968c478882}</Project>
+      <Name>KUE4VS_UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UE4PropVis\UE4PropVis.csproj">
       <Project>{3b347154-c273-431f-85ac-6cde691fcb17}</Project>
       <Name>UE4PropVis</Name>
@@ -205,6 +224,7 @@
       <ManifestResourceName>VSPackage</ManifestResourceName>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup>

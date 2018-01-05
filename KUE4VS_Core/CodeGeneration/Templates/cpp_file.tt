@@ -1,0 +1,25 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cpp" #>
+<#@ parameter type="System.String" name="file_title" #>
+<#@ parameter type="System.String" name="file_header" #>
+<#@ parameter type="System.Boolean" name="matching_header" #>
+<#@ parameter type="System.Collections.Generic.IEnumerable<string>" name="default_includes" #>
+<#@ parameter type="System.String" name="item_name" #>
+<#= this.file_header #>
+
+<# if (this.matching_header) { #>
+#include "<#= file_title #>.h"
+<# } #>
+<# foreach (string include_path in this.default_includes) { #>
+#include "<#= include_path #>"
+<# } #>
+
+
+<#= item_name #>::<#= item_name #>()
+{
+
+}

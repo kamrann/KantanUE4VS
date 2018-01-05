@@ -1,0 +1,35 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".weird" #>
+<#@ parameter type="System.String" name="item_name" #>
+<#@ parameter type="System.String" name="base_class" #>
+<#@ parameter type="System.String" name="module_name" #>
+<#@ parameter type="System.String" name="class_keyword" #>
+<#@ parameter type="System.Boolean" name="export" #>
+<#@ parameter type="System.Boolean" name="reflected" #>
+<#@ parameter type="System.String" name="reflection_macro" #>
+<#= this.reflected ? this.reflection_macro + "\n" : ""
+#><#= this.class_keyword #> <#= (this.export ? this.module_name + "_API " : "") + this.item_name #><#=this.StringBefore(" : public ", this.base_class) #>
+{
+<# if (reflected) { #>
+	GENERATED_BODY()
+
+<# } #>
+public:
+	<#= item_name #>();
+};
+
+<#+
+	private string StringBefore(string prepend, string value)
+	{
+		if (String.IsNullOrEmpty(value))
+        {
+            return String.Empty;
+        }
+
+        return prepend + value;
+	}
+#>
