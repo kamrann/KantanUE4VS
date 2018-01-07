@@ -44,7 +44,6 @@ namespace KUE4VS.CodeGeneration
             string file_header,
             IEnumerable<string> default_includes,
             bool reflected,
-            List<string> nspace,
             string body
             )
         {
@@ -54,7 +53,6 @@ namespace KUE4VS.CodeGeneration
                 file_header = file_header,
                 default_includes = default_includes,
                 reflected = reflected,
-                nspace = nspace,
                 body = body
             }.TransformText();
 
@@ -66,7 +64,6 @@ namespace KUE4VS.CodeGeneration
             string file_header,
             IEnumerable<string> default_includes,
             bool matching_header,
-            List<string> nspace,
             string body,
             string loctext_ns = null,
             string footer = null
@@ -79,7 +76,6 @@ namespace KUE4VS.CodeGeneration
                 default_includes = default_includes,
                 matching_header = matching_header,
                 loctext_ns = loctext_ns,
-                nspace = nspace,
                 body = body,
                 footer_content = footer
             }.TransformText();
@@ -113,7 +109,13 @@ namespace KUE4VS.CodeGeneration
                 reflection_macro = reflected_macro
             }.TransformText();
 
-            return GenerateHeader(file_title, file_header, default_includes, reflected, nspace, decl);
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+            {
+                nspace = nspace,
+                content = decl
+            }.TransformText();
+
+            return GenerateHeader(file_title, file_header, default_includes, reflected, body);
         }
 
         public static string GenerateTypeCpp(
@@ -126,9 +128,15 @@ namespace KUE4VS.CodeGeneration
         {
             // @TODO:
             const bool matching_header = true;
-            string body = "";
+            string content = "";
 
-            return GenerateCpp(file_title, file_header, default_includes, matching_header, nspace, body);
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+            {
+                nspace = nspace,
+                content = content
+            }.TransformText();
+
+            return GenerateCpp(file_title, file_header, default_includes, matching_header, body);
         }
 
         public static string GenerateBuildRulesFile(
@@ -164,17 +172,23 @@ namespace KUE4VS.CodeGeneration
             List<string> nspace
             )
         {
-            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_interface_decl
+            string decl = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_interface_decl
             {
                 module_name = module_name,
                 interface_name = interface_class_name
+            }.TransformText();
+
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+            {
+                nspace = nspace,
+                content = decl
             }.TransformText();
 
             List<string> includes = new List<string>();
             includes.Add("ModuleManager.h");
             includes.AddRange(additional_includes);
 
-            return GenerateHeader(file_title, file_header, includes, false, nspace, body);
+            return GenerateHeader(file_title, file_header, includes, false, body);
         }
 
         public static string GenerateModuleImplHeader(
@@ -190,13 +204,19 @@ namespace KUE4VS.CodeGeneration
             bool has_custom_base = !String.IsNullOrEmpty(custom_base);
             string base_class = has_custom_base ? custom_base : "IModuleInterface";
 
-            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_impl_decl
+            string decl = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_impl_decl
             {
                 module_name = module_name,
                 base_class = base_class,
                 custom_base = has_custom_base
             }.TransformText();
-            
+
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+            {
+                nspace = nspace,
+                content = decl
+            }.TransformText();
+
             List<string> includes = new List<string>();
             if (has_custom_base)
             {
@@ -208,7 +228,7 @@ namespace KUE4VS.CodeGeneration
             }
             includes.AddRange(additional_includes);
 
-            return GenerateHeader(file_title, file_header, includes, false, nspace, body);
+            return GenerateHeader(file_title, file_header, includes, false, body);
         }
 
         public static string GenerateModuleImplCpp(
@@ -221,20 +241,26 @@ namespace KUE4VS.CodeGeneration
             List<string> nspace
             )
         {
-            string body = "";
+            string content = "";
 
             if (custom_impl)
             {
                 bool has_custom_base = !String.IsNullOrEmpty(custom_base);
                 string base_class = has_custom_base ? custom_base : "IModuleInterface";
 
-                body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_impl_implementation
+                content = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_impl_implementation
                 {
                     module_name = module_name,
                     base_class = base_class,
                     custom_base = has_custom_base
                 }.TransformText();
             }
+
+            string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+            {
+                nspace = nspace,
+                content = content
+            }.TransformText();
 
             string footer = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.module_implementation_macro
             {
@@ -252,7 +278,23 @@ namespace KUE4VS.CodeGeneration
             }
             includes.AddRange(additional_includes);
 
-            return GenerateCpp(file_title, file_header, includes, matching_header, nspace, body, loctext_ns, footer);
+            return GenerateCpp(file_title, file_header, includes, matching_header, body, loctext_ns, footer);
+        }
+
+        public static string GenerateUPluginFile(
+            string plugin_name,
+            string category,
+            bool with_content
+            )
+        {
+            string json = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.uplugin_file
+            {
+                plugin_name = plugin_name,
+                category = category,
+                with_content = with_content,
+            }.TransformText();
+
+            return json;
         }
     }
 }

@@ -57,12 +57,10 @@ namespace KUE4VS
                     return null;
                 }
 
-                var cpp_folder_path = Utils.GenerateSubfolderPath(
-                    proj,
-                    Location.ModuleName,
+                var cpp_folder_path = Utils.GenerateSourceSubfolderPath(
+                    Location.Module,
                     ModuleFileLocationType.Private,
-                    Location.RelativePath
-                    // todo: plugin
+                    String.IsNullOrWhiteSpace(Location.RelativePath) ? "" : Location.RelativePath
                     );
 
                 additions.Add(new GenericFileAdditionTask
@@ -91,7 +89,7 @@ namespace KUE4VS
                     nspace,
                     type_name,
                     base_class,
-                    Location.ModuleName,
+                    Location.Module.Name,
                     should_export
                     );
                 if (hdr_contents == null)
@@ -100,12 +98,10 @@ namespace KUE4VS
                 }
 
                 // Now generate the paths where we want to add the files
-                var hdr_folder_path = Utils.GenerateSubfolderPath(
-                    proj,
-                    Location.ModuleName,
+                var hdr_folder_path = Utils.GenerateSourceSubfolderPath(
+                    Location.Module,
                     bPrivateHeader ? ModuleFileLocationType.Private : ModuleFileLocationType.Public,
-                    Location.RelativePath
-                    // todo: plugin
+                    String.IsNullOrWhiteSpace(Location.RelativePath) ? "" : Location.RelativePath
                     );
 
                 additions.Add(new GenericFileAdditionTask

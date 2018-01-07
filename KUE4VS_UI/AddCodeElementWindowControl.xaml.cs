@@ -39,9 +39,6 @@
             {
                 case CodeElementType.Type:
                     TaskData = new AddTypeTask();
-                    ((AddTypeTask)TaskData).bPrivateHeader = true;
-                    ((AddTypeTask)TaskData).Location.ModuleName = "foo";
-                    ((AddTypeTask)TaskData).Location.RelativePath = "bar";
                     break;
                 case CodeElementType.Source:
                     TaskData = new AddSourceFileTask();

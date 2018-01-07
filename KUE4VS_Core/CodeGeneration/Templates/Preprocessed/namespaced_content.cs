@@ -18,9 +18,9 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
+    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public partial class hdr_file : hdr_fileBase
+    public partial class namespaced_content : namespaced_contentBase
     {
 #line hidden
         /// <summary>
@@ -29,60 +29,78 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         public virtual string TransformText()
         {
             
-            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.file_header));
+            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ for (int i = 0; i < this.nspace.Count; ++i) { for (int t = 0; t < i; ++t) { 
             
             #line default
             #line hidden
-            this.Write("\r\n\r\n#pragma once\r\n\r\n");
+            this.Write("\t");
             
-            #line 10 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- foreach (string include_path in this.default_includes) { 
-            
-            #line default
-            #line hidden
-            this.Write("#include \"");
-            
-            #line 11 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(include_path));
+            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ } string ns = this.nspace[i]; 
             
             #line default
             #line hidden
-            this.Write("\"\r\n");
+            this.Write("namespace ");
             
-            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
+            #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(ns));
+            
+            #line default
+            #line hidden
+            this.Write(" {\r\n");
+            
+            #line 8 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
  } 
             
             #line default
             #line hidden
             
-            #line 13 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- if (this.reflected) { 
-            
-            #line default
-            #line hidden
-            this.Write("#include \"");
-            
-            #line 14 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.file_title));
-            
-            #line default
-            #line hidden
-            this.Write(".generated.h\"\r\n");
-            
-            #line 15 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\r\n");
-            
-            #line 18 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.body));
+            #line 9 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ if (this.nspace.Count > 0) { 
             
             #line default
             #line hidden
             this.Write("\r\n");
+            
+            #line 11 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(this.content));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 14 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ for (int i = this.nspace.Count - 1; i >= 0; --i) { 
+            
+            #line default
+            #line hidden
+            
+            #line 15 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ for (int t = 0; t < i; ++t) { 
+            
+            #line default
+            #line hidden
+            this.Write("\t");
+            
+            #line 15 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("}\r\n");
+            
+            #line 16 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\namespaced_content.tt"
+ } 
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -94,7 +112,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public class hdr_fileBase
+    public class namespaced_contentBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

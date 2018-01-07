@@ -28,8 +28,9 @@ namespace KUE4VS
         }
 
         public const string UProjectExtension = "uproject";
+        public const string UPluginExtension = "uplugin";
 
-		public class SafeProjectReference
+        public class SafeProjectReference
 		{
 			public string FullName { get; set; }
 			public string Name { get; set; }
@@ -293,7 +294,12 @@ namespace KUE4VS
 			return Config.EndsWith("Editor", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		public static string GetUProjectFileName(Project Project)
+        public static string GetUProjectName(Project Project)
+        {
+            return Project.Name;
+        }
+
+        public static string GetUProjectFileName(Project Project)
 		{
 			return Project.Name + "." + UProjectExtension;
 		}
@@ -602,15 +608,32 @@ namespace KUE4VS
             return prefix + name_stub;
         }
 
-        // @TODO: module and plugin maybe eventually want types to hold references/identifiers
-        public static string GenerateSubfolderPath(Project proj, string module_name, ModuleFileLocationType loc_type, string relative_path, string plugin_name = null)
+        public static string GenerateSourceSubfolderPath(ModuleRef module, ModuleFileLocationType loc_type, string relative_path)
         {
-            var source_path = GetUProjectSourceDirectory(proj);
-
-            if (String.IsNullOrEmpty(plugin_name) == false)
+            var base_path = module.RootPath;
+            switch (loc_type)
             {
-                // todo;
+                case ModuleFileLocationType.TopLevel:
+                    break;
+
+                case ModuleFileLocationType.Public:
+                    base_path = Path.Combine(base_path, "Public");
+                    break;
+
+                case ModuleFileLocationType.Private:
+                    base_path = Path.Combine(base_path, "Private");
+                    break;
             }
+
+            return Path.GetFullPath(
+                Path.Combine(base_path, relative_path)
+                );
+        }
+
+        public static string GenerateModuleSubfolderPath(ModuleHost module_host, string module_name, ModuleFileLocationType loc_type, string relative_path)//, string plugin_name = null)
+        {
+            //var source_path = GetUProjectSourceDirectory(proj);
+            var source_path = module_host.SourceDirectory;
 
             // @todo: not necessarily, use of some kind of module identifier is better
             var module_path = Path.Combine(source_path, module_name);
@@ -728,6 +751,130 @@ namespace KUE4VS
             }
 
             return new_item;
+        }
+
+        /// <summary>
+        /// Creates a relative path from one file or folder to another.
+        /// </summary>
+        /// <param name="fromPath">Contains the directory that defines the start of the relative path.</param>
+        /// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
+        /// <returns>The relative path from the start directory to the end path or <c>toPath</c> if the paths are not related.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="UriFormatException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static String MakeRelativePath(String fromPath, String toPath)
+        {
+            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+            Uri fromUri = new Uri(fromPath);
+            Uri toUri = new Uri(toPath);
+
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+
+            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            String relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
+            {
+                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            }
+
+            return relativePath;
+        }
+
+        public static string EnsureTrailingSeparator(string directory_path)
+        {
+            return directory_path.Last().In(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar) ?
+                directory_path : (directory_path + Path.DirectorySeparatorChar);
+        }
+
+        public static IEnumerable<ModuleRef> FindModulesInSourceFolder(string source_dir, ModuleHost host)
+        {
+            List<ModuleRef> modules = new List<ModuleRef>();
+
+            if (Directory.Exists(source_dir))
+            {
+                var module_files = Directory.GetFiles(source_dir, "*.Build.cs", SearchOption.AllDirectories);
+                foreach (var filename in module_files)
+                {
+                    string name = Path.GetFileName(filename);
+                    var idx = name.IndexOf('.');
+                    name = name.Substring(0, idx);
+                    source_dir = EnsureTrailingSeparator(source_dir);
+                    string module_dir = EnsureTrailingSeparator(Path.GetDirectoryName(filename));
+                    string relative = MakeRelativePath(source_dir, module_dir);
+                    modules.Add(new ModuleRef(name, host, relative));
+                }
+            }
+
+            return modules;
+        }
+
+        public static IEnumerable<UPlugin> FindPluginsInProject(UProject project)
+        {
+            List<UPlugin> plugins = new List<UPlugin>();
+
+            var plugins_dir = project.PluginsDirectory;
+            if (Directory.Exists(plugins_dir))
+            {
+                var uplugin_files = Directory.GetFiles(plugins_dir, "*.uplugin", SearchOption.AllDirectories);
+                foreach (var filename in uplugin_files)
+                {
+                    string name = Path.GetFileName(filename);
+                    var idx = name.IndexOf('.');
+                    name = name.Substring(0, idx);
+                    plugins_dir = EnsureTrailingSeparator(plugins_dir);
+                    string uplugin_dir = EnsureTrailingSeparator(Path.GetDirectoryName(filename));
+                    string relative = MakeRelativePath(plugins_dir, uplugin_dir);
+                    plugins.Add(new UPlugin(name, project, relative));
+                }
+            }
+
+            return plugins;
+        }
+
+        public static IEnumerable<UProject> GetSolutionUProjects()
+        {
+            var uprojects = new List<UProject>();
+
+            var vcproj = CurrentProjectContext;
+            var uproject_name = GetUProjectName(vcproj);
+            var uproject_dir = GetUProjectDirectory(vcproj);
+            uprojects.Add(new UProject(uproject_name, uproject_dir));
+
+            return uprojects;
+        }
+
+        public static IEnumerable<ModuleHost> GetAllModuleHosts()
+        {
+            var hosts = new List<ModuleHost>();
+
+            var uprojects = GetSolutionUProjects();
+            foreach (var uproj in uprojects)
+            {
+                hosts.Add(uproj);
+
+                foreach (var uplug in uproj.Plugins)
+                {
+                    hosts.Add(uplug);
+                }
+            }
+
+            return hosts;
+        }
+
+        public static IEnumerable<ModuleRef> GetAllModules()
+        {
+            var modules = new List<ModuleRef>();
+
+            var hosts = GetAllModuleHosts();
+            foreach (var host in hosts)
+            {
+                modules.AddRange(host.Modules);
+            }
+
+            return modules;
         }
 
         /*		private static string CachedUProjectRootFolder = string.Empty;

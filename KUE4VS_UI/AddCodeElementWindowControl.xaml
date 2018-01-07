@@ -20,11 +20,22 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <StackPanel>
-        <StackPanel Orientation="Horizontal" >
-            <Label Content="Element Type" HorizontalAlignment="Left" VerticalAlignment="Center" />
-            <ComboBox x:Name="ElementTypeBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource CodeElementTypeEnumData}}" SelectedItem="{Binding ElementType}" SelectionChanged="ElementTypeSelectionChanged" />
-        </StackPanel>
+	<StackPanel Grid.IsSharedSizeScope="True" >
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+				<RowDefinition Name="PrivateHeaderRow" Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="Auto" SharedSizeGroup="A" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Label Grid.Row="0" Grid.Column="0" Content="Code Element Type" HorizontalAlignment="Left" VerticalAlignment="Center" />
+			<ComboBox x:Name="ElementTypeBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource CodeElementTypeEnumData}}" SelectedItem="{Binding ElementType}" SelectionChanged="ElementTypeSelectionChanged" />
+        </Grid>
 		<Separator Height="10" />
         <ContentPresenter x:Name="AddElementPresenter" ContentTemplateSelector="{StaticResource CodeElementTemplateSelector}" />
 		<Separator Height="10" />

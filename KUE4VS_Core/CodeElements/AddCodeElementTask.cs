@@ -1,18 +1,30 @@
 ﻿using EnvDTE;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Data;
 
 namespace KUE4VS
 {
-    public abstract class AddCodeElementTask
+    public abstract class AddCodeElementTask : INotifyPropertyChanged
     {
         public CodeElementType ElementType { get; set; }
-        public string ElementName { get; set; }
+
+        string _elem_name = "";
+        public string ElementName
+        {
+            get { return _elem_name; }
+            set
+            {
+                SetProperty(ref _elem_name, value);
+            }
+        }
 
         public abstract IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj);
         public virtual void PostFileAdditions(Project proj) { }
@@ -65,6 +77,51 @@ namespace KUE4VS
             {
                 _action();
             }
+        }
+
+        private ICommand _elem_name_changed_cmd;
+        public ICommand ElementNameChangedCommand
+        {
+            get
+            {
+                return _elem_name_changed_cmd ?? (_elem_name_changed_cmd = new CommandHandler(() => OnElementNameChanged(), true));
+            }
+        }
+
+        protected virtual void OnElementNameChanged()
+        {}
+
+        private ICommand _refresh_modules_cmd;
+        public ICommand RefreshModulesCommand
+        {
+            get
+            {
+                return _refresh_modules_cmd ?? (_refresh_modules_cmd = new CommandHandler(() => OnRefreshModules(), true));
+            }
+        }
+
+        protected virtual void OnRefreshModules()
+        {
+            //(FindResource("AvailableModulesSource") as ObjectDataProvider).Refresh();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            this.OnPropertyChanged(propertyName);
+            return true;
+        }
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

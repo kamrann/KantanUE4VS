@@ -22,6 +22,14 @@ namespace KUE4VS
             Location = new SourceRelativeLocation();
         }
 
+        public void OnModuleBoxOpening(object sender, EventArgs args)
+        {
+            // @NOTE: If remove, also remove assemblies WindowsBase and Sys.Wnd.Data
+            var box = sender as System.Windows.Controls.ComboBox;
+            var data_prov = box.ItemsSource as System.Windows.Data.ObjectDataProvider;
+            data_prov.Refresh();
+        }
+
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
         {
             List<GenericFileAdditionTask> additions = new List<GenericFileAdditionTask>();
@@ -46,7 +54,6 @@ namespace KUE4VS
                     file_header,
                     default_includes,
                     false,
-                    nspace,
                     ""
                     );
                 if (cpp_contents == null)
@@ -54,12 +61,16 @@ namespace KUE4VS
                     return null;
                 }
 
-                var cpp_folder_path = Utils.GenerateSubfolderPath(
-                    proj,
-                    Location.ModuleName,
+                string namespaced_contents = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+                {
+                    nspace = nspace,
+                    content = cpp_contents
+                }.TransformText();
+
+                var cpp_folder_path = Utils.GenerateSourceSubfolderPath(
+                    Location.Module,
                     ModuleFileLocationType.Private,
-                    Location.RelativePath
-                    // todo: plugin
+                    String.IsNullOrWhiteSpace(Location.RelativePath) ? "" : Location.RelativePath
                     );
 
                 additions.Add(new GenericFileAdditionTask
@@ -67,7 +78,7 @@ namespace KUE4VS
                     FileTitle = file_title,
                     Extension = ".cpp",
                     FolderPath = cpp_folder_path,
-                    Contents = cpp_contents
+                    Contents = namespaced_contents
                 });
             }
 
@@ -85,7 +96,6 @@ namespace KUE4VS
                     file_header,
                     default_includes,
                     is_reflected,
-                    nspace,
                     ""
                     );
                 if (hdr_contents == null)
@@ -93,13 +103,17 @@ namespace KUE4VS
                     return null;
                 }
 
+                string namespaced_contents = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
+                {
+                    nspace = nspace,
+                    content = hdr_contents
+                }.TransformText();
+
                 // Now generate the path where we want to add the file
-                var hdr_folder_path = Utils.GenerateSubfolderPath(
-                    proj,
-                    Location.ModuleName,
+                var hdr_folder_path = Utils.GenerateSourceSubfolderPath(
+                    Location.Module,
                     bPrivateHeader ? ModuleFileLocationType.Private : ModuleFileLocationType.Public,
-                    Location.RelativePath
-                    // todo: plugin
+                    String.IsNullOrWhiteSpace(Location.RelativePath) ? "" : Location.RelativePath
                     );
 
                 additions.Add(new GenericFileAdditionTask
@@ -107,7 +121,7 @@ namespace KUE4VS
                     FileTitle = file_title,
                     Extension = ".h",
                     FolderPath = hdr_folder_path,
-                    Contents = hdr_contents
+                    Contents = namespaced_contents
                 });
             }
 

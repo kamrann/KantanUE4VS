@@ -10,7 +10,6 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         public IEnumerable<string> default_includes { get; set; }
         public bool matching_header { get; set; }
         public string loctext_ns { get; set; }
-        public List<string> nspace { get; set; }
         public string body { get; set; }
         public string footer_content { get; set; }
     }

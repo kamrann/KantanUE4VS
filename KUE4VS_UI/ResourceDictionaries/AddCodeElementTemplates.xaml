@@ -33,22 +33,75 @@
 		</ObjectDataProvider.MethodParameters>
 	</ObjectDataProvider>
 
+<!--	NEED to somehow make the following reevaluate after changes, or on dropdown. Also need to select first entry by default probably. -->
+	<ObjectDataProvider x:Key="AvailableModulesSource"
+	                    ObjectType="{x:Type core:Utils}"
+	                    MethodName="GetAllModules" />
 
-<!--	<kue4vs_ui:PublicInterfaceCheckStateConverter x:Key="PublicInterfaceCheckStateConverter" /> -->
+  <ObjectDataProvider x:Key="AvailableModuleHostsSource"
+                      ObjectType="{x:Type core:Utils}"
+                      MethodName="GetAllModuleHosts" />
+
+  <ObjectDataProvider x:Key="AvailableProjectsSource"
+                      ObjectType="{x:Type core:Utils}"
+                      MethodName="GetSolutionUProjects" />
+
+
+	<!--	<kue4vs_ui:PublicInterfaceCheckStateConverter x:Key="PublicInterfaceCheckStateConverter" /> -->
 	<kue4vs_ui:PublicInterfaceVisibilityConverter x:Key="PublicInterfaceVisibilityConverter" />
 
 
 	<DataTemplate x:Key="SourceRelativeLocationTemplate" DataType="{x:Type core:SourceRelativeLocation}">
 		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+			<DockPanel HorizontalAlignment="Stretch">
 				<Label Content="Module" HorizontalAlignment="Left" VerticalAlignment="Center" />
-				<TextBox Text="{Binding ModuleName}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
-			</StackPanel>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+				<ComboBox x:Name="ModuleBox" ItemsSource="{Binding Source={StaticResource AvailableModulesSource}}" SelectedItem="{Binding Module}">
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="Drop">
+<!--							<ic:CallMethodAction TargetObject="{Binding Source={StaticResource AvailableModulesSource}}" MethodName="Refresh" /> -->
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</ComboBox>
+			</DockPanel>
+			<DockPanel HorizontalAlignment="Stretch">
 				<Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
 				<TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
-			</StackPanel>
+			</DockPanel>
 		</StackPanel>
+
+<!--		<DataTemplate.Triggers>
+			<EventTrigger RoutedEvent="ComboBox.Drop" SourceName="ModuleBox">
+				<EventTrigger.Setters>
+					<Setter Property="Height" Value="0" TargetName="PrivateHeaderRow" />
+				</EventTrigger.Setters>
+			</EventTrigger>
+		</DataTemplate.Triggers>
+-->	</DataTemplate>
+
+	<DataTemplate x:Key="ModuleLocationTemplate" DataType="{x:Type core:ModuleLocation}">
+	  <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+	    <DockPanel HorizontalAlignment="Stretch">
+	      <Label Content="Project/Plugin" HorizontalAlignment="Left" VerticalAlignment="Center" />
+	      <ComboBox ItemsSource="{Binding Source={StaticResource AvailableModuleHostsSource}}" SelectedItem="{Binding Host}" />
+	    </DockPanel>
+	    <DockPanel HorizontalAlignment="Stretch">
+	      <Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
+	      <TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
+	    </DockPanel>
+	  </StackPanel>
+	</DataTemplate>
+
+	<DataTemplate x:Key="PluginLocationTemplate" DataType="{x:Type core:PluginLocation}">
+	  <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+	    <DockPanel HorizontalAlignment="Stretch">
+	      <Label Content="Project" HorizontalAlignment="Left" VerticalAlignment="Center" />
+	      <ComboBox ItemsSource="{Binding Source={StaticResource AvailableProjectsSource}}" SelectedItem="{Binding Project}" />
+	    </DockPanel>
+	    <DockPanel HorizontalAlignment="Stretch">
+	      <Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
+	      <TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
+	    </DockPanel>
+	  </StackPanel>
 	</DataTemplate>
 
 	<DataTemplate x:Key="AddSourceTemplate" DataType="{x:Type core:AddSourceFileTask}">
@@ -60,7 +113,7 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" SharedSizeGroup="A" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
@@ -71,7 +124,7 @@
 
 			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox x:Name="AddModeBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource SourceFileAddModeEnumData}}" SelectedItem="{Binding Mode}" />
-			<CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bPrivateHeader}" />
+			<CheckBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bPrivateHeader}" />
 			<ContentPresenter x:Name="LocationPresenter" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Location}" />
 		</Grid>
 
@@ -95,7 +148,7 @@
 				<RowDefinition Name="NamespaceRow" Height="0" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" SharedSizeGroup="A" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
@@ -109,7 +162,7 @@
 			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox x:Name="TypeVariantBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource AddableTypeVariantEnumData}}" SelectedItem="{Binding Variant}" />
 			<TextBox Text="{Binding Base}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
-			<CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bPrivateHeader}" />
+			<CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bPrivateHeader}" />
 			<ContentPresenter x:Name="LocationPresenter" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Location}" />
 			<TextBox Text="{Binding Namespace}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
 		</Grid>
@@ -151,7 +204,7 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" SharedSizeGroup="A" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
@@ -163,29 +216,29 @@
 			<Label Grid.Row="5" Grid.Column="0" Content="Enforce IWYU?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="6" Grid.Column="0" Content="Suppress Unity Build?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+			<TextBox Text="{Binding ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="TextChanged">
+						<i:InvokeCommandAction Command="{Binding ElementNameChangedCommand}"/>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</TextBox>
 
-			<ComboBox x:Name="ModuleTypeBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ModuleTypeEnumData}}" SelectedItem="{Binding Type}" >
-<!--				<i:Interaction.Triggers>
-					<i:EventTrigger EventName="SelectionChanged">
-						<i:InvokeCommandAction Command="{Binding ModuleTypetriChangedCommand}"/>
-					</i:EventTrigger>
-				</i:Interaction.Triggers>
-				-->
-			</ComboBox>
-			<CheckBox x:Name="CustomImplementationCheckBox" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bCustomImplementation}" >
-<!--				<i:Interaction.Triggers>
-					<i:EventTrigger EventName="Unchecked">
-						<i:InvokeCommandAction Command="{Binding CustomImplementationUncheckedCommand}"/>
-					</i:EventTrigger>
-				</i:Interaction.Triggers>
--->			</CheckBox>
+			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource ModuleLocationTemplate}" Content="{Binding Location}" />
+			<ComboBox x:Name="ModuleTypeBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ModuleTypeEnumData}}" SelectedItem="{Binding Type}" />
+			<CheckBox x:Name="CustomImplementationCheckBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bCustomImplementation}" />
 			<DockPanel Grid.Row="4" Grid.Column="1" >
-				<CheckBox x:Name="PublicInterfaceCheckBox" VerticalAlignment="Center" IsEnabled="{Binding bCustomImplementation}" />
-				<TextBox Text="{Binding PublicInterfaceName}" Margin="5, 0, 0, 0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding ElementName=PublicInterfaceCheckBox, Path=IsChecked, Converter={StaticResource PublicInterfaceVisibilityConverter}}" />
+				<CheckBox x:Name="PublicInterfaceCheckBox" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="{Binding bCustomImplementation}" />
+				<TextBox Text="{Binding PublicInterfaceName}" Margin="5, 0, 0, 0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding ElementName=PublicInterfaceCheckBox, Path=IsChecked, Converter={StaticResource PublicInterfaceVisibilityConverter}}" >
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="TextChanged" >
+							<i:InvokeCommandAction Command="{Binding InterfaceNameChangedCommand}"/>
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</TextBox>
 			</DockPanel>
-			<CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bEnforceIWYU}" />
-			<CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding bSuppressUnity}" />
+			<CheckBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bEnforceIWYU}" />
+			<CheckBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bSuppressUnity}" />
 		</Grid>
 
 		<DataTemplate.Triggers>
@@ -209,13 +262,15 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto" />
+				<ColumnDefinition Width="Auto" SharedSizeGroup="A" />
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
 			<Label Grid.Row="0" Grid.Column="0" Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="1" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
 			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource PluginLocationTemplate}" Content="{Binding Location}" />
 		</Grid>
 	</DataTemplate>
 

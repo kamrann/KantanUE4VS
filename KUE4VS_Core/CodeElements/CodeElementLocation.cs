@@ -13,25 +13,40 @@ namespace KUE4VS
     public class SourceRelativeLocation
     {
         // Module
-        public string ModuleName { get; set; }
+        public ModuleRef Module { get; set; }
 
         // Path, relative to Private/Public folder structure
         public string RelativePath { get; set; }
+
+        public SourceRelativeLocation()
+        {
+            RelativePath = "";
+        }
     }
 
     public class ModuleLocation
     {
-        // todo: proj/plug reference
+        public ModuleHost Host { get; set; }
 
         // From Project/Plugin Source directory [Optional]
         public string RelativePath { get; set; }
+
+        public ModuleLocation()
+        {
+            RelativePath = "";
+        }
     }
 
     public class PluginLocation
     {
-        // todo: proj reference
+        public UProject Project { get; set; }
 
         // From Plugins directory [Optional]
         public string RelativePath { get; set; }
+
+        public PluginLocation()
+        {
+            RelativePath = "";
+        }
     }
 }

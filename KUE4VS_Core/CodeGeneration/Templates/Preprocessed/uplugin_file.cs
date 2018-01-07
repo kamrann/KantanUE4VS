@@ -18,9 +18,9 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
+    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\uplugin_file.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public partial class hdr_file : hdr_fileBase
+    public partial class uplugin_file : uplugin_fileBase
     {
 #line hidden
         /// <summary>
@@ -28,61 +28,30 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("{\r\n\t\"FileVersion\": 3,\r\n\t\"Version\": 1,\r\n\t\"VersionName\": \"1.0\",\r\n\t\"FriendlyName\": \"" +
+                    "");
             
-            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.file_header));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\r\n#pragma once\r\n\r\n");
-            
-            #line 10 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- foreach (string include_path in this.default_includes) { 
+            #line 10 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\uplugin_file.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(plugin_name));
             
             #line default
             #line hidden
-            this.Write("#include \"");
+            this.Write("\",\r\n\t\"Description\": \"\",\r\n\t\"Category\": \"");
             
-            #line 11 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(include_path));
-            
-            #line default
-            #line hidden
-            this.Write("\"\r\n");
-            
-            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- } 
+            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\uplugin_file.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(category));
             
             #line default
             #line hidden
+            this.Write("\",\r\n\t\"CreatedBy\": \"\",\r\n\t\"CreatedByURL\": \"\",\r\n\t\"DocsURL\": \"\",\r\n\t\"MarketplaceURL\": " +
+                    "\"\",\r\n\t\"SupportURL\": \"\",\r\n\t\"CanContainContent\": ");
             
-            #line 13 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- if (this.reflected) { 
-            
-            #line default
-            #line hidden
-            this.Write("#include \"");
-            
-            #line 14 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.file_title));
+            #line 18 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\uplugin_file.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.ConvertBool(with_content)));
             
             #line default
             #line hidden
-            this.Write(".generated.h\"\r\n");
-            
-            #line 15 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
- } 
-            
-            #line default
-            #line hidden
-            this.Write("\r\n\r\n");
-            
-            #line 18 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\hdr_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.body));
-            
-            #line default
-            #line hidden
-            this.Write("\r\n");
+            this.Write(",\r\n\t\"IsBetaVersion\": false,\r\n\t\"Installed\": false\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -94,7 +63,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public class hdr_fileBase
+    public class uplugin_fileBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

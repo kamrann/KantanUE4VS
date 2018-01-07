@@ -9,7 +9,6 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         public string file_header { get; set; }
         public IEnumerable<string> default_includes{ get; set; }
         public bool reflected{ get; set; }
-        public List<string> nspace{ get; set; }
         public string body{ get; set; }
     }
 }
