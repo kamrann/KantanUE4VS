@@ -12,7 +12,7 @@ using System.Windows.Data;
 
 namespace KUE4VS
 {
-    public abstract class AddCodeElementTask : INotifyPropertyChanged
+    public abstract class AddCodeElementTask : PropertyChangeNotifyBase
     {
         public CodeElementType ElementType { get; set; }
 
@@ -25,6 +25,9 @@ namespace KUE4VS
                 SetProperty(ref _elem_name, value);
             }
         }
+
+        public AddCodeElementTask()
+        {}
 
         public abstract IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj);
         public virtual void PostFileAdditions(Project proj) { }
@@ -53,75 +56,6 @@ namespace KUE4VS
 
             PostFileAdditions(proj);
             return true;
-        }
-
-        // @todo: should put this into separate view model
-        public class CommandHandler : ICommand
-        {
-            private Action _action;
-            private bool _canExecute;
-            public CommandHandler(Action action, bool canExecute)
-            {
-                _action = action;
-                _canExecute = canExecute;
-            }
-
-            public bool CanExecute(object parameter)
-            {
-                return _canExecute;
-            }
-
-            public event EventHandler CanExecuteChanged;
-
-            public void Execute(object parameter)
-            {
-                _action();
-            }
-        }
-
-        private ICommand _elem_name_changed_cmd;
-        public ICommand ElementNameChangedCommand
-        {
-            get
-            {
-                return _elem_name_changed_cmd ?? (_elem_name_changed_cmd = new CommandHandler(() => OnElementNameChanged(), true));
-            }
-        }
-
-        protected virtual void OnElementNameChanged()
-        {}
-
-        private ICommand _refresh_modules_cmd;
-        public ICommand RefreshModulesCommand
-        {
-            get
-            {
-                return _refresh_modules_cmd ?? (_refresh_modules_cmd = new CommandHandler(() => OnRefreshModules(), true));
-            }
-        }
-
-        protected virtual void OnRefreshModules()
-        {
-            //(FindResource("AvailableModulesSource") as ObjectDataProvider).Refresh();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (Equals(storage, value))
-            {
-                return false;
-            }
-
-            storage = value;
-            this.OnPropertyChanged(propertyName);
-            return true;
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

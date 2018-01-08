@@ -10,6 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.IO;
 using EnvDTE80;
+using System.Collections.ObjectModel;
 
 namespace KUE4VS
 {
@@ -875,6 +876,24 @@ namespace KUE4VS
             }
 
             return modules;
+        }
+
+        public static UProject GetDefaultUProject()
+        {
+            var projects = GetSolutionUProjects();
+            return projects.FirstOrDefault();
+        }
+
+        public static ModuleHost GetDefaultModuleHost()
+        {
+            var hosts = GetAllModuleHosts();
+            return hosts.FirstOrDefault();
+        }
+
+        public static ModuleRef GetDefaultModule()
+        {
+            var modules = GetAllModules();
+            return modules.FirstOrDefault();
         }
 
         /*		private static string CachedUProjectRootFolder = string.Empty;

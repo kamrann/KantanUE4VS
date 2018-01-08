@@ -13,20 +13,22 @@ namespace KUE4VS_UI
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
+            var src = (item as AddCodeElement_ViewModel).Model; //item;
+
             string resName = null;
-            if (item is AddSourceFileTask)
+            if (src is AddSourceFileTask)
             {
                 resName = "AddSourceTemplate";
             }
-            else if (item is AddTypeTask)
+            else if (src is AddTypeTask)
             {
                 resName = "AddTypeTemplate";
             }
-            else if (item is AddModuleTask)
+            else if (src is AddModuleTask)
             {
                 resName = "AddModuleTemplate";
             }
-            else if (item is AddPluginTask)
+            else if (src is AddPluginTask)
             {
                 resName = "AddPluginTemplate";
             }

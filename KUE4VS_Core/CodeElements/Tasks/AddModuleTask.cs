@@ -40,74 +40,23 @@ namespace KUE4VS
         public bool bSuppressUnity { get; set; }
         // todo: extra dependency modules
 
-        void PropChangedHandler(object sender, PropertyChangedEventArgs args)
-        {
-            if (args.PropertyName == "ElementName")
-            {
-                if (!bInterfaceNameManuallySet)
-                {
-                    PublicInterfaceName = DetermineDefaultInterfaceName();
-                }
-            }
-        }
-
-        string DetermineDefaultInterfaceName()
+        public string DetermineDefaultInterfaceName()
         {
             return String.IsNullOrEmpty(ElementName) ?
                 "" : ("I" + ElementName + "Module");
         }
 
-        private ICommand _custom_impl_unchecked_cmd;
-        public ICommand CustomImplUncheckedCommand
-        {
-            get
-            {
-                return _custom_impl_unchecked_cmd ?? (_custom_impl_unchecked_cmd = new CommandHandler(() => OnCustomImplementationUnchecked(), true));
-            }
-        }
-
-        private ICommand _interface_name_changed_cmd;
-        public ICommand InterfaceNameChangedCommand
-        {
-            get
-            {
-                return _interface_name_changed_cmd ?? (_interface_name_changed_cmd = new CommandHandler(() => OnInterfaceNameChanged(), true));
-            }
-        }
-
-        void OnCustomImplementationUnchecked()
-        {
-            PublicInterfaceName = null;
-            bInterfaceNameManuallySet = false;
-        }
-
-        protected override void OnElementNameChanged()
-        {
-            /* Doesn't work as this is fired before the binding updates the property. Handling from prop changed instead. 
-            if (!bInterfaceNameManuallySet)
-            {
-                PublicInterfaceName = DetermineDefaultInterfaceName();
-            }
-            */
-        }
-
-        bool bInterfaceNameManuallySet = false;
-
-        void OnInterfaceNameChanged()
-        {
-            bInterfaceNameManuallySet = !String.IsNullOrEmpty(PublicInterfaceName);
-        }
-
         public AddModuleTask()
         {
-            Location = new ModuleLocation();
             Type = ModuleType.Runtime;
             bCustomImplementation = false;
             PublicInterfaceName = null;
             bEnforceIWYU = true;
             bSuppressUnity = true;
 
-            PropertyChanged += PropChangedHandler;
+            Location = new ModuleLocation();
+            ExtContext.Instance.RefreshModuleHosts();
+            Location.Host = ExtContext.Instance.AvailableModuleHosts.FirstOrDefault(); //Utils.GetDefaultModuleHost();
         }
 
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
@@ -120,8 +69,13 @@ namespace KUE4VS
             bool custom_impl = bCustomImplementation;
             string custom_base = custom_impl ? PublicInterfaceName : null;
             bool has_custom_base = !String.IsNullOrEmpty(custom_base);
+            // Prepend the module name to the specified relative path - For modules we generate, we always put the module build file into
+            // a directory named after the module, on top of any relative path specified in the UI.
+            // The ModuleRef type, however, doesn't make that assumption since we want to be able to work with preexisting modules that
+            // don't follow that requirement.
+            string module_rel_path = Path.Combine(module_name, Location.RelativePath);
 
-            ModuleRef new_module = new ModuleRef(module_name, Location.Host, Location.RelativePath);
+            ModuleRef new_module = new ModuleRef(module_name, Location.Host, module_rel_path);
 
             // Build.cs file
             {

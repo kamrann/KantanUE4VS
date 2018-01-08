@@ -13,6 +13,7 @@ namespace KUE4VS
         public SourceFileAdditionMode Mode { get; set; }
         public SourceRelativeLocation Location { get; set; }
         public bool bPrivateHeader { get; set; }
+        public bool Reflected { get; set; }
 
         // Valid only for non-reflected types
         public string Namespace { get; set; }
@@ -20,14 +21,9 @@ namespace KUE4VS
         public AddSourceFileTask()
         {
             Location = new SourceRelativeLocation();
-        }
-
-        public void OnModuleBoxOpening(object sender, EventArgs args)
-        {
-            // @NOTE: If remove, also remove assemblies WindowsBase and Sys.Wnd.Data
-            var box = sender as System.Windows.Controls.ComboBox;
-            var data_prov = box.ItemsSource as System.Windows.Data.ObjectDataProvider;
-            data_prov.Refresh();
+            ExtContext.Instance.RefreshModules();
+            Location.Module = ExtContext.Instance.AvailableModules.FirstOrDefault();//Utils.GetDefaultModule();
+            Reflected = false;
         }
 
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
@@ -36,7 +32,7 @@ namespace KUE4VS
 
             string file_title = ElementName;
             string file_header = "/** Some copyright stuff. */";
-            bool is_reflected = false;  // @todo
+            bool is_reflected = Reflected;
 
             List<string> nspace = Utils.SplitNamespaceDefinition(Namespace);
 

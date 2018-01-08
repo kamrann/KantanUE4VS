@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using EnvDTE;
 using EnvDTE80;
+using System.Collections.ObjectModel;
 
 namespace KUE4VS
 {
@@ -24,5 +25,14 @@ namespace KUE4VS
         string SolutionFilepath { get; }
 
         IVsOutputWindowPane GetOutputPane();
+
+        ObservableCollection<ModuleRef> AvailableModules { get; }
+        void RefreshModules();
+
+        ObservableCollection<ModuleHost> AvailableModuleHosts { get; }
+        void RefreshModuleHosts();
+
+        ObservableCollection<UProject> AvailableUProjects { get; }
+        void RefreshUProjects();
     }
 }

@@ -10,7 +10,7 @@ namespace KUE4VS
         List<UPlugin> _plugins;
         public IEnumerable<UPlugin> Plugins { get { return _plugins; } }
 
-        public UProject(string name, string root): base(name, root)
+        public UProject(string name, string root) : base(name, root)
         {
             _plugins = new List<UPlugin>(Utils.FindPluginsInProject(this));
         }

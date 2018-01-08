@@ -38,11 +38,11 @@
 	                    ObjectType="{x:Type core:Utils}"
 	                    MethodName="GetAllModules" />
 
-  <ObjectDataProvider x:Key="AvailableModuleHostsSource"
+	<ObjectDataProvider x:Key="AvailableModuleHostsSource"
                       ObjectType="{x:Type core:Utils}"
                       MethodName="GetAllModuleHosts" />
 
-  <ObjectDataProvider x:Key="AvailableProjectsSource"
+	<ObjectDataProvider x:Key="AvailableProjectsSource"
                       ObjectType="{x:Type core:Utils}"
                       MethodName="GetSolutionUProjects" />
 
@@ -55,10 +55,13 @@
 		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
 			<DockPanel HorizontalAlignment="Stretch">
 				<Label Content="Module" HorizontalAlignment="Left" VerticalAlignment="Center" />
-				<ComboBox x:Name="ModuleBox" ItemsSource="{Binding Source={StaticResource AvailableModulesSource}}" SelectedItem="{Binding Module}">
+				<ComboBox x:Name="ModuleBox" SelectedItem="{Binding Module}"
+						  ItemsSource="{Binding ElementName=AddElementPresenter, Path=DataContext.AvailableModules}" >
+					<!--      ItemsSource="{Binding Source={x:Static core:ExtContext.Instance}, Path=AvailableModules}" > -->
+					<!--				          ItemsSource="{Binding Source={StaticResource AvailableModulesSource}}" > -->
 					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="Drop">
-<!--							<ic:CallMethodAction TargetObject="{Binding Source={StaticResource AvailableModulesSource}}" MethodName="Refresh" /> -->
+						<i:EventTrigger EventName="DropDownOpened">
+							<i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type kue4vs_ui:AddCodeElementWindowControl}}, Path=RefreshModulesCommand}" />
 						</i:EventTrigger>
 					</i:Interaction.Triggers>
 				</ComboBox>
@@ -68,48 +71,57 @@
 				<TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
 			</DockPanel>
 		</StackPanel>
-
-<!--		<DataTemplate.Triggers>
-			<EventTrigger RoutedEvent="ComboBox.Drop" SourceName="ModuleBox">
-				<EventTrigger.Setters>
-					<Setter Property="Height" Value="0" TargetName="PrivateHeaderRow" />
-				</EventTrigger.Setters>
-			</EventTrigger>
-		</DataTemplate.Triggers>
--->	</DataTemplate>
+	</DataTemplate>
 
 	<DataTemplate x:Key="ModuleLocationTemplate" DataType="{x:Type core:ModuleLocation}">
-	  <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-	    <DockPanel HorizontalAlignment="Stretch">
-	      <Label Content="Project/Plugin" HorizontalAlignment="Left" VerticalAlignment="Center" />
-	      <ComboBox ItemsSource="{Binding Source={StaticResource AvailableModuleHostsSource}}" SelectedItem="{Binding Host}" />
-	    </DockPanel>
-	    <DockPanel HorizontalAlignment="Stretch">
-	      <Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
-	      <TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
-	    </DockPanel>
-	  </StackPanel>
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+			<DockPanel HorizontalAlignment="Stretch">
+				<Label Content="Project/Plugin" HorizontalAlignment="Left" VerticalAlignment="Center" />
+				<ComboBox SelectedItem="{Binding Host}" 
+				  ItemsSource="{Binding ElementName=AddElementPresenter, Path=DataContext.AvailableModuleHosts}" >
+					<!-- ItemsSource="{Binding Source={StaticResource AvailableModuleHostsSource}}" -->
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="DropDownOpened">
+							<i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type kue4vs_ui:AddCodeElementWindowControl}}, Path=RefreshModuleHostsCommand}" />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</ComboBox>
+			</DockPanel>
+			<DockPanel HorizontalAlignment="Stretch">
+				<Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
+				<TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
+			</DockPanel>
+		</StackPanel>
 	</DataTemplate>
 
 	<DataTemplate x:Key="PluginLocationTemplate" DataType="{x:Type core:PluginLocation}">
-	  <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
-	    <DockPanel HorizontalAlignment="Stretch">
-	      <Label Content="Project" HorizontalAlignment="Left" VerticalAlignment="Center" />
-	      <ComboBox ItemsSource="{Binding Source={StaticResource AvailableProjectsSource}}" SelectedItem="{Binding Project}" />
-	    </DockPanel>
-	    <DockPanel HorizontalAlignment="Stretch">
-	      <Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
-	      <TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
-	    </DockPanel>
-	  </StackPanel>
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+			<DockPanel HorizontalAlignment="Stretch">
+				<Label Content="Project" HorizontalAlignment="Left" VerticalAlignment="Center" />
+				<ComboBox SelectedItem="{Binding Project}" 
+				          ItemsSource="{Binding ElementName=AddElementPresenter, Path=DataContext.AvailableUProjects}" >
+					<!-- ItemsSource="{Binding Source={StaticResource AvailableProjectsSource}}" -->
+					<i:Interaction.Triggers>
+						<i:EventTrigger EventName="DropDownOpened">
+							<i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type kue4vs_ui:AddCodeElementWindowControl}}, Path=RefreshUProjectsCommand}" />
+						</i:EventTrigger>
+					</i:Interaction.Triggers>
+				</ComboBox>
+			</DockPanel>
+			<DockPanel HorizontalAlignment="Stretch">
+				<Label Content="Relative Path" HorizontalAlignment="Left" VerticalAlignment="Center" />
+				<TextBox Text="{Binding RelativePath}" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" MinWidth="125" />
+			</DockPanel>
+		</StackPanel>
 	</DataTemplate>
 
-	<DataTemplate x:Key="AddSourceTemplate" DataType="{x:Type core:AddSourceFileTask}">
+	<DataTemplate x:Key="AddSourceTemplate" DataType="{x:Type kue4vs_ui:AddCodeElement_ViewModel}">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Name="PrivateHeaderRow" Height="Auto" />
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 			<Grid.ColumnDefinitions>
@@ -121,15 +133,17 @@
 			<Label Grid.Row="1" Grid.Column="0" Content="File Type(s)" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="2" Grid.Column="0" Content="Private Header?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="3" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="4" Grid.Column="0" Content="Reflected?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
-			<ComboBox x:Name="AddModeBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource SourceFileAddModeEnumData}}" SelectedItem="{Binding Mode}" />
-			<CheckBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bPrivateHeader}" />
-			<ContentPresenter x:Name="LocationPresenter" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Location}" />
+			<TextBox Text="{Binding Path=Model.ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<ComboBox x:Name="AddModeBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource SourceFileAddModeEnumData}}" SelectedItem="{Binding Path=Model.Mode}" />
+			<CheckBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bPrivateHeader}" />
+			<ContentPresenter x:Name="LocationPresenter" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Path=Model.Location}" />
+			<CheckBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.Reflected}" />
 		</Grid>
 
 		<DataTemplate.Triggers>
-			<DataTrigger Binding="{Binding Path=Mode}" Value="{x:Static core:SourceFileAdditionMode.CppOnly}">
+			<DataTrigger Binding="{Binding Path=Model.Mode}" Value="{x:Static core:SourceFileAdditionMode.CppOnly}">
 				<DataTrigger.Setters>
 					<Setter Property="Height" Value="0" TargetName="PrivateHeaderRow" />
 				</DataTrigger.Setters>
@@ -137,7 +151,7 @@
 		</DataTemplate.Triggers>
 	</DataTemplate>
 
-	<DataTemplate x:Key="AddTypeTemplate" DataType="{x:Type core:AddTypeTask}">
+	<DataTemplate x:Key="AddTypeTemplate" DataType="{x:Type kue4vs_ui:AddCodeElement_ViewModel}">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -158,41 +172,32 @@
 			<Label Grid.Row="3" Grid.Column="0" Content="Private Header?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="4" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="5" Grid.Column="0" Content="Namespace" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="6" Grid.Column="0" Content="Export?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
-			<ComboBox x:Name="TypeVariantBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource AddableTypeVariantEnumData}}" SelectedItem="{Binding Variant}" />
-			<TextBox Text="{Binding Base}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
-			<CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bPrivateHeader}" />
-			<ContentPresenter x:Name="LocationPresenter" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Location}" />
-			<TextBox Text="{Binding Namespace}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<TextBox Text="{Binding Path=Model.ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<ComboBox x:Name="TypeVariantBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource AddableTypeVariantEnumData}}" SelectedItem="{Binding Path=Model.Variant}" />
+			<TextBox Text="{Binding Path=Model.Base}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bPrivateHeader}" />
+			<ContentPresenter x:Name="LocationPresenter" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Path=Model.Location}" />
+			<TextBox Text="{Binding Path=Model.Namespace}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<CheckBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.Export}" />
 		</Grid>
 
 		<DataTemplate.Triggers>
-			<DataTrigger Binding="{Binding Path=Variant}" Value="{x:Static core:AddableTypeVariant.RawClass}">
+			<DataTrigger Binding="{Binding Path=Model.Variant}" Value="{x:Static core:AddableTypeVariant.RawClass}">
 				<DataTrigger.Setters>
 					<Setter Property="Height" Value="Auto" TargetName="NamespaceRow" />
 				</DataTrigger.Setters>
 			</DataTrigger>
-			<DataTrigger Binding="{Binding Path=Variant}" Value="{x:Static core:AddableTypeVariant.RawStruct}">
+			<DataTrigger Binding="{Binding Path=Model.Variant}" Value="{x:Static core:AddableTypeVariant.RawStruct}">
 				<DataTrigger.Setters>
 					<Setter Property="Height" Value="Auto" TargetName="NamespaceRow" />
 				</DataTrigger.Setters>
 			</DataTrigger>
-			<!--
-			<MultiDataTrigger>
-				<MultiDataTrigger.Conditions>
-					<Condition Binding="{Binding Path=Variant}" Value="{x:Static core:AddableTypeVariant.RawClass}" />
-					<Condition Binding="{Binding Path=Variant}" Value="{x:Static core:AddableTypeVariant.RawStruct}" />
-				</MultiDataTrigger.Conditions>
-				<MultiDataTrigger.Setters>
-					<Setter Property="Height" Value="Auto" TargetName="NamespaceRow" />
-				</MultiDataTrigger.Setters>
-			</MultiDataTrigger>
-			-->
 		</DataTemplate.Triggers>
 	</DataTemplate>
 
-	<DataTemplate x:Key="AddModuleTemplate" DataType="{x:Type core:AddModuleTask}">
+	<DataTemplate x:Key="AddModuleTemplate" DataType="{x:Type kue4vs_ui:AddModule_ViewModel}">
 		<Grid>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -216,37 +221,40 @@
 			<Label Grid.Row="5" Grid.Column="0" Content="Enforce IWYU?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="6" Grid.Column="0" Content="Suppress Unity Build?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" >
-				<i:Interaction.Triggers>
+			<TextBox Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" >
+<!--				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="TextChanged">
 						<i:InvokeCommandAction Command="{Binding ElementNameChangedCommand}"/>
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
-			</TextBox>
+-->			</TextBox>
 
-			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource ModuleLocationTemplate}" Content="{Binding Location}" />
-			<ComboBox x:Name="ModuleTypeBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ModuleTypeEnumData}}" SelectedItem="{Binding Type}" />
-			<CheckBox x:Name="CustomImplementationCheckBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bCustomImplementation}" />
+			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource ModuleLocationTemplate}" Content="{Binding Path=Model.Location}" />
+			<ComboBox x:Name="ModuleTypeBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource ModuleTypeEnumData}}" SelectedItem="{Binding Path=Model.Type}" />
+			<CheckBox x:Name="CustomImplementationCheckBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bCustomImplementation}" />
 			<DockPanel Grid.Row="4" Grid.Column="1" >
-				<CheckBox x:Name="PublicInterfaceCheckBox" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="{Binding bCustomImplementation}" />
-				<TextBox Text="{Binding PublicInterfaceName}" Margin="5, 0, 0, 0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding ElementName=PublicInterfaceCheckBox, Path=IsChecked, Converter={StaticResource PublicInterfaceVisibilityConverter}}" >
+				<CheckBox x:Name="PublicInterfaceCheckBox" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="{Binding Path=Model.bCustomImplementation}" />
+				<TextBox Text="{Binding Path=Model.PublicInterfaceName}" Margin="5, 0, 0, 0" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="{Binding ElementName=PublicInterfaceCheckBox, Path=IsChecked, Converter={StaticResource PublicInterfaceVisibilityConverter}}" >
 					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="TextChanged" >
-							<i:InvokeCommandAction Command="{Binding InterfaceNameChangedCommand}"/>
+					  <!--						<i:EventTrigger EventName="TextChanged" >
+							<i:InvokeCommandAction Command="{Binding Path=InterfaceNameChangedCommand}"/>
+						</i:EventTrigger> -->
+						<i:EventTrigger EventName="LostFocus" >
+							<i:InvokeCommandAction Command="{Binding Path=UpdateAutoInterfaceNameCommand}"/>
 						</i:EventTrigger>
 					</i:Interaction.Triggers>
 				</TextBox>
 			</DockPanel>
-			<CheckBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bEnforceIWYU}" />
-			<CheckBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding bSuppressUnity}" />
+			<CheckBox Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bEnforceIWYU}" />
+			<CheckBox Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bSuppressUnity}" />
 		</Grid>
 
 		<DataTemplate.Triggers>
-			<DataTrigger Binding="{Binding Path=Type}" Value="{x:Static core:ModuleType.Editor}">
+			<DataTrigger Binding="{Binding Path=Model.Type}" Value="{x:Static core:ModuleType.Editor}">
 				<DataTrigger.Setters>
 				</DataTrigger.Setters>
 			</DataTrigger>
-			<DataTrigger Binding="{Binding Path=bCustomImplementation}" Value="False">
+			<DataTrigger Binding="{Binding Path=Model.bCustomImplementation}" Value="False">
 				<DataTrigger.Setters>
 					<Setter Property="IsChecked" Value="False" TargetName="PublicInterfaceCheckBox" />
 				</DataTrigger.Setters>
@@ -254,9 +262,10 @@
 		</DataTemplate.Triggers>
 	</DataTemplate>
 
-	<DataTemplate x:Key="AddPluginTemplate" DataType="{x:Type core:AddPluginTask}">
+	<DataTemplate x:Key="AddPluginTemplate" DataType="{x:Type kue4vs_ui:AddCodeElement_ViewModel}">
 		<Grid>
 			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -268,9 +277,13 @@
 
 			<Label Grid.Row="0" Grid.Column="0" Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="1" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="2" Grid.Column="0" Content="Category" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="3" Grid.Column="0" Content="With Content?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
-			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource PluginLocationTemplate}" Content="{Binding Location}" />
+			<TextBox Text="{Binding Path=Model.ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource PluginLocationTemplate}" Content="{Binding Path=Model.Location}" />
+			<TextBox Text="{Binding Path=Model.Category}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+			<CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.WithContent}" />
 		</Grid>
 	</DataTemplate>
 

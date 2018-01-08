@@ -14,6 +14,7 @@ namespace KUE4VS
         public string Base { get; set; }
         public SourceRelativeLocation Location { get; set; }
         public bool bPrivateHeader { get; set; }
+        public bool Export{ get; set; }
 
         // Valid only for non-reflected types
         public string Namespace { get; set; }
@@ -21,6 +22,10 @@ namespace KUE4VS
         public AddTypeTask()
         {
             Location = new SourceRelativeLocation();
+            ExtContext.Instance.RefreshModules();
+            Location.Module = ExtContext.Instance.AvailableModules.FirstOrDefault();//Utils.GetDefaultModule();
+
+            Export = false;
         }
 
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
@@ -34,7 +39,7 @@ namespace KUE4VS
             // @NOTE: Weirdly, passing null seems to crash the template processer
             string base_class = String.IsNullOrEmpty(Base) ? String.Empty : Base;
             string type_name = Utils.GetPrefixedTypeName(ElementName, base_class, Variant);
-            bool should_export = false;
+            bool should_export = Export;
 
             List<string> nspace = Utils.SplitNamespaceDefinition(Namespace);
 

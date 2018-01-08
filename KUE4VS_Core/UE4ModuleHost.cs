@@ -48,5 +48,11 @@ namespace KUE4VS
         {
             return _name;
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as ModuleHost;
+            return !ReferenceEquals(other, null) && other.ToString().CompareTo(this.ToString()) == 0;
+        }
     }
 }

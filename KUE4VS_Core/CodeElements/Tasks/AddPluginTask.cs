@@ -10,12 +10,17 @@ namespace KUE4VS
 {
     public class AddPluginTask : AddCodeElementTask
     {
-        // todo: various plugin elements
         public PluginLocation Location { get; set; }
+        public string Category { get; set; }
+        public bool WithContent { get; set; }
 
         public AddPluginTask()
         {
             Location = new PluginLocation();
+            ExtContext.Instance.RefreshModules();
+            Location.Project = ExtContext.Instance.AvailableUProjects.FirstOrDefault();//Utils.GetDefaultUProject();
+
+            WithContent = false;
         }
 
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
@@ -23,10 +28,15 @@ namespace KUE4VS
             List<GenericFileAdditionTask> additions = new List<GenericFileAdditionTask>();
 
             string plugin_name = ElementName;
-            string category = "";
-            bool with_content = false;
+            string category = Category;
+            bool with_content = WithContent;
+            // Prepend the plugin name to the specified relative path - For plugins we generate, we always put the .uplugin file into
+            // a directory named after the plugin, on top of any relative path specified in the UI.
+            // The UPlugin type, however, doesn't make that assumption since we want to be able to work with preexisting plugins that
+            // don't follow that requirement.
+            string plugin_rel_path = Path.Combine(plugin_name, Location.RelativePath);
 
-            UPlugin new_plugin = new UPlugin(plugin_name, Location.Project, Location.RelativePath);
+            UPlugin new_plugin = new UPlugin(plugin_name, Location.Project, plugin_rel_path);
 
             // .uplugin file
             {

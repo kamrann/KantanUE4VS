@@ -12,6 +12,8 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
 using EnvDTE;
 using EnvDTE80;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 namespace UE4PropVis_VSIX
 {
@@ -113,6 +115,78 @@ namespace UE4PropVis_VSIX
 		IVsOutputWindowPane KUE4VS.IExtContext.GetOutputPane()
         {
             return GetOutputPane(VSConstants.OutputWindowPaneGuid.BuildOutputPane_guid, "Build");
+        }
+
+        void KUE4VS.IExtContext.RefreshModules()
+        {
+            var old = new List<KUE4VS.ModuleRef>(_cached_modules);
+            var updated = new List<KUE4VS.ModuleRef>();
+            //_cached_modules.Clear();
+            var modules = KUE4VS.Utils.GetAllModules();
+            foreach (var m in modules)
+            {
+                var existing = old.Find(x => x.Equals(m));
+                updated.Add(ReferenceEquals(existing, null) ? m : existing);
+            }
+
+            _cached_modules = new ObservableCollection<KUE4VS.ModuleRef>(updated);
+        }
+
+        void KUE4VS.IExtContext.RefreshModuleHosts()
+        {
+            var old = new List<KUE4VS.ModuleHost>(_cached_module_hosts);
+            var updated = new List<KUE4VS.ModuleHost>();
+            //_cached_module_hosts.Clear();
+            var hosts = KUE4VS.Utils.GetAllModuleHosts();
+            foreach (var h in hosts)
+            {
+                var existing = old.Find(x => x.Equals(h));
+                updated.Add(ReferenceEquals(existing, null) ? h : existing);
+            }
+
+            _cached_module_hosts = new ObservableCollection<KUE4VS.ModuleHost>(updated);
+        }
+
+        void KUE4VS.IExtContext.RefreshUProjects()
+        {
+            var old = new List<KUE4VS.UProject>(_cached_uprojects);
+            var updated = new List<KUE4VS.UProject>();
+            //_cached_uprojects.Clear();
+            var projects = KUE4VS.Utils.GetSolutionUProjects();
+            foreach (var p in projects)
+            {
+                var existing = old.Find(x => x.Equals(p));
+                updated.Add(ReferenceEquals(existing, null) ? p : existing);
+            }
+
+            _cached_uprojects = new ObservableCollection<KUE4VS.UProject>(updated);
+        }
+
+        ObservableCollection<KUE4VS.ModuleRef> _cached_modules = new ObservableCollection<KUE4VS.ModuleRef>();
+        ObservableCollection<KUE4VS.ModuleRef> KUE4VS.IExtContext.AvailableModules
+        {
+            get
+            {
+                return _cached_modules;
+            }
+        }
+
+        ObservableCollection<KUE4VS.ModuleHost> _cached_module_hosts = new ObservableCollection<KUE4VS.ModuleHost>();
+        ObservableCollection<KUE4VS.ModuleHost> KUE4VS.IExtContext.AvailableModuleHosts
+        {
+            get
+            {
+                return _cached_module_hosts;
+            }
+        }
+
+        ObservableCollection<KUE4VS.UProject> _cached_uprojects = new ObservableCollection<KUE4VS.UProject>();
+        ObservableCollection<KUE4VS.UProject> KUE4VS.IExtContext.AvailableUProjects
+        {
+            get
+            {
+                return _cached_uprojects;
+            }
         }
 
         /// <summary>

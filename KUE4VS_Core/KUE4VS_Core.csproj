@@ -106,6 +106,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CodeGeneration\Templates\TTHelpers.cs" />
+    <Compile Include="PropertyChangeNotifyBase.cs" />
     <Compile Include="UE4Plugin.cs" />
     <Compile Include="UE4ModuleHost.cs" />
     <Compile Include="UE4Project.cs" />
