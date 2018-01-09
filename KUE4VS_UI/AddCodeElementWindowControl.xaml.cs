@@ -42,7 +42,7 @@
             {
                 case CodeElementType.Type:
                     TaskData = new AddTypeTask();
-                    view_model = new AddCodeElement_ViewModel(TaskData);
+                    view_model = new AddType_ViewModel(TaskData as AddTypeTask);
                     break;
                 case CodeElementType.Source:
                     TaskData = new AddSourceFileTask();

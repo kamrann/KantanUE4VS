@@ -176,7 +176,8 @@
 
 			<TextBox Text="{Binding Path=Model.ElementName}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox x:Name="TypeVariantBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource AddableTypeVariantEnumData}}" SelectedItem="{Binding Path=Model.Variant}" />
-			<TextBox Text="{Binding Path=Model.Base}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<ComboBox x:Name="BaseClassBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" IsEditable="True"
+					  ItemsSource="{Binding Path=AvailableBaseClasses, Mode=OneWay}" SelectedItem="{Binding Path=Model.Base}" Text="{Binding Path=CustomBaseClassName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
 			<CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bPrivateHeader}" />
 			<ContentPresenter x:Name="LocationPresenter" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Path=Model.Location}" />
 			<TextBox Text="{Binding Path=Model.Namespace}" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />

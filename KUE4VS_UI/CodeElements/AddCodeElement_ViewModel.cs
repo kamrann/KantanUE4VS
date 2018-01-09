@@ -21,6 +21,8 @@ namespace KUE4VS_UI
         public AddCodeElement_ViewModel(AddCodeElementTask model)
         {
             _task = model;
+
+            this.PropertyChanged += OnViewModelPropertyChanged;
             Model.PropertyChanged += OnModelPropertyChanged;
         }
 
@@ -32,6 +34,7 @@ namespace KUE4VS_UI
             }
         }
 
+        protected virtual void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs args) { }
         protected virtual void OnModelPropertyChanged(object sender, PropertyChangedEventArgs args) { }
 
         public ObservableCollection<ModuleRef> AvailableModules

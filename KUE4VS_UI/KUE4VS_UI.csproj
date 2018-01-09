@@ -56,6 +56,7 @@
     <Compile Include="AddCodeElementWindowControl.xaml.cs">
       <DependentUpon>AddCodeElementWindowControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CodeElements\AddType_ViewModel.cs" />
     <Compile Include="CodeElements\AddModule_ViewModel.cs" />
     <Compile Include="CodeElements\AddCodeElement_ViewModel.cs" />
     <Compile Include="CodeElementTypeTemplateSelector.cs" />

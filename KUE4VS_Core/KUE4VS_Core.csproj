@@ -107,11 +107,13 @@
     </Compile>
     <Compile Include="CodeGeneration\Templates\TTHelpers.cs" />
     <Compile Include="PropertyChangeNotifyBase.cs" />
-    <Compile Include="UE4Plugin.cs" />
-    <Compile Include="UE4ModuleHost.cs" />
-    <Compile Include="UE4Project.cs" />
-    <Compile Include="UE4Module.cs" />
-    <Compile Include="CoreUE4Types.cs" />
+    <Compile Include="UE4Core\EngineClasses.cs" />
+    <Compile Include="UE4Core\UE4Classes.cs" />
+    <Compile Include="UE4Core\UE4Plugin.cs" />
+    <Compile Include="UE4Core\UE4ModuleHost.cs" />
+    <Compile Include="UE4Core\UE4Project.cs" />
+    <Compile Include="UE4Core\UE4Module.cs" />
+    <Compile Include="UE4Core\CoreUE4Types.cs" />
     <Compile Include="CodeElements\Tasks\AddModuleTask.cs" />
     <Compile Include="CodeElements\Tasks\AddPluginTask.cs" />
     <Compile Include="CodeElements\Tasks\AddSourceFileTask.cs" />

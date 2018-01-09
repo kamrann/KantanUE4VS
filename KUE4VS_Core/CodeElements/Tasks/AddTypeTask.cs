@@ -10,11 +10,20 @@ namespace KUE4VS
 {
     public class AddTypeTask : AddCodeElementTask
     {
-        public AddableTypeVariant Variant { get; set; }
-        public string Base { get; set; }
+        public UE4ClassDefnBase Base { get; set; }
         public SourceRelativeLocation Location { get; set; }
         public bool bPrivateHeader { get; set; }
         public bool Export{ get; set; }
+
+        AddableTypeVariant _variant;
+        public AddableTypeVariant Variant
+        {
+            get { return _variant; }
+            set
+            {
+                SetProperty(ref _variant, value);
+            }
+        }
 
         // Valid only for non-reflected types
         public string Namespace { get; set; }
@@ -37,7 +46,9 @@ namespace KUE4VS
             string type_keyword = Constants.TypeKeywords[Variant];
             bool is_reflected = Constants.ReflectedTypes[Variant];
             // @NOTE: Weirdly, passing null seems to crash the template processer
-            string base_class = String.IsNullOrEmpty(Base) ? String.Empty : Base;
+            string base_class = ReferenceEquals(Base, null) ? String.Empty : Base.Name;
+            //String.IsNullOrEmpty(Base) ? String.Empty : Base;
+            bool has_base = !String.IsNullOrEmpty(base_class);
             string type_name = Utils.GetPrefixedTypeName(ElementName, base_class, Variant);
             bool should_export = Export;
 
@@ -81,9 +92,31 @@ namespace KUE4VS
             {
                 // Generate content
 
-                List<string> default_includes = new List<string>{
-                    "CoreMinimal.h"
-                };
+                List<string> default_includes = new List<string>();
+                if (has_base)
+                {
+                    if (!String.IsNullOrEmpty(Base.IncludePath))
+                    {
+                        default_includes.Add(Base.IncludePath);
+                    }
+                    else
+                    {
+                        // @TODO: Disallow? Warning?
+                    }
+
+                    if (Variant == AddableTypeVariant.UClass)
+                    {
+                        default_includes.Add("ScriptMacros.h");
+                    }
+                }
+                else
+                {
+                    default_includes.Add("CoreMinimal.h");
+                    if (Constants.ReflectedTypes[Variant])
+                    {
+                        default_includes.Add("ObjectMacros.h");
+                    }
+                }
 
                 string hdr_contents = CodeGeneration.SourceGenerator.GenerateTypeHeader(
                     file_title,
