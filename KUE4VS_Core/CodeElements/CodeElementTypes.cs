@@ -29,6 +29,14 @@ namespace KUE4VS
         RawStruct,
     };
 
+    public enum PluginDefaultConfig
+    {
+        Runtime,
+        Editor,
+        RuntimeAndEditor,
+        ContentOnly,
+    };
+
 
     public static partial class Constants
     {

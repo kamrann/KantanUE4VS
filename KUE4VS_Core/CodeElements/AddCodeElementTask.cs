@@ -26,8 +26,28 @@ namespace KUE4VS
             }
         }
 
+        bool _is_valid = false;
+        public bool IsValid
+        {
+            get { return _is_valid; }
+            set
+            {
+                SetProperty(ref _is_valid, value);
+            }
+        }
+
         public AddCodeElementTask()
         {}
+
+        public virtual bool DetermineIsNameValid()
+        {
+            return !String.IsNullOrWhiteSpace(ElementName);
+        }
+
+        public virtual bool DetermineIsValid()
+        {
+            return DetermineIsNameValid();
+        }
 
         public abstract IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj);
         public virtual void PostFileAdditions(Project proj) { }

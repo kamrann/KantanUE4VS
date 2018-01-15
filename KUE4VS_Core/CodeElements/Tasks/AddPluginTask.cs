@@ -12,6 +12,7 @@ namespace KUE4VS
     {
         public PluginLocation Location { get; set; }
         public string Category { get; set; }
+//        public 
         public bool WithContent { get; set; }
 
         public AddPluginTask()
@@ -21,6 +22,21 @@ namespace KUE4VS
             Location.Project = ExtContext.Instance.AvailableUProjects.FirstOrDefault();//Utils.GetDefaultUProject();
 
             WithContent = false;
+        }
+
+        public override bool DetermineIsNameValid()
+        {
+            if (!base.DetermineIsNameValid())
+            {
+                return false;
+            }
+
+            if (ExtContext.Instance.AvailableModuleHosts.Where(x => x is UPlugin && string.Compare(x.Name, ElementName, true) == 0).Count() > 0)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)

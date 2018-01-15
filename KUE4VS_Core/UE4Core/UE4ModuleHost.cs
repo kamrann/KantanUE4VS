@@ -49,6 +49,11 @@ namespace KUE4VS
             return _name;
         }
 
+        public override int GetHashCode()
+        {
+            return _name.GetHashCode();
+        }
+
         public override bool Equals(object obj)
         {
             var other = obj as ModuleHost;

@@ -31,7 +31,7 @@ namespace KUE4VS
             List<GenericFileAdditionTask> additions = new List<GenericFileAdditionTask>();
 
             string file_title = ElementName;
-            string file_header = "/** Some copyright stuff. */";
+            string file_header = ExtContext.Instance.ExtensionOptions.SourceFileHeaderText;
             bool is_reflected = Reflected;
 
             List<string> nspace = Utils.SplitNamespaceDefinition(Namespace);

@@ -26,6 +26,14 @@ namespace KUE4VS_UI
             }
         }
 
+        public bool EnableBaseClassSelection
+        {
+            get
+            {
+                return AddTypeModel.Variant == AddableTypeVariant.UClass;
+            }
+        }
+
         public IEnumerable<UE4ClassDefnBase> AvailableBaseClasses
         {
             get
@@ -61,6 +69,8 @@ namespace KUE4VS_UI
             }
         }
 
+        // @TODO: Think still need to propagate this to the model.
+        // Disabled editable property in the xaml for now.
         string _custom_base_class_name = null;
         public string CustomBaseClassName
         {
@@ -78,6 +88,13 @@ namespace KUE4VS_UI
         void UpdateBaseClassBox()
         {
             OnPropertyChanged("AvailableBaseClasses");
+
+            if (AddTypeModel.Variant == AddableTypeVariant.UClass && ReferenceEquals(AddTypeModel.Base, null))
+            {
+                AddTypeModel.Base = AvailableBaseClasses.FirstOrDefault();
+            }
+
+            OnPropertyChanged("EnableBaseClassSelection");
         }
 
         void OnCustomBaseClassNameChanged()

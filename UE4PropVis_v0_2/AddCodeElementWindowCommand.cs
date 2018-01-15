@@ -96,15 +96,6 @@ namespace UE4PropVis_VSIX
 
             IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
             Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
-
-            // temp
-            //windowFrame.SetFramePos()
-            int onscreen;
-            windowFrame.IsOnScreen(out onscreen);
-            int vis = windowFrame.IsVisible();
-            bool ok = vis != 0 && onscreen != 0;
-
-            PackageProvider.Pkg.GetOutputPane(Microsoft.VisualStudio.VSConstants.OutputWindowPaneGuid.BuildOutputPane_guid, "Build").OutputStringThreadSafe(ok ? "Visible\n" : "Not visible\n");
         }
     }
 }

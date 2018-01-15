@@ -7,6 +7,7 @@
     using KUE4VS.CodeGeneration;
     using System.Windows.Input;
     using System.Windows.Data;
+    using System.ComponentModel;
 
     /// <summary>
     /// Interaction logic for AddCodeElementWindowControl.
@@ -25,14 +26,6 @@
         }
 
         public AddCodeElementTask TaskData { get; private set; }
-
-        public bool CanAddElement
-        {
-            get
-            {
-                return true;// TaskData is AddTypeTask;
-            }
-        }
 
         void InitializeContent(CodeElementType ElementType)
         {
@@ -59,10 +52,21 @@
             }
 
             TaskData.ElementType = ElementType;
+            TaskData.PropertyChanged += OnModelChanged;
 
             ElementTypeBox.DataContext = view_model;
             // @NOTE: Setting this also sets the DataContext to the same object
             AddElementPresenter.Content = view_model;
+            AddBtn.DataContext = TaskData;
+            AddFinishBtn.DataContext = TaskData;
+        }
+
+        private void OnModelChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (string.Compare(args.PropertyName, "IsValid") != 0)
+            {
+                TaskData.IsValid = TaskData.DetermineIsValid();
+            }
         }
 
         private void ElementTypeSelectionChanged(object sender, SelectionChangedEventArgs e)

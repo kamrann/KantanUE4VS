@@ -33,15 +33,15 @@
 				<ColumnDefinition Width="*" />
 			</Grid.ColumnDefinitions>
 
-			<Label Grid.Row="0" Grid.Column="0" Content="Code Element Type" HorizontalAlignment="Left" VerticalAlignment="Center" />
+			<Label Grid.Row="0" Grid.Column="0" Content="Code Element" HorizontalAlignment="Left" VerticalAlignment="Center" />
 			<ComboBox x:Name="ElementTypeBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource CodeElementTypeEnumData}}" SelectedItem="{Binding Path=Model.ElementType}" SelectionChanged="ElementTypeSelectionChanged" />
         </Grid>
 		<Separator Height="10" />
         <ContentPresenter x:Name="AddElementPresenter" ContentTemplateSelector="{StaticResource CodeElementTemplateSelector}" />
 		<Separator Height="10" />
 		<StackPanel Orientation="Horizontal" >
-			<Button Content="Add" MinWidth="50" IsEnabled="{Binding ElementName=AddCodeElementToolWindowCtrl, Path=CanAddElement}" Click="OnAddElement" />
-			<Button Content="Add &amp; Finish" MinWidth="50" Margin="5,0,0,0" IsEnabled="{Binding ElementName=AddCodeElementToolWindowCtrl, Path=CanAddElement}"  Click="OnAddElementAndFinish" />
+			<Button x:Name="AddBtn" Content="Add" MinWidth="50" IsEnabled="{Binding IsValid}" Click="OnAddElement" />
+			<Button x:Name="AddFinishBtn" Content="Add &amp; Finish" MinWidth="50" Margin="5,0,0,0" IsEnabled="{Binding IsValid}" Click="OnAddElementAndFinish" />
 		</StackPanel>
     </StackPanel>
 </UserControl>

@@ -24,6 +24,8 @@ namespace KUE4VS
         bool IsUE4Loaded { get; }
         string SolutionFilepath { get; }
 
+        KUE4VSOptions ExtensionOptions { get; }
+
         IVsOutputWindowPane GetOutputPane();
 
         ObservableCollection<ModuleRef> AvailableModules { get; }

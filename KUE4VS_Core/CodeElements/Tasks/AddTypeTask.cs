@@ -10,7 +10,6 @@ namespace KUE4VS
 {
     public class AddTypeTask : AddCodeElementTask
     {
-        public UE4ClassDefnBase Base { get; set; }
         public SourceRelativeLocation Location { get; set; }
         public bool bPrivateHeader { get; set; }
         public bool Export{ get; set; }
@@ -25,6 +24,16 @@ namespace KUE4VS
             }
         }
 
+        UE4ClassDefnBase _base;
+        public UE4ClassDefnBase Base
+        {
+            get { return _base; }
+            set
+            {
+                SetProperty(ref _base, value);
+            }
+        }
+
         // Valid only for non-reflected types
         public string Namespace { get; set; }
 
@@ -35,6 +44,11 @@ namespace KUE4VS
             Location.Module = ExtContext.Instance.AvailableModules.FirstOrDefault();//Utils.GetDefaultModule();
 
             Export = false;
+
+            if (Variant == AddableTypeVariant.UClass)
+            {
+                Base = EngineTypes.UClasses.FirstOrDefault();
+            }
         }
 
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
@@ -42,7 +56,7 @@ namespace KUE4VS
             List<GenericFileAdditionTask> additions = new List<GenericFileAdditionTask>();
 
             string file_title = ElementName;
-            string file_header = "/** Some copyright stuff. */";
+            string file_header = ExtContext.Instance.ExtensionOptions.SourceFileHeaderText;
             string type_keyword = Constants.TypeKeywords[Variant];
             bool is_reflected = Constants.ReflectedTypes[Variant];
             // @NOTE: Weirdly, passing null seems to crash the template processer

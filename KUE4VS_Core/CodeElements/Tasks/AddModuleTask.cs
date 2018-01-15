@@ -59,13 +59,28 @@ namespace KUE4VS
             Location.Host = ExtContext.Instance.AvailableModuleHosts.FirstOrDefault(); //Utils.GetDefaultModuleHost();
         }
 
+        public override bool DetermineIsNameValid()
+        {
+            if (!base.DetermineIsNameValid())
+            {
+                return false;
+            }
+
+            if (ExtContext.Instance.AvailableModules.Where(x => string.Compare(x.Name, ElementName, true) == 0).Count() > 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj)
         {
             List<GenericFileAdditionTask> additions = new List<GenericFileAdditionTask>();
 
             string module_name = ElementName;
             string impl_file_title = module_name + "ModuleImpl";
-            string file_header = "/** Some copyright stuff. */";
+            string file_header = ExtContext.Instance.ExtensionOptions.SourceFileHeaderText;
             bool custom_impl = bCustomImplementation;
             string custom_base = custom_impl ? PublicInterfaceName : null;
             bool has_custom_base = !String.IsNullOrEmpty(custom_base);

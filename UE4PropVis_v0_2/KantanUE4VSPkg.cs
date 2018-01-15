@@ -14,6 +14,7 @@ using EnvDTE;
 using EnvDTE80;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.IO;
 
 namespace UE4PropVis_VSIX
 {
@@ -40,6 +41,7 @@ namespace UE4PropVis_VSIX
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(AddCodeElementWindow))]
+    [ProvideOptionPage(typeof(KUE4VS.KUE4VSOptions), ExtensionName, "General", 0, 0, true)]
     public sealed class KantanUE4VSPkg :
         Package,
         KUE4VS.IExtContext,
@@ -54,6 +56,8 @@ namespace UE4PropVis_VSIX
         private const string VersionString = "v0.1";
         private const string ExtensionName = "KantanUE4VS";
         private const string UnrealSolutionFileNamePrefix = "UE4";
+
+        private const string CodeGenerationOptionKey = ExtensionName + "CodeGeneration";
 
         private DTE2 dte;
         private IVsSolutionBuildManager2 build_mgr;
@@ -107,6 +111,21 @@ namespace UE4PropVis_VSIX
                 return solution_filepath;
             }
         }
+
+        KUE4VS.KUE4VSOptions KUE4VS.IExtContext.ExtensionOptions
+        {
+            get
+            {
+                return (KUE4VS.KUE4VSOptions)GetDialogPage(typeof(KUE4VS.KUE4VSOptions));
+            }
+        }
+
+        /// The package's options page
+/*        public KUE4VS.KUE4VSOptions OptionsPage
+        {
+            get { return (KUE4VS.KUE4VSOptions)GetDialogPage(typeof(KUE4VS.KUE4VSOptions)); }
+        }
+        */
 
         /// <summary>
 		/// Gets a Visual Studio pane to output text to, or creates one if not visible.  Does not bring the pane to front (you can call Activate() to do that.)
@@ -198,6 +217,8 @@ namespace UE4PropVis_VSIX
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
+
+            AddOptionKey(CodeGenerationOptionKey);
         }
 
         #region Package Members
@@ -373,6 +394,16 @@ namespace UE4PropVis_VSIX
         }
 
         #endregion
+
+        protected override void OnSaveOptions(string key, Stream stream)
+        {
+            base.OnSaveOptions(key, stream);
+        }
+
+        protected override void OnLoadOptions(string key, Stream stream)
+        {
+            base.OnLoadOptions(key, stream);
+        }
 
         /// IDispose pattern lets us clean up our stuff!
 		protected override void Dispose(bool disposing)
