@@ -1,22 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="UE4PropVis.KantanDev.53a58c57-0e5a-4b47-8d7a-159b8e34447e" Version="0.3" Language="en-US" Publisher="Kantan Dev" />
-        <DisplayName>UE4 Property Visualizer</DisplayName>
-        <Description xml:space="preserve">Visual Studio extension for displaying UE4 blueprint variables in the debugger watch windows.</Description>
+        <Identity Id="KantanUE4VS.KantanDev.53a58c57-0e5a-4b47-8d7a-159b8e34447e" Version="0.4" Language="en-US" Publisher="Kantan Dev" />
+        <DisplayName>Kantan UE4VS</DisplayName>
+        <Description xml:space="preserve">Visual Studio extension for working with Unreal Engine 4 projects.
+Provides common code element generation shortcuts, and enables viewing of blueprint properties in the watch windows.</Description>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,16.0)" />
     </Installation>
     <Dependencies>
         <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
-      <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
-  </Dependencies>
+        <Dependency Id="Microsoft.VisualStudio.MPF.15.0" DisplayName="Visual Studio MPF 15.0" d:Source="Installed" Version="[15.0]" />
+    </Dependencies>
     <Assets>
         <Asset Type="DebuggerEngineExtension" Path="UE4PropVis.vsdconfig" />
         <Asset Type="NativeVisualizer" Path="UE4Properties.natvis" />
-      <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
-  </Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
     <Prerequisites>
         <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0.26208.0,16.0)" DisplayName="Visual Studio core editor" />
         <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0.26208.0,16.0)" DisplayName="C# and Visual Basic" />

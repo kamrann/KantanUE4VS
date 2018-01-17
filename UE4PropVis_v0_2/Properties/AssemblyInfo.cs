@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UE4PropVis_VSIX")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Kantan UE4VS")]
+[assembly: AssemblyDescription("Visual Studio extension for Unreal Engine 4 projects.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("UE4PropVis_VSIX")]
+[assembly: AssemblyCompany("kantandev.com")]
+[assembly: AssemblyProduct("Kantan UE4VS")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

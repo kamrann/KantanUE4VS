@@ -12,6 +12,8 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         public bool export { get; set; }
         public bool reflected { get; set; }
         public string reflection_macro { get; set; }
+        public bool constructor { get; set; }
+        public IEnumerable<string> declarations { get; set; }
     }
 }
 

@@ -14,7 +14,17 @@ namespace KUE4VS
     {
         public event EventHandler OnOptionsChanged;
 
+        private bool _enable_prop_vis;
         private string _source_header_text;
+
+        [Category("Blueprint Property Visualization")]
+        [DisplayName("Enable Visualization")]
+        [Description("Toggles the blueprint property watch window extension on and off.")]
+        public bool EnablePropVis
+        {
+            get { return _enable_prop_vis; }
+            set { _enable_prop_vis = value; }
+        }
 
         [Category("Code Generation")]
         [DisplayName("Source File Header")]
@@ -28,7 +38,8 @@ namespace KUE4VS
 
         public KUE4VSOptions()
         {
-            SourceFileHeaderText = @"// [Set a copyright notice via Tools|Options|Kantan UE4VS]";
+            EnablePropVis = true;
+            SourceFileHeaderText = @"// [Set a file header via Tools|Options|Kantan UE4VS]";
         }
 
         protected override void OnApply(PageApplyEventArgs e)

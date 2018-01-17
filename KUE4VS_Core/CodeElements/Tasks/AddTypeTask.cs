@@ -63,12 +63,16 @@ namespace KUE4VS
             string base_class = ReferenceEquals(Base, null) ? String.Empty : Base.Name;
             //String.IsNullOrEmpty(Base) ? String.Empty : Base;
             bool has_base = !String.IsNullOrEmpty(base_class);
-            string type_name = Utils.GetPrefixedTypeName(ElementName, base_class, Variant);
+            string unprefixed_type_name = ElementName;
+            string type_name = Utils.GetPrefixedTypeName(unprefixed_type_name, base_class, Variant);
             bool should_export = Export;
 
             List<string> nspace = Utils.SplitNamespaceDefinition(Namespace);
 
+            // @TODO: Perhaps have a 'header only' property, which defaults differently depending on Variant
+            bool requires_cpp = (Variant == AddableTypeVariant.UClass || Variant == AddableTypeVariant.RawClass);
             // Cpp file
+            if (requires_cpp)
             {
                 // Generate content
 
@@ -107,7 +111,11 @@ namespace KUE4VS
                 // Generate content
 
                 List<string> default_includes = new List<string>();
-                if (has_base)
+                if (Variant == AddableTypeVariant.UInterface)
+                {
+                    default_includes.Add("Interface.h");
+                }
+                else if (has_base)
                 {
                     if (!String.IsNullOrEmpty(Base.IncludePath))
                     {
@@ -132,18 +140,42 @@ namespace KUE4VS
                     }
                 }
 
-                string hdr_contents = CodeGeneration.SourceGenerator.GenerateTypeHeader(
-                    file_title,
-                    file_header,
-                    default_includes,
-                    type_keyword,
-                    is_reflected,
-                    nspace,
-                    type_name,
-                    base_class,
-                    Location.Module.Name,
-                    should_export
-                    );
+                string hdr_contents = null;
+                switch (Variant)
+                {
+                    case AddableTypeVariant.UClass:
+                    case AddableTypeVariant.UStruct:
+                    case AddableTypeVariant.RawClass:
+                    case AddableTypeVariant.RawStruct:
+                        hdr_contents = CodeGeneration.SourceGenerator.GenerateTypeHeader(
+                            file_title,
+                            file_header,
+                            default_includes,
+                            type_keyword,
+                            is_reflected,
+                            nspace,
+                            type_name,
+                            base_class,
+                            Location.Module.Name,
+                            should_export
+                            );
+                        break;
+
+                    case AddableTypeVariant.UInterface:
+                        hdr_contents = CodeGeneration.SourceGenerator.GenerateUInterfaceHeader(
+                            file_title,
+                            file_header,
+                            default_includes,
+                            unprefixed_type_name,
+                            Location.Module.Name,
+                            should_export
+                            );
+                        break;
+
+                    case AddableTypeVariant.UEnum:
+                        // @TODO:
+                        break;
+                }
                 if (hdr_contents == null)
                 {
                     return null;

@@ -43,7 +43,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
             this.Write(" ");
             
             #line 7 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture((this.export ? this.module_name + "_API " : "") + this.type_name));
+            this.Write(this.ToStringHelper.ToStringWithCulture((this.export ? this.module_name.ToUpper() + "_API " : "") + this.type_name));
             
             #line default
             #line hidden
@@ -67,14 +67,58 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
             
             #line default
             #line hidden
+            
+            #line 13 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+ if (constructor) { 
+            
+            #line default
+            #line hidden
             this.Write("public:\r\n\t");
             
-            #line 14 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+            #line 15 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(type_name));
             
             #line default
             #line hidden
-            this.Write("();\r\n};\r\n");
+            this.Write("();\r\n\r\n");
+            
+            #line 17 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 18 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+ if (!ReferenceEquals(declarations, null)) { 
+            
+            #line default
+            #line hidden
+            
+            #line 19 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+ foreach (var decl in declarations) { 
+            
+            #line default
+            #line hidden
+            
+            #line 20 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(decl));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n");
+            
+            #line 21 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 22 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\class_type_decl.tt"
+ } 
+            
+            #line default
+            #line hidden
+            this.Write("};\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }

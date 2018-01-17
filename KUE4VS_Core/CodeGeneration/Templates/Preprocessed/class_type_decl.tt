@@ -4,12 +4,20 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#= this.reflected ? this.reflection_macro + "\r\n" : ""
-#><#= this.type_keyword #> <#= (this.export ? this.module_name + "_API " : "") + this.type_name #><#= TTHelpers.StringBefore(" : public ", this.base_class) #>
+#><#= this.type_keyword #> <#= (this.export ? this.module_name.ToUpper() + "_API " : "") + this.type_name #><#= TTHelpers.StringBefore(" : public ", this.base_class) #>
 {
 <# if (reflected) { #>
 	GENERATED_BODY()
 
 <# } #>
+<# if (constructor) { #>
 public:
 	<#= type_name #>();
+
+<# } #>
+<# if (!ReferenceEquals(declarations, null)) { #>
+<# foreach (var decl in declarations) { #>
+<#= decl #>
+<# } #>
+<# } #>
 };

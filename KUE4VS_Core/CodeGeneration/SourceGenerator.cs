@@ -106,7 +106,8 @@ namespace KUE4VS.CodeGeneration
                 export = export,
                 type_keyword = class_keyword,
                 reflected = reflected,
-                reflection_macro = reflected_macro
+                reflection_macro = reflected_macro,
+                constructor = true
             }.TransformText();
 
             string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
@@ -116,6 +117,52 @@ namespace KUE4VS.CodeGeneration
             }.TransformText();
 
             return GenerateHeader(file_title, file_header, default_includes, reflected, body);
+        }
+
+        public static string GenerateUInterfaceHeader(
+            string file_title,
+            string file_header,
+            IEnumerable<string> default_includes,
+            string interfacename,
+            string modulename,
+            bool export
+            )
+        {
+            string reflected_macro = "UINTERFACE()";
+            string uint_decl = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.class_type_decl
+            {
+                type_name = "U" + interfacename,
+                base_class = "UInterface",
+                module_name = modulename,
+                export = export,
+                type_keyword = "class",
+                reflected = true,
+                reflection_macro = reflected_macro,
+                constructor = false
+            }.TransformText();
+
+            var declarations = new List<string>
+            {
+                "\t// Interface methods",
+                "public:",
+            };
+
+            string iint_decl = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.class_type_decl
+            {
+                type_name = "I" + interfacename,
+                base_class = null,
+                module_name = modulename,
+                export = export,
+                type_keyword = "class",
+                reflected = true,
+                reflection_macro = null,
+                constructor = false,
+                declarations = declarations
+            }.TransformText();
+
+            string body = uint_decl + "\r\n" + iint_decl;
+
+            return GenerateHeader(file_title, file_header, default_includes, true, body);
         }
 
         public static string GenerateTypeCpp(

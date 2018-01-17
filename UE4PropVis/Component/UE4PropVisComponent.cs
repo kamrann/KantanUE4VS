@@ -12,9 +12,6 @@ using Microsoft.VisualStudio.Debugger.Evaluation;
 using UE4PropVis.Core;
 using UE4PropVis.Core.EE;
 
-//add a bunch of print strings to the various callback method implementatons,
-//	and try again setting the property value vis id to be guid.empty.
-
 
 namespace UE4PropVis
 {
@@ -46,6 +43,13 @@ namespace UE4PropVis
 
 		void IDkmCustomVisualizer.EvaluateVisualizedExpression(DkmVisualizedExpression expression, out DkmEvaluationResult resultObject)
 		{
+            if (KUE4VS.ExtContext.Instance.ExtensionOptions.EnablePropVis == false)
+            {
+                var LangExpr = DkmLanguageExpression.Create(DefaultEE.CppLanguage, DkmEvaluationFlags.None, Utility.GetExpressionFullName(expression), null);
+                expression.EvaluateExpressionCallback(expression.InspectionContext, LangExpr, expression.StackFrame, out resultObject);
+                return;
+            }
+
 			Debug.Print("UE4PV: EvaluateVisualizedExpression('{0}'/'{1}', [{2}])",
 				Utility.GetExpressionFullName(expression),
 				Utility.GetExpressionName(expression),
@@ -121,18 +125,21 @@ namespace UE4PropVis
 				expression.VisualizerId
 				);
 
-			var data_item = expression.GetDataItem<ExpressionDataItem>();
-			if (data_item != null)
-			{
-				Debug.Assert(data_item.Visualizer != null);
+            if (KUE4VS.ExtContext.Instance.ExtensionOptions.EnablePropVis)
+            {
+                var data_item = expression.GetDataItem<ExpressionDataItem>();
+                if (data_item != null)
+                {
+                    Debug.Assert(data_item.Visualizer != null);
 
-				if (data_item.Visualizer.WantsCustomExpansion)
-				{
-					useDefaultEvaluationBehavior = false;
-					defaultEvaluationResult = null;
-					return;
-				}
-			}
+                    if (data_item.Visualizer.WantsCustomExpansion)
+                    {
+                        useDefaultEvaluationBehavior = false;
+                        defaultEvaluationResult = null;
+                        return;
+                    }
+                }
+            }
 
 			// Don't need any special expansion, just delegate back to the default EE
 			useDefaultEvaluationBehavior = true;

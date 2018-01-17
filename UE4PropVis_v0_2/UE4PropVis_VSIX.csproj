@@ -39,7 +39,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UE4PropVis_VSIX</RootNamespace>
-    <AssemblyName>UE4PropVis_VSIX</AssemblyName>
+    <AssemblyName>KantanUE4VS</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
