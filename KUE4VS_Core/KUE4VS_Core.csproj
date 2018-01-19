@@ -53,6 +53,7 @@
     </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
@@ -108,6 +109,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="CodeGeneration\Templates\TTHelpers.cs" />
+    <Compile Include="EnumToDescriptionConverter.cs" />
+    <Compile Include="EnumToDisplayNameConverter.cs" />
     <Compile Include="KUE4VSOptions.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -197,40 +200,11 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>hdr_file.cs</LastGenOutput>
     </Content>
-    <Content Include="CodeGeneration\Legacy\type_decl.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>type_decl.weird</LastGenOutput>
-    </Content>
-    <None Include="CodeGeneration\Legacy\type_decl.weird">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>type_decl.tt</DependentUpon>
-    </None>
     <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeGeneration\Legacy\cpp_file.cpp">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>cpp_file.tt</DependentUpon>
-    </Content>
-    <Content Include="CodeGeneration\Legacy\cpp_file.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>cpp_file.cpp</LastGenOutput>
-    </Content>
-    <Content Include="CodeGeneration\Legacy\hdr_file.h">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>hdr_file.tt</DependentUpon>
-    </Content>
-    <Content Include="CodeGeneration\Legacy\hdr_file.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>hdr_file.h</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,8 @@
-﻿namespace KUE4VS_UI
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
+namespace KUE4VS_UI
 {
+    using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Windows;
     using System.Windows.Controls;
@@ -14,6 +17,8 @@
     /// </summary>
     public partial class AddCodeElementWindowControl : UserControl
     {
+        public event EventHandler ContentUpdated;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AddCodeElementWindowControl"/> class.
         /// </summary>
@@ -64,6 +69,7 @@
             // then we can't access the instantiated template here (nor by explicitly calling ApplyTemplate, or delaying until later).
             var selector = new CodeElementTypeTemplateSelector();
             AddElementPresenter.ContentTemplate = selector.SelectTemplate(view_model, AddElementPresenter);
+            AddElementPresenter.ApplyTemplate();
 
             var name_text_box = AddElementPresenter.ContentTemplate.FindName("ElementNameBox", AddElementPresenter) as FrameworkElement;
             if (name_text_box != null)
@@ -74,6 +80,13 @@
 
             AddBtn.DataContext = TaskData;
             AddFinishBtn.DataContext = TaskData;
+
+            this.ContentUpdated?.Invoke(this, new EventArgs());
+        }
+
+        public int GetIdealHeight()
+        {
+            return (int)ContentStack.DesiredSize.Height;
         }
 
         private void OnLoaded(object sender, RoutedEventArgs args)

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:kue4vs="clr-namespace:KUE4VS;assembly=KUE4VS_Core"
              xmlns:kue4vs_ui="clr-namespace:KUE4VS_UI"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              Background="{DynamicResource VsBrush.Window}"
@@ -16,12 +17,19 @@
 				<ResourceDictionary Source="ResourceDictionaries/AddCodeElementTemplates.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
+			<kue4vs:EnumToDisplayNameConverter x:Key="EnumDisplayNameConverter" />
+			<kue4vs:EnumToDescriptionConverter x:Key="EnumDescriptionConverter" />
+
+			<DataTemplate x:Key="EnumItemDisplay">
+				<TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" ToolTip="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+			</DataTemplate>
+
 			<kue4vs_ui:CodeElementTypeTemplateSelector x:Key="CodeElementTemplateSelector"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
-	<StackPanel Grid.IsSharedSizeScope="True" >
-		<Grid>
+	<DockPanel x:Name="ContentStack" Grid.IsSharedSizeScope="True" Margin="5" >
+		<Grid DockPanel.Dock="Top">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -34,14 +42,20 @@
 			</Grid.ColumnDefinitions>
 
 			<Label Grid.Row="0" Grid.Column="0" Content="Code Element" HorizontalAlignment="Left" VerticalAlignment="Center" />
-			<ComboBox x:Name="ElementTypeBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource CodeElementTypeEnumData}}" SelectedItem="{Binding Path=Model.ElementType}" SelectionChanged="ElementTypeSelectionChanged" />
+			<ComboBox x:Name="ElementTypeBox" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"
+					  ItemsSource="{Binding Source={StaticResource CodeElementTypeEnumData}}"
+					  SelectedItem="{Binding Path=Model.ElementType}"
+					  SelectionChanged="ElementTypeSelectionChanged"
+					  ItemTemplate="{StaticResource EnumItemDisplay}" />
         </Grid>
-		<Separator Height="10" />
-        <ContentPresenter x:Name="AddElementPresenter" ContentTemplateSelector="{StaticResource CodeElementTemplateSelector}" />
-		<Separator Height="10" />
-		<StackPanel Orientation="Horizontal" >
+		<Separator Height="10" DockPanel.Dock="Top" />
+		<StackPanel DockPanel.Dock="Bottom"  Orientation="Horizontal" HorizontalAlignment="Right" >
 			<Button x:Name="AddBtn" Content="Add" MinWidth="50" IsEnabled="{Binding IsValid}" Click="OnAddElement" />
-			<Button x:Name="AddFinishBtn" Content="Add &amp; Finish" MinWidth="50" Margin="5,0,0,0" IsEnabled="{Binding IsValid}" Click="OnAddElementAndFinish" />
+			<Button x:Name="AddFinishBtn" Visibility="Collapsed" Content="Add &amp; Finish" MinWidth="50" Margin="5,0,0,0" IsEnabled="{Binding IsValid}" Click="OnAddElementAndFinish" />
 		</StackPanel>
-    </StackPanel>
+		<Separator Height="10" DockPanel.Dock="Bottom" />
+		<ScrollViewer>
+			<ContentPresenter x:Name="AddElementPresenter" ContentTemplateSelector="{StaticResource CodeElementTemplateSelector}" Margin="0,0,5,0" />
+		</ScrollViewer>
+    </DockPanel>
 </UserControl>

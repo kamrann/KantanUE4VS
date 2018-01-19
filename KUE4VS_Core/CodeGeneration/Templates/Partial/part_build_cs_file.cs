@@ -1,4 +1,5 @@
-﻿
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
 using System.Collections.Generic;
 
 namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed

@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
+using System;
 using Microsoft.VisualStudio.TextTemplating.VSHost;
 using Microsoft.VisualStudio.TextTemplating;
 using Microsoft.VisualStudio.Shell;

@@ -38,7 +38,7 @@
     <ProjectGuid>{B57809F4-0760-41E5-85DB-00719A6261F5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UE4PropVis_VSIX</RootNamespace>
+    <RootNamespace>KUE4VSPkg</RootNamespace>
     <AssemblyName>KantanUE4VS</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>true</GeneratePkgDefFile>

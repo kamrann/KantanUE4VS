@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2005
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UE4PropVis_VSIX", "UE4PropVis_v0_2\UE4PropVis_VSIX.csproj", "{B57809F4-0760-41E5-85DB-00719A6261F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KantanUE4VS", "UE4PropVis_v0_2\KantanUE4VS.csproj", "{B57809F4-0760-41E5-85DB-00719A6261F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UE4PropVis", "UE4PropVis\UE4PropVis.csproj", "{3B347154-C273-431F-85AC-6CDE691FCB17}"
 EndProject

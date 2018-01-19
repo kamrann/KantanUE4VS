@@ -1,12 +1,11 @@
-﻿using System;
+﻿// Copyright 2017-2018 Cameron Angus. All Rights Reserved.
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
-//using System.ComponentModel.Design;
-//using System.Drawing.Design;
-
 
 namespace UE4PropVis
 {

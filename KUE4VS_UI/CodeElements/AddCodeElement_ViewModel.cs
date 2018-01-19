@@ -1,4 +1,5 @@
-﻿
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

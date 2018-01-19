@@ -168,7 +168,7 @@
 			</Grid.ColumnDefinitions>
 
 			<Label Grid.Row="0" Grid.Column="0" Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-			<Label Grid.Row="1" Grid.Column="0" Content="Type" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+			<Label Grid.Row="1" Grid.Column="0" Content="Kind" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="2" Grid.Column="0" Content="Base" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="3" Grid.Column="0" Content="Private Header?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="4" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>

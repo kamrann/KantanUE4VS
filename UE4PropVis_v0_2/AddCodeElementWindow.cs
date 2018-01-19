@@ -1,8 +1,11 @@
-﻿namespace UE4PropVis_VSIX
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
+namespace KUE4VSPkg
 {
     using System;
     using System.Runtime.InteropServices;
     using Microsoft.VisualStudio.Shell;
+    using Microsoft.VisualStudio.Shell.Interop;
     using KUE4VS_UI;
 
     /// <summary>
@@ -29,7 +32,33 @@
             // This is the user control hosted by the tool window; Note that, even if this class implements IDisposable,
             // we are not calling Dispose on this object. This is because ToolWindowPane calls Dispose on
             // the object returned by the Content property.
-            this.Content = new AddCodeElementWindowControl();
+            var impl = new AddCodeElementWindowControl();
+            impl.ContentUpdated += OnContentUpdated;
+
+            this.Content = impl;
+        }
+
+        public void OnContentUpdated(object sender, EventArgs args)
+        {
+            var frame = Frame as IVsWindowFrame;
+            if (frame != null ) // @TODO: only if undocked? && )
+            {
+                Guid pguidRelativeTo;
+                int px;
+                int py;
+                int pcx;
+                int pcy;
+
+                frame.GetFramePos(new[] { VSSETFRAMEPOS.SFP_fSize }, out pguidRelativeTo, out px, out py, out pcx, out pcy);
+                var control = Content as AddCodeElementWindowControl;
+                control.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+                var desired_height = /*control.GetIdealHeight(); /*/(int)control.DesiredSize.Height;
+                control.InvalidateMeasure();
+                if (pcy < desired_height)
+                {
+                    frame.SetFramePos(VSSETFRAMEPOS.SFP_fSize, pguidRelativeTo, px, py, pcx, desired_height);
+                }
+            }
         }
 
         public static AddCodeElementWindowControl GetControlInstance()

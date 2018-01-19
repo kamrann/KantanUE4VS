@@ -1,4 +1,6 @@
-﻿using EnvDTE;
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
+using EnvDTE;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

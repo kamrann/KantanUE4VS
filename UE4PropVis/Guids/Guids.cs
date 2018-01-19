@@ -1,4 +1,5 @@
-﻿
+﻿// Copyright 2017-2018 Cameron Angus. All Rights Reserved.
+
 using System;
 
 namespace UE4PropVis.Guids

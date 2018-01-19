@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
+using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -16,7 +18,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
 
-namespace UE4PropVis_VSIX
+namespace KUE4VSPkg
 {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
@@ -40,7 +42,7 @@ namespace UE4PropVis_VSIX
     [Guid(KantanUE4VSPkg.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(AddCodeElementWindow))]
+    [ProvideToolWindow(typeof(AddCodeElementWindow), Width = 400, Height = 300, Style = VsDockStyle.Float)]
     [ProvideOptionPage(typeof(KUE4VS.KUE4VSOptions), ExtensionName, "General", 0, 0, true)]
     [ProvideOptionPage(typeof(UE4PropVis.Config), ExtensionName, "Property Visualization", 0, 0, true)]
     // Force the package to load whenever a solution exists
@@ -122,13 +124,6 @@ namespace UE4PropVis_VSIX
                 return (KUE4VS.KUE4VSOptions)GetDialogPage(typeof(KUE4VS.KUE4VSOptions));
             }
         }
-
-        /// The package's options page
-/*        public KUE4VS.KUE4VSOptions OptionsPage
-        {
-            get { return (KUE4VS.KUE4VSOptions)GetDialogPage(typeof(KUE4VS.KUE4VSOptions)); }
-        }
-        */
 
         /// <summary>
 		/// Gets a Visual Studio pane to output text to, or creates one if not visible.  Does not bring the pane to front (you can call Activate() to do that.)
@@ -307,11 +302,6 @@ namespace UE4PropVis_VSIX
         {
             UpdateUnrealLoadedStatus();
 
-/*            if (OnSolutionClosed != null)
-            {
-                OnSolutionClosed();
-            }
-*/
             return VSConstants.S_OK;
         }
 
@@ -322,17 +312,6 @@ namespace UE4PropVis_VSIX
 
         int IVsSolutionEvents.OnAfterOpenProject(IVsHierarchy pHierarchy, int fAdded)
         {
-            // This function is called after a Visual Studio project is opened (or a new project is created.)
-
-            // Get the actual Project object from the IVsHierarchy object that was supplied
-/*            var OpenedProject = Utils.HierarchyObjectToProject(pHierarchy);
-            Utils.OnProjectListChanged();
-            if (OpenedProject != null && OnProjectOpened != null)
-            {
-                LoadedProjectPaths.Add(OpenedProject.FullName);
-                OnProjectOpened(OpenedProject);
-            }
-*/
             return VSConstants.S_OK;
         }
 
@@ -340,40 +319,16 @@ namespace UE4PropVis_VSIX
         {
             UpdateUnrealLoadedStatus();
 
-/*            StartTicker();
-
-            if (OnSolutionOpened != null)
-            {
-                OnSolutionOpened();
-            }
-*/
             return VSConstants.S_OK;
         }
 
         int IVsSolutionEvents.OnBeforeCloseProject(IVsHierarchy pHierarchy, int fRemoved)
         {
-            // This function is called after a Visual Studio project is closed
-
-            // Get the actual Project object from the IVsHierarchy object that was supplied
-/*            var ClosedProject = Utils.HierarchyObjectToProject(pHierarchy);
-            if (ClosedProject != null && OnProjectClosed != null)
-            {
-                LoadedProjectPaths.Remove(ClosedProject.FullName);
-                OnProjectClosed(ClosedProject);
-            }
-*/
             return VSConstants.S_OK;
         }
 
         int IVsSolutionEvents.OnBeforeCloseSolution(object pUnkReserved)
         {
-/*            StopTicker();
-
-            if (OnSolutionClosing != null)
-            {
-                OnSolutionClosing();
-            }
-*/
             return VSConstants.S_OK;
         }
 
@@ -412,32 +367,8 @@ namespace UE4PropVis_VSIX
         /// IDispose pattern lets us clean up our stuff!
 		protected override void Dispose(bool disposing)
         {
-/*            if (Ticker != null && Ticker.IsAlive)
-            {
-                Thread.Sleep(TickPeriod + TickPeriod);
-                if (Ticker.IsAlive)
-                {
-                    Logging.WriteLine("WARNING: Force aborting Ticker thread");
-                    Ticker.Abort();
-                }
-            }
-*/
             base.Dispose(disposing);
 
-            // Clean up singleton instance
-            //PrivateInstance = null;
-
-/*            CommandLineEditor = null;
-            StartupProjectSelector = null;
-            BatchBuilder = null;
-            QuickBuilder = null;
-
-            if (CompileSingleFile != null)
-            {
-                CompileSingleFile.Dispose();
-                CompileSingleFile = null;
-            }
-*/
             // No longer want solution events
             if (SolutionEventsHandle != 0)
             {
@@ -446,22 +377,6 @@ namespace UE4PropVis_VSIX
             }
             sln_mgr = null;
 
-/*            // No longer want selection events
-            if (SelectionEventsHandle != 0)
-            {
-                SelectionManager.UnadviseSelectionEvents(SelectionEventsHandle);
-                SelectionEventsHandle = 0;
-            }
-            SelectionManager = null;
-
-            // No longer want update solution events
-            if (UpdateSolutionEventsHandle != 0)
-            {
-                SolutionBuildManager.UnadviseUpdateSolutionEvents(UpdateSolutionEventsHandle);
-                UpdateSolutionEventsHandle = 0;
-            }
-            SolutionBuildManager = null;
-*/
             KUE4VS.Logging.WriteLine("Closing KantanUE4VS extension");
             KUE4VS.Logging.Close();
         }

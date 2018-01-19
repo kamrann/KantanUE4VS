@@ -113,6 +113,10 @@
       <Bitmap guid="guidImages1" href="Resources\AddCodeElementWindowCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
   </Commands>
+  
+  <KeyBindings>
+    <KeyBinding guid="guidKantanUE4VSPkgCmdSet" id="CmdId_AddCodeElementWindow" editor="guidVSStd97" key1="u" mod1="Control Alt" />
+  </KeyBindings>
 
   <Symbols>
     <!-- This is the package guid. -->

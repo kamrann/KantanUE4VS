@@ -1,10 +1,12 @@
-﻿using System;
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
+using System;
 using System.ComponentModel.Design;
 using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace UE4PropVis_VSIX
+namespace KUE4VSPkg
 {
     /// <summary>
     /// Command handler

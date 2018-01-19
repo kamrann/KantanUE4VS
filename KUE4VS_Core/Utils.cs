@@ -1,4 +1,5 @@
 ﻿// Copyright 1998-2017 Epic Games, Inc. All Rights Reserved.
+// Modifications 2018 Cameron Angus. 
 
 using System;
 using Microsoft.VisualStudio;

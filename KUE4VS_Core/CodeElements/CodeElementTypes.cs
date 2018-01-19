@@ -1,14 +1,21 @@
-﻿
+﻿// Copyright 2018 Cameron Angus. All Rights Reserved.
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace KUE4VS
 {
     public enum CodeElementType
     {
+        [Display(Name = "New Type", Description = "Add code for a new UE4 reflected or native type.")]
         Type,
+        [Display(Name = "Source File(s)", Description = "Add bare source files.")]
         Source,
+        [Display(Name = "Module", Description = "Add a UE4 code module.")]
         Module,
+        [Display(Name = "Plugin", Description = "Add a plugin.")]
         Plugin,
     };
 
