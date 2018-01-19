@@ -6,6 +6,7 @@ namespace UE4PropVis.Guids
     public static class Component
     {
         public static readonly Guid VisualizerComponent = new Guid("7C9480F6-7D8C-470B-9FE5-108BAD428ADC");
+        public const string PropVisConfigString = "EA2715A9-6527-454F-849C-AE34CCCDACE2";
     }
 
     public static class Visualizer

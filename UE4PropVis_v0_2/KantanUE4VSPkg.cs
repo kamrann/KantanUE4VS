@@ -42,6 +42,9 @@ namespace UE4PropVis_VSIX
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(AddCodeElementWindow))]
     [ProvideOptionPage(typeof(KUE4VS.KUE4VSOptions), ExtensionName, "General", 0, 0, true)]
+    [ProvideOptionPage(typeof(UE4PropVis.Config), ExtensionName, "Property Visualization", 0, 0, true)]
+    // Force the package to load whenever a solution exists
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     public sealed class KantanUE4VSPkg :
         Package,
         KUE4VS.IExtContext,
@@ -243,6 +246,7 @@ namespace UE4PropVis_VSIX
 
             KUE4VS.ExtContext.Instance = this;
             PackageProvider.Pkg = this;
+            UE4PropVis.Config.Instance = (UE4PropVis.Config)GetDialogPage(typeof(UE4PropVis.Config));
 
             UpdateUnrealLoadedStatus();
 

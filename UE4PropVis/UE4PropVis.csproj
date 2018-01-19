@@ -44,6 +44,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>UE4PropVisKey.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <Choose>
     <When Condition=" '$(Configuration)'!='Debug 2013' ">
       <ItemGroup>
@@ -63,7 +69,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.Shell.15.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -75,7 +83,9 @@
   <ItemGroup>
     <Compile Include="Constants\Cpp.cs" />
     <Compile Include="Constants\UE4.cs" />
-    <Compile Include="Core\Config.cs" />
+    <Compile Include="Core\Config.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Core\DefaultEnumContextDataItem.cs" />
     <Compile Include="Core\EE\DefaultEE.cs" />
     <Compile Include="Core\EE\EnumeratedObjectContext.cs" />
@@ -117,6 +127,9 @@
       <Project>{4f4009af-568a-438f-925a-93c9db8ca74a}</Project>
       <Name>KUE4VS_Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UE4PropVisKey.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ConcordSDKDir)Tools\bin\Microsoft.VSDebugger.targets" />

@@ -5,10 +5,10 @@ Licensed under the MIT license. See LICENSE file in the project root for full li
 -->
 
 <!--
-This file is used to describe the HelloWorld component. This file is run through 
-vsdconfigtool.exe as part of the build, which generates HelloWorld.vsdconfig. HelloWorld.vsdconfig 
-is a binary version of this file which is deployed along with HelloWorld.dll. HelloWorld.vsdconfig 
-is then read by he component loading system at runtime.
+This file is used to describe the component. This file is run through 
+vsdconfigtool.exe as part of the build, which generates a .vsdconfig. This
+is a binary version of this file which is deployed along with dll and 
+then read by the component loading system at runtime.
 
 For more information about this file, see https://github.com/Microsoft/ConcordExtensibilitySamples/wiki/Component-discovery-and-configuration
 -->

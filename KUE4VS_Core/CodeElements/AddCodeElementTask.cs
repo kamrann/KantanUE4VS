@@ -104,16 +104,16 @@ namespace KUE4VS
             var results = new Results();
             foreach (var task in tasks)
             {
-                // Create the required directories on disk
+                var file_path = Path.Combine(task.FolderPath, task.FileTitle + task.Extension);
+
                 try
                 {
-                    var file_path = Path.Combine(task.FolderPath, task.FileTitle + task.Extension);
-
                     if (File.Exists(file_path))
                     {
                         throw new IOException();
                     }
 
+                    // Create the required directories on disk
                     Directory.CreateDirectory(task.FolderPath);
 
                     // Create the file
@@ -129,6 +129,10 @@ namespace KUE4VS
 
                     if (item == null)
                     {
+                        ExtContext.Instance.GetOutputPane().OutputStringThreadSafe(
+                            "Failed to add item to project: " + file_path + "\n"
+                            );
+
                         results.bItemAdditionFailure = true;
                         if (all_or_nothing)
                         {
@@ -145,8 +149,12 @@ namespace KUE4VS
                         created.Add((file_path, item));
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    ExtContext.Instance.GetOutputPane().OutputStringThreadSafe(
+                        "Exception processing file addition: " + file_path + " [" + e.Message  + "]" + "\n"
+                        );
+
                     results.bFileCreationFailure = true;
                     if (all_or_nothing)
                     {
@@ -162,6 +170,10 @@ namespace KUE4VS
             if (results.AnyFailure && all_or_nothing)
             {
                 // Cleanup
+
+                ExtContext.Instance.GetOutputPane().OutputStringThreadSafe(
+                    "Cancelling entire generation task..."
+                    );
 
                 foreach (var addition in created)
                 {

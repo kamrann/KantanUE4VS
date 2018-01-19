@@ -55,7 +55,7 @@ namespace UE4PropVis.Core
 
 		public bool DetermineObjectCanHaveProperties()
 		{
-			switch (Config.PropertyDisplayPolicy)
+			switch (Config.Instance.PropertyDisplayPolicy)
 			{
 				case Config.PropDisplayPolicyType.BlueprintOnly:
 					{

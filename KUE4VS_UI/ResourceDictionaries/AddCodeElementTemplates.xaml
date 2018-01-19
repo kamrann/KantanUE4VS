@@ -135,7 +135,7 @@
 			<Label Grid.Row="3" Grid.Column="0" Content="Location" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="4" Grid.Column="0" Content="Reflected?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<TextBox x:Name="ElementNameBox" Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox x:Name="AddModeBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource SourceFileAddModeEnumData}}" SelectedItem="{Binding Path=Model.Mode}" />
 			<CheckBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.bPrivateHeader}" />
 			<ContentPresenter x:Name="LocationPresenter" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource SourceRelativeLocationTemplate}" Content="{Binding Path=Model.Location}" />
@@ -175,7 +175,7 @@
 			<Label Grid.Row="5" Grid.Column="0" Content="Namespace" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="6" Grid.Column="0" Content="Export?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
+			<TextBox x:Name="ElementNameBox" Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" />
 			<ComboBox x:Name="TypeVariantBox" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" ItemsSource="{Binding Source={StaticResource AddableTypeVariantEnumData}}" SelectedItem="{Binding Path=Model.Variant}" />
 			<ComboBox x:Name="BaseClassBox" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Width="200" IsEditable="False" IsEnabled="{Binding Path=EnableBaseClassSelection}"
 					  ItemsSource="{Binding Path=AvailableBaseClasses, Mode=OneWay}" SelectedItem="{Binding Path=Model.Base}" Text="{Binding Path=CustomBaseClassName, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
@@ -225,7 +225,7 @@
 			<Label Grid.Row="5" Grid.Column="0" Content="Enforce IWYU?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="6" Grid.Column="0" Content="Suppress Unity Build?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" >
+			<TextBox x:Name="ElementNameBox" Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" >
 <!--				<i:Interaction.Triggers>
 					<i:EventTrigger EventName="TextChanged">
 						<i:InvokeCommandAction Command="{Binding ElementNameChangedCommand}"/>
@@ -284,7 +284,7 @@
 			<Label Grid.Row="2" Grid.Column="0" Content="Category" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 			<Label Grid.Row="3" Grid.Column="0" Content="With Content?" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
-			<TextBox Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
+			<TextBox x:Name="ElementNameBox" Text="{Binding Path=Model.ElementName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
 			<ContentPresenter x:Name="LocationPresenter" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" ContentTemplate="{StaticResource PluginLocationTemplate}" Content="{Binding Path=Model.Location}" />
 			<TextBox Text="{Binding Path=Model.Category}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" />
 			<CheckBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" IsChecked="{Binding Path=Model.WithContent}" />

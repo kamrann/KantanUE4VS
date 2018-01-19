@@ -17,19 +17,15 @@ namespace UE4PropVis
 		{
 			if (raw_format && text.Length > 0)
 			{
-				// Ensure we have the format specifier for raw format, to prevent the evaluator just calling back again to us.
-				int comma = text.IndexOf(',');
-				if (comma == -1)
-				{
-					text += ",!";
-				}
+                // Ensure we have the format specifier for raw format, to prevent the evaluator just calling back again to us.
+                text = text.TrimEnd(new char[] { ' ' });
+                if (text.Last() == ',')
+                {
+                    text += '!';
+                }
 				else
-				{
-					int raw = text.IndexOf('!', comma + 1);
-					if (raw == -1)
-					{
-						text += "!";
-					}
+                {
+					text += ",!";
 				}
 			}
 

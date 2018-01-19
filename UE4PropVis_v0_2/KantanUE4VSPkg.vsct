@@ -76,7 +76,7 @@
         <Parent guid="guidKantanUE4VSPkgCmdSet" id="KUE4VS_ToolbarGroup" />
         <Icon guid="guidImages" id="bmpPic2" />
         <Strings>
-          <ButtonText>Add New Class</ButtonText>
+          <ButtonText>Add New Type</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidKantanUE4VSPkgCmdSet" id="CmdId_AddNewModule" priority="0x0100" type="Button">
@@ -97,7 +97,7 @@
         <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1" />
         <Icon guid="guidImages1" id="bmpPic1" />
         <Strings>
-          <ButtonText>Add Code Elements</ButtonText>
+          <ButtonText>UE4 Code Elements</ButtonText>
         </Strings>
       </Button>
     </Buttons>

@@ -80,7 +80,22 @@ namespace UE4PropVis
 			var eval = DefaultEE.DefaultEval(expression_, true);
 			DkmEvaluationResult[] children;
 			DkmEvaluationResultEnumContext default_enum_ctx;
-			expression_.GetChildrenCallback(eval, 0, expression_.InspectionContext, out children, out default_enum_ctx);
+
+            // @TODO: Work out why this fails sometimes. Seems to happen when the non-expanded preview yields Name=", Class=".
+            try
+            {
+                expression_.GetChildrenCallback(eval, 0, expression_.InspectionContext, out children, out default_enum_ctx);
+            }
+            catch
+            {
+                enumContext = DkmEvaluationResultEnumContext.Create(
+                    0,
+                    expression_.StackFrame,
+                    expression_.InspectionContext,
+                    null
+                );
+                return;
+            }
 
 			// Now any custom additions to the expansion
 			int custom_children = 0;
@@ -384,7 +399,7 @@ namespace UE4PropVis
 			// Generate the condensed display string.
 			if (is_null)
 			{
-				if (Config.CustomNullObjectPreview)
+				if (Config.Instance.CustomNullObjectPreview)
 				{
 					custom_display_str = "<NULL> UObject";
 				}
@@ -394,7 +409,7 @@ namespace UE4PropVis
 					custom_display_str = null_eval.Value + " <NULL>";
 				}
 			}
-			else if (Config.DisplayUObjectPreview)
+			else if (Config.Instance.DisplayUObjectPreview)
 			{
 				// Prefix the address, if this is a pointer expression
 				string address_prefix_str = "";
@@ -405,7 +420,7 @@ namespace UE4PropVis
 
 				// Specialized display for UClass?
 				bool uclass_specialized = false;
-				if (Config.DisplaySpecializedUClassPreview)
+				if (Config.Instance.DisplaySpecializedUClassPreview)
 				{
 					var uclass_em = obj_em.PtrCast(Typ.UObjectBase).PtrMember(Memb.ObjClass);
 					var _uclass_fname_expr_str = uclass_em.PtrCast(Typ.UObjectBase).PtrMember(Memb.ObjName).Expression;
@@ -491,7 +506,7 @@ namespace UE4PropVis
 				return;
 			}
 
-			var policy = Config.PropertyListDisplayPolicy;
+			var policy = Config.Instance.PropertyListDisplayPolicy;
 			switch(policy)
 			{
 				case Config.PropListDisplayPolicyType.AlwaysShow:

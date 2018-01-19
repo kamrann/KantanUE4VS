@@ -22,6 +22,8 @@
             this.InitializeComponent();
             InitializeContent(CodeElementType.Type);
 
+            this.Loaded += OnLoaded;
+
             ElementTypeBox.SelectionChanged += ElementTypeSelectionChanged;
         }
 
@@ -57,8 +59,25 @@
             ElementTypeBox.DataContext = view_model;
             // @NOTE: Setting this also sets the DataContext to the same object
             AddElementPresenter.Content = view_model;
+
+            // @TODO: Don't understand why, but if leaving the template selector applied in the xaml to choose the template,
+            // then we can't access the instantiated template here (nor by explicitly calling ApplyTemplate, or delaying until later).
+            var selector = new CodeElementTypeTemplateSelector();
+            AddElementPresenter.ContentTemplate = selector.SelectTemplate(view_model, AddElementPresenter);
+
+            var name_text_box = AddElementPresenter.ContentTemplate.FindName("ElementNameBox", AddElementPresenter) as FrameworkElement;
+            if (name_text_box != null)
+            {
+                name_text_box.Focus();
+            }
+            //
+
             AddBtn.DataContext = TaskData;
             AddFinishBtn.DataContext = TaskData;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs args)
+        {
         }
 
         private void OnModelChanged(object sender, PropertyChangedEventArgs args)

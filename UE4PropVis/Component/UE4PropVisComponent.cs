@@ -45,8 +45,11 @@ namespace UE4PropVis
 		{
             if (KUE4VS.ExtContext.Instance.ExtensionOptions.EnablePropVis == false)
             {
-                var LangExpr = DkmLanguageExpression.Create(DefaultEE.CppLanguage, DkmEvaluationFlags.None, Utility.GetExpressionFullName(expression), null);
-                expression.EvaluateExpressionCallback(expression.InspectionContext, LangExpr, expression.StackFrame, out resultObject);
+                /*                var LangExpr = DkmLanguageExpression.Create(DefaultEE.CppLanguage, DkmEvaluationFlags.None, Utility.GetExpressionFullName(expression), null);
+                                expression.EvaluateExpressionCallback(expression.InspectionContext, LangExpr, expression.StackFrame, out resultObject);
+                                return;
+                                */
+                resultObject = null;
                 return;
             }
 

@@ -172,7 +172,7 @@ namespace UE4PropVis
 
 			var uclass_em = obj_em.PtrCast(Typ.UObjectBase).PtrMember(Memb.ObjClass);
 
-			if (Config.PropertyDisplayPolicy == Config.PropDisplayPolicyType.BlueprintOnly)
+			if (Config.Instance.PropertyDisplayPolicy == Config.PropDisplayPolicyType.BlueprintOnly)
 			{
 				// See if the actual class of the object instance whose properties we want to enumerate
 				// is native or not.
@@ -214,7 +214,7 @@ namespace UE4PropVis
 
 				bool should_skip = false;
 
-				if (!should_skip && Config.PropertyDisplayPolicy == Config.PropDisplayPolicyType.BlueprintOnly)
+				if (!should_skip && Config.Instance.PropertyDisplayPolicy == Config.PropDisplayPolicyType.BlueprintOnly)
 				{
 					// Check to see if this property is native or blueprint
 					// We can test this by getting the UProperty's Outer, and checking its object flags for RF_Native.
@@ -248,7 +248,7 @@ namespace UE4PropVis
 						idx,
 						start_expr
 						);
-					if (prop_val_eval != null && !Config.IsPropertyHidden(prop_val_eval.Name))
+					if (prop_val_eval != null && !Config.Instance.IsPropertyHidden(prop_val_eval.Name))
 					{
 						prop_evals_[prop_val_eval.Name] = prop_val_eval;
 						++idx;
@@ -452,7 +452,7 @@ namespace UE4PropVis
 				case Prop.Object:
 				case Prop.SoftObject:
 					{
-						if(!Config.ShowExactUObjectTypes)
+						if(!Config.Instance.ShowExactUObjectTypes)
 						{
 							break;
 						}
@@ -509,13 +509,13 @@ namespace UE4PropVis
 
 							case Prop.SoftObject:
 								{
-									// @NOTE: Don't really see anything to gain by casting to TAssetPtr< xxx >, since it's just another level of encapsulation that isn't
+									// @NOTE: Don't really see anything to gain by casting to TSoftObjectPtr< xxx >, since it's just another level of encapsulation that isn't
 									// needed for visualization purposes.
 									string suffix = String.Format(" [{0}]", is_native ? obj_cpp_type_name : uclass_display_name);
-									string primary_type = Typ.SoftObjectPtr; //String.Format("TAssetPtr<{0}>", obj_cpp_type_name);
+									string primary_type = Typ.SoftObjectPtr;
 									string primary_display = String.Format("{0}{1}", Typ.SoftObjectPtr, suffix);
 
-									// If just using FAssetPtr, no need for a fallback since we don't need to evaluate the specialized template parameter type
+									// If just using FSoftObjectPtr, no need for a fallback since we don't need to evaluate the specialized template parameter type
 									return new CppTypeInfo[]
 									{
 										new CppTypeInfo(primary_type, primary_display)
@@ -528,30 +528,31 @@ namespace UE4PropVis
 						}
 					}
 
-/*				@TODO: Not so important. What's below is wrong, but essentially if we implement this, it's just to differentiate between UClass, UBlueprintGeneratedClass, etc
-				case "ClassProperty":
-				case "AssetClassProperty":
-					{
-						if (!Config.ShowExactUObjectTypes)
-						{
-							break;
-						}
+                    /*				@TODO: Not so important. What's below is wrong, but essentially if we implement this, it's just to differentiate between UClass, UBlueprintGeneratedClass, etc
+                                    case "ClassProperty":
+                                    case "AssetClassProperty":
+                                        {
+                                            if (!Config.Instance.ShowExactUObjectTypes)
+                                            {
+                                                break;
+                                            }
 
-						// Need to find out the subtype of the property, which is specified by UClassProperty::MetaClass/UAssetClassProperty::MetaClass
-						// Cast to whichever property type we are (either UClassProperty or UAssetClassProperty)
-						string propclass_name = String.Format("U{0}", prop_type);
-						var classprop_em = ExpressionManipulator.FromExpression(uprop_expr_str).PtrCast(propclass_name);
-						// Either way, we have a member called 'MetaClass' which specified the base UClass stored in this property
-						var subtype_uclass_em = classprop_em.PtrMember("MetaClass");
-						var subtype_fname_em = subtype_uclass_em.PtrCast("UObjectBase").PtrMember("Name");
-						string subtype_fname = UE4Utility.GetFNameAsString(subtype_fname_em.Expression, context_expr);
-						return String.Format("U{0}*", subtype_fname);
-					}
-*/			}
+                                            // Need to find out the subtype of the property, which is specified by UClassProperty::MetaClass/UAssetClassProperty::MetaClass
+                                            // Cast to whichever property type we are (either UClassProperty or UAssetClassProperty)
+                                            string propclass_name = String.Format("U{0}", prop_type);
+                                            var classprop_em = ExpressionManipulator.FromExpression(uprop_expr_str).PtrCast(propclass_name);
+                                            // Either way, we have a member called 'MetaClass' which specified the base UClass stored in this property
+                                            var subtype_uclass_em = classprop_em.PtrMember("MetaClass");
+                                            var subtype_fname_em = subtype_uclass_em.PtrCast("UObjectBase").PtrMember("Name");
+                                            string subtype_fname = UE4Utility.GetFNameAsString(subtype_fname_em.Expression, context_expr);
+                                            return String.Format("U{0}*", subtype_fname);
+                                        }
+                    */
+            }
 
-			// Standard cases, just use cpp type stored in map.
-			// If not found, null string will be returned.
-			string cpp_type = null;
+            // Standard cases, just use cpp type stored in map.
+            // If not found, null string will be returned.
+            string cpp_type = null;
 			if (ue4_proptype_map_.TryGetValue(prop_type, out cpp_type))
 			{
 				return new CppTypeInfo[] { new CppTypeInfo(cpp_type) };
