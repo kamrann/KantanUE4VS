@@ -100,8 +100,7 @@ namespace KUE4VS_UI
 
         void OnCustomBaseClassNameChanged()
         {
-            int foo = 10;
-            int moo = foo;
+
         }
     }
 }

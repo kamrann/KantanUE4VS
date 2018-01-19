@@ -174,9 +174,9 @@ namespace KUE4VS
                             );
                         break;
 
-                    case AddableTypeVariant.UEnum:
+                    //case AddableTypeVariant.UEnum:
                         // @TODO:
-                        break;
+                     //   break;
                 }
                 if (hdr_contents == null)
                 {

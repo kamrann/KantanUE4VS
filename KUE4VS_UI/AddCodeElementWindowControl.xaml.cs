@@ -34,8 +34,12 @@ namespace KUE4VS_UI
 
         public AddCodeElementTask TaskData { get; private set; }
 
-        void InitializeContent(CodeElementType ElementType)
+        public void InitializeContent(CodeElementType ElementType)
         {
+            RefreshModules();
+            RefreshModuleHosts();
+            RefreshUProjects();
+
             TaskData = null;
             AddCodeElement_ViewModel view_model = null;
             switch (ElementType)
@@ -123,6 +127,10 @@ namespace KUE4VS_UI
             {
                 // @todo: log output
             }
+            else
+            {
+                TaskData.OnPropertyChanged("IsValid");
+            }
         }
 
 
@@ -139,8 +147,8 @@ namespace KUE4VS_UI
         {
             ExtContext.Instance.RefreshModules();
 
-            var provider_res = FindResource("AvailableModulesSource") as ObjectDataProvider;
-            provider_res.Refresh();
+            //var provider_res = FindResource("AvailableModulesSource") as ObjectDataProvider;
+            //provider_res.Refresh();
         }
 
 
@@ -157,8 +165,8 @@ namespace KUE4VS_UI
         {
             ExtContext.Instance.RefreshModuleHosts();
 
-            var provider_res = FindResource("AvailableModuleHostsSource") as ObjectDataProvider;
-            provider_res.Refresh();
+            //var provider_res = FindResource("AvailableModuleHostsSource") as ObjectDataProvider;
+            //provider_res.Refresh();
         }
 
 
@@ -175,8 +183,8 @@ namespace KUE4VS_UI
         {
             ExtContext.Instance.RefreshUProjects();
 
-            var provider_res = FindResource("AvailableProjectsSource") as ObjectDataProvider;
-            provider_res.Refresh();
+            //var provider_res = FindResource("AvailableProjectsSource") as ObjectDataProvider;
+            //provider_res.Refresh();
         }
     }
 }

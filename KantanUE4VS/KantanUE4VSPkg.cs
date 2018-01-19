@@ -58,7 +58,7 @@ namespace KUE4VSPkg
         /// </summary>
         public const string PackageGuidString = "58fe42de-aa3c-45b2-a2dd-4ffe1583db46";
 
-        private const string VersionString = "v0.1";
+        private const string VersionString = "v0.5";
         private const string ExtensionName = "KantanUE4VS";
         private const string UnrealSolutionFileNamePrefix = "UE4";
 
@@ -285,7 +285,7 @@ namespace KUE4VSPkg
                 is_ue4_loaded =
                     (
                         solution_filepath != null &&
-                        System.IO.Path.GetFileName(solution_filepath).StartsWith(UnrealSolutionFileNamePrefix, StringComparison.OrdinalIgnoreCase)
+                        Path.GetFileName(solution_filepath).StartsWith(UnrealSolutionFileNamePrefix, StringComparison.OrdinalIgnoreCase)
                     );
             }
         }

@@ -39,7 +39,7 @@ namespace KUE4VS
         }
 
         public AddCodeElementTask()
-        {}
+        { }
 
         public virtual bool DetermineIsNameValid()
         {
@@ -48,7 +48,8 @@ namespace KUE4VS
 
         public virtual bool DetermineIsValid()
         {
-            return DetermineIsNameValid();
+            var vcproj = Utils.CurrentProjectContext;
+            return vcproj != null && Utils.IsGameProject(vcproj) && DetermineIsNameValid();
         }
 
         public abstract IEnumerable<GenericFileAdditionTask> GenerateAdditions(Project proj);
@@ -58,7 +59,7 @@ namespace KUE4VS
         {
             // @TODO: Should maybe have a dropdown for project selection in the UI and store the selection on the task.
             var proj = Utils.CurrentProjectContext;
-            if (proj == null)
+            if (proj == null || Utils.IsGameProject(proj) == false)
             {
                 return false;
             }

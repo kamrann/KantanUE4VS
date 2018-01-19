@@ -31,7 +31,7 @@ namespace KUE4VS
         UClass,
         UStruct,
         UInterface,
-        UEnum,
+        // @TODO: UEnum,
         RawClass,
         RawStruct,
     };
@@ -53,7 +53,7 @@ namespace KUE4VS
                 { AddableTypeVariant.UClass, "class" },
                 { AddableTypeVariant.UStruct, "struct" },
                 { AddableTypeVariant.UInterface, "class" },
-                { AddableTypeVariant.UEnum, "enum class" },
+                //{ AddableTypeVariant.UEnum, "enum class" },
                 { AddableTypeVariant.RawClass, "class" },
                 { AddableTypeVariant.RawStruct, "struct" },
             };
@@ -64,7 +64,7 @@ namespace KUE4VS
                 { AddableTypeVariant.UClass, "U" },
                 { AddableTypeVariant.UStruct, "F" },
                 { AddableTypeVariant.UInterface, "U" },
-                { AddableTypeVariant.UEnum, "E" },
+                //{ AddableTypeVariant.UEnum, "E" },
                 { AddableTypeVariant.RawClass, "F" },
                 { AddableTypeVariant.RawStruct, "F" },
             };
@@ -75,7 +75,7 @@ namespace KUE4VS
                 { AddableTypeVariant.UClass, true },
                 { AddableTypeVariant.UStruct, true },
                 { AddableTypeVariant.UInterface, true },
-                { AddableTypeVariant.UEnum, true },
+                //{ AddableTypeVariant.UEnum, true },
                 { AddableTypeVariant.RawClass, false },
                 { AddableTypeVariant.RawStruct, false },
             };

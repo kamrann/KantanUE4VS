@@ -717,6 +717,8 @@ namespace KUE4VS
                         if (child == null)
                         {
                             // Okay fuck it then
+                            ExtContext.Instance.GetOutputPane().OutputStringThreadSafe("Issue adding VC project item. This may be related to a VS bug for which a fix is pending release. You can work around it by setting 'Enable Project Caching' to 'No' in Tools | Options | Projects and Solutions | VC++ Project Settings, then restarting VS.\n");
+
                             return null;
                         }
                     }
@@ -841,9 +843,12 @@ namespace KUE4VS
             var uprojects = new List<UProject>();
 
             var vcproj = CurrentProjectContext;
-            var uproject_name = GetUProjectName(vcproj);
-            var uproject_dir = GetUProjectDirectory(vcproj);
-            uprojects.Add(new UProject(uproject_name, uproject_dir));
+            if (IsGameProject(vcproj))
+            {
+                var uproject_name = GetUProjectName(vcproj);
+                var uproject_dir = GetUProjectDirectory(vcproj);
+                uprojects.Add(new UProject(uproject_name, uproject_dir));
+            }
 
             return uprojects;
         }

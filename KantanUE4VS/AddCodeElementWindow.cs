@@ -61,9 +61,29 @@ namespace KUE4VSPkg
             }
         }
 
+        public static void ShowToolWindow()
+        {
+            // Get the instance number 0 of this tool window. This window is single instance so this instance
+            // is actually the only one.
+            // The last flag is set to true so that if the tool window does not exists it will be created.
+            ToolWindowPane window = PackageProvider.Pkg.FindToolWindow(typeof(AddCodeElementWindow), 0, true);
+            if ((null == window) || (null == window.Frame))
+            {
+                throw new NotSupportedException("Cannot create tool window");
+            }
+
+            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+        }
+
         public static AddCodeElementWindowControl GetControlInstance()
         {
             var window = (AddCodeElementWindow)PackageProvider.Pkg.FindToolWindow(typeof(AddCodeElementWindow), 0, true);
+            if ((null == window) || (null == window.Frame))
+            {
+                throw new NotSupportedException("Cannot create tool window");
+            }
+
             return (AddCodeElementWindowControl)window.Content;
         }
     }

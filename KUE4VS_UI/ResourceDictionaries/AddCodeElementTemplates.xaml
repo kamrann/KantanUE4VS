@@ -47,7 +47,6 @@
                       MethodName="GetSolutionUProjects" />
 
 
-	<!--	<kue4vs_ui:PublicInterfaceCheckStateConverter x:Key="PublicInterfaceCheckStateConverter" /> -->
 	<kue4vs_ui:PublicInterfaceVisibilityConverter x:Key="PublicInterfaceVisibilityConverter" />
 
 

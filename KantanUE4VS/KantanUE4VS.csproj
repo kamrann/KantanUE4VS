@@ -91,8 +91,7 @@
       <ResourceName>Menus.ctmenu</ResourceName>
       <SubType>Designer</SubType>
     </VSCTCompile>
-    <Content Include="Resources\AddCodeElementWindowCommand.png" />
-    <Content Include="Resources\Toolbar.png" />
+    <Content Include="Resources\CodeElementsToolbar.png" />
     <Content Include="Resources\KantanUE4VSPkg.ico" />
     <Content Include="stylesheet.css" />
     <Content Include="UE4Properties.natvis">
