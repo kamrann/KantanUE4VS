@@ -6,6 +6,7 @@
 <#= this.file_header #>
 
 using UnrealBuildTool;
+using System.IO;
 
 public class <#= this.module_name #> : ModuleRules
 {
@@ -16,57 +17,36 @@ public class <#= this.module_name #> : ModuleRules
 		bEnforceIWYU = <#= TTHelpers.ConvertBool(this.enforce_iwyu) #>;
 		bFasterWithoutUnity = <#= TTHelpers.ConvertBool(this.suppress_unity) #>;
 
-		PublicIncludePaths.AddRange(
-			new string[] {
-				"<#= this.module_name #>/Public"
-				// ... add public include paths required here ...
-			}
-			);				
+		PublicIncludePaths.AddRange(new string[] {
+			Path.Combine(ModuleDirectory, "Public"),
+		});				
 		
-		PrivateIncludePaths.AddRange(
-			new string[] {
-				"<#= this.module_name #>/Private",
-				// ... add other private include paths required here ...
-			}
-			);
+		PrivateIncludePaths.AddRange(new string[] {
+			Path.Combine(ModuleDirectory, "Private"),
+		});
 		
-		PublicDependencyModuleNames.AddRange(
-			new string[]
-			{
+		PublicDependencyModuleNames.AddRange(new string[] {
 <# foreach (var mod in this.public_deps) { #>
-				"<#= mod #>",
+			"<#= mod #>",
 <# } #>
-				// ... add other public dependencies that you statically link with here ...
-			}
-			);
+		});
 				
-		PrivateDependencyModuleNames.AddRange(
-			new string[]
-			{
+		PrivateDependencyModuleNames.AddRange(new string[] {
 <# foreach (var mod in this.private_deps) { #>
-				"<#= mod #>",
+			"<#= mod #>",
 <# } #>
-				// ... add private dependencies that you statically link with here ...	
-			}
-			);
+		});
 		
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
+		DynamicallyLoadedModuleNames.AddRange(new string[] {
 <# foreach (var mod in this.dynamic_deps) { #>
-				"<#= mod #>",
+			"<#= mod #>",
 <# } #>
-				// ... add any modules that your module loads dynamically here ...
-			}
-			);
+		});
 
-		PrivateIncludePathModuleNames.AddRange(
-			new string[]
-			{
+		PrivateIncludePathModuleNames.AddRange(new string[] {
 <# foreach (var mod in this.dynamic_deps) { #>
-				"<#= mod #>",
+			"<#= mod #>",
 <# } #>
-			}
-			);
+		});
 	}
 }

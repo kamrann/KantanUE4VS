@@ -115,7 +115,7 @@ namespace KUE4VS
                 List<string> default_includes = new List<string>();
                 if (Variant == AddableTypeVariant.UInterface)
                 {
-                    default_includes.Add("Interface.h");
+                    default_includes.Add("UObject/Interface.h");
                 }
                 else if (has_base)
                 {
@@ -130,7 +130,7 @@ namespace KUE4VS
 
                     if (Variant == AddableTypeVariant.UClass)
                     {
-                        default_includes.Add("ScriptMacros.h");
+                        default_includes.Add("UObject/ScriptMacros.h");
                     }
                 }
                 else
@@ -138,7 +138,7 @@ namespace KUE4VS
                     default_includes.Add("CoreMinimal.h");
                     if (Constants.ReflectedTypes[Variant])
                     {
-                        default_includes.Add("ObjectMacros.h");
+                        default_includes.Add("UObject/ObjectMacros.h");
                     }
                 }
 

@@ -11,7 +11,7 @@ namespace KUE4VS
         public static readonly ReadOnlyCollection<UClassDefn> UClasses = new ReadOnlyCollection<UClassDefn>(
             new[] {
                 // Core
-                new UClassDefn("UObject", "Object.h"),
+                new UClassDefn("UObject", "UObject/Object.h"),
                 new UClassDefn("AActor", "GameFramework/Actor.h"),
                 
                 // Components

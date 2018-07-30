@@ -18,7 +18,7 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+    #line 1 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
     public partial class build_cs_file : build_cs_fileBase
     {
@@ -29,21 +29,21 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
         public virtual string TransformText()
         {
             
-            #line 6 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 6 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.file_header));
             
             #line default
             #line hidden
-            this.Write("\r\n\r\nusing UnrealBuildTool;\r\n\r\npublic class ");
+            this.Write("\r\n\r\nusing UnrealBuildTool;\r\nusing System.IO;\r\n\r\npublic class ");
             
-            #line 10 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 11 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.module_name));
             
             #line default
             #line hidden
             this.Write(" : ModuleRules\r\n{\r\n\tpublic ");
             
-            #line 12 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 13 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(this.module_name));
             
             #line default
@@ -51,123 +51,114 @@ namespace KUE4VS_Core.CodeGeneration.Templates.Preprocessed
             this.Write("(ReadOnlyTargetRules Target) : base(Target)\r\n\t{\r\n\t\tPCHUsage = PCHUsageMode.UseExp" +
                     "licitOrSharedPCHs;\r\n\r\n\t\tbEnforceIWYU = ");
             
-            #line 16 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 17 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.ConvertBool(this.enforce_iwyu)));
             
             #line default
             #line hidden
             this.Write(";\r\n\t\tbFasterWithoutUnity = ");
             
-            #line 17 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 18 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(TTHelpers.ConvertBool(this.suppress_unity)));
             
             #line default
             #line hidden
-            this.Write(";\r\n\r\n\t\tPublicIncludePaths.AddRange(\r\n\t\t\tnew string[] {\r\n\t\t\t\t\"");
+            this.Write(@";
+
+		PublicIncludePaths.AddRange(new string[] {
+			Path.Combine(ModuleDirectory, ""Public""),
+		});				
+		
+		PrivateIncludePaths.AddRange(new string[] {
+			Path.Combine(ModuleDirectory, ""Private""),
+		});
+		
+		PublicDependencyModuleNames.AddRange(new string[] {
+");
             
-            #line 21 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.module_name));
-            
-            #line default
-            #line hidden
-            this.Write("/Public\"\r\n\t\t\t\t// ... add public include paths required here ...\r\n\t\t\t}\r\n\t\t\t);\t\t\t\t\r" +
-                    "\n\t\t\r\n\t\tPrivateIncludePaths.AddRange(\r\n\t\t\tnew string[] {\r\n\t\t\t\t\"");
-            
-            #line 28 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(this.module_name));
-            
-            #line default
-            #line hidden
-            this.Write("/Private\",\r\n\t\t\t\t// ... add other private include paths required here ...\r\n\t\t\t}\r\n\t" +
-                    "\t\t);\r\n\t\t\r\n\t\tPublicDependencyModuleNames.AddRange(\r\n\t\t\tnew string[]\r\n\t\t\t{\r\n");
-            
-            #line 36 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 29 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  foreach (var mod in this.public_deps) { 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t\"");
+            this.Write("\t\t\t\"");
             
-            #line 37 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 30 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mod));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 38 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 31 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t// ... add other public dependencies that you statically link with here ...\r\n" +
-                    "\t\t\t}\r\n\t\t\t);\r\n\t\t\t\t\r\n\t\tPrivateDependencyModuleNames.AddRange(\r\n\t\t\tnew string[]\r\n\t\t" +
-                    "\t{\r\n");
+            this.Write("\t\t});\r\n\t\t\t\t\r\n\t\tPrivateDependencyModuleNames.AddRange(new string[] {\r\n");
             
-            #line 46 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 35 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  foreach (var mod in this.private_deps) { 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t\"");
+            this.Write("\t\t\t\"");
             
-            #line 47 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 36 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mod));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 48 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 37 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t// ... add private dependencies that you statically link with here ...\t\r\n\t\t\t}" +
-                    "\r\n\t\t\t);\r\n\t\t\r\n\t\tDynamicallyLoadedModuleNames.AddRange(\r\n\t\t\tnew string[]\r\n\t\t\t{\r\n");
+            this.Write("\t\t});\r\n\t\t\r\n\t\tDynamicallyLoadedModuleNames.AddRange(new string[] {\r\n");
             
-            #line 56 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 41 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  foreach (var mod in this.dynamic_deps) { 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t\"");
+            this.Write("\t\t\t\"");
             
-            #line 57 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 42 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mod));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 58 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 43 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t// ... add any modules that your module loads dynamically here ...\r\n\t\t\t}\r\n\t\t\t" +
-                    ");\r\n\r\n\t\tPrivateIncludePathModuleNames.AddRange(\r\n\t\t\tnew string[]\r\n\t\t\t{\r\n");
+            this.Write("\t\t});\r\n\r\n\t\tPrivateIncludePathModuleNames.AddRange(new string[] {\r\n");
             
-            #line 66 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 47 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  foreach (var mod in this.dynamic_deps) { 
             
             #line default
             #line hidden
-            this.Write("\t\t\t\t\"");
+            this.Write("\t\t\t\"");
             
-            #line 67 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 48 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(mod));
             
             #line default
             #line hidden
             this.Write("\",\r\n");
             
-            #line 68 "C:\UE4 Projects\KantanUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
+            #line 49 "C:\Code\KUE4VS\KUE4VS_Core\CodeGeneration\Templates\Preprocessed\build_cs_file.tt"
  } 
             
             #line default
             #line hidden
-            this.Write("\t\t\t}\r\n\t\t\t);\r\n\t}\r\n}\r\n");
+            this.Write("\t\t});\r\n\t}\r\n}\r\n");
             return this.GenerationEnvironment.ToString();
         }
     }
