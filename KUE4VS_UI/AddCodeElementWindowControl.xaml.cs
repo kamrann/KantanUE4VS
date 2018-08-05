@@ -24,6 +24,9 @@ namespace KUE4VS_UI
         /// </summary>
         public AddCodeElementWindowControl()
         {
+            // HACK: Force assembly to load from the correct place, as otherwise xaml will attempt to load it using the wrong search path.
+            typeof(System.Windows.Interactivity.Behavior).ToString();
+
             this.InitializeComponent();
             InitializeContent(CodeElementType.Type);
 
