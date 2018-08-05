@@ -339,7 +339,7 @@ namespace KUE4VS
                 var sln = ExtContext.Instance.Dte.Solution;
                 var sln_build = sln.SolutionBuild as SolutionBuild2;
                 var startup_projects = sln_build.StartupProjects as Array;
-                if (startup_projects.Length != 1)
+                if (startup_projects == null || startup_projects.Length != 1)
                 {
                     return null;
                 }
@@ -843,7 +843,7 @@ namespace KUE4VS
             var uprojects = new List<UProject>();
 
             var vcproj = CurrentProjectContext;
-            if (IsGameProject(vcproj))
+            if (vcproj != null && IsGameProject(vcproj))
             {
                 var uproject_name = GetUProjectName(vcproj);
                 var uproject_dir = GetUProjectDirectory(vcproj);
