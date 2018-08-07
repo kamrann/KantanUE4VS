@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="KantanUE4VS.KantanDev.53a58c57-0e5a-4b47-8d7a-159b8e34447e" Version="0.5" Language="en-US" Publisher="Kantan Dev" />
+        <Identity Id="KantanUE4VS.KantanDev.53a58c57-0e5a-4b47-8d7a-159b8e34447e" Version="0.6.0" Language="en-US" Publisher="Kantan Dev" />
         <DisplayName>Kantan UE4VS</DisplayName>
         <Description xml:space="preserve">Visual Studio extension for working with Unreal Engine 4 projects.
 Provides common code element generation shortcuts, and enables viewing of blueprint properties in the watch windows.</Description>
