@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Linq;
+using System.Reflection;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
@@ -17,6 +18,8 @@ using EnvDTE80;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
+
+[assembly: AssemblyInformationalVersion("KUE4VS 0.6.0")]
 
 namespace KUE4VSPkg
 {
@@ -58,7 +61,7 @@ namespace KUE4VSPkg
         /// </summary>
         public const string PackageGuidString = "58fe42de-aa3c-45b2-a2dd-4ffe1583db46";
 
-        private const string VersionString = "v0.5";
+        private const string VersionString = "v0.6.0";
         private const string ExtensionName = "KantanUE4VS";
         private const string UnrealSolutionFileNamePrefix = "UE4";
 
