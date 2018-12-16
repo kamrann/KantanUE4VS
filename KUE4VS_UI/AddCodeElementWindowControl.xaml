@@ -6,8 +6,7 @@
              xmlns:kue4vs="clr-namespace:KUE4VS;assembly=KUE4VS_Core"
              xmlns:kue4vs_ui="clr-namespace:KUE4VS_UI"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             Background="{DynamicResource VsBrush.Window}"
-             Foreground="{DynamicResource VsBrush.WindowText}"
+			 Style="{DynamicResource AddCodeElementWindowStyle}"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              Name="AddCodeElementToolWindowCtrl">
