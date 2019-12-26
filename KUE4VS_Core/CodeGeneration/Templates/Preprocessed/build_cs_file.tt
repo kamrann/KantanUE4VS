@@ -15,11 +15,11 @@ public class <#= this.module_name #> : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		bEnforceIWYU = <#= TTHelpers.ConvertBool(this.enforce_iwyu) #>;
-		bFasterWithoutUnity = <#= TTHelpers.ConvertBool(this.suppress_unity) #>;
+		bUseUnity = <#= TTHelpers.ConvertBool(this.use_unity_override) #>;
 
 		PublicIncludePaths.AddRange(new string[] {
 			Path.Combine(ModuleDirectory, "Public"),
-		});				
+		});
 		
 		PrivateIncludePaths.AddRange(new string[] {
 			Path.Combine(ModuleDirectory, "Private"),

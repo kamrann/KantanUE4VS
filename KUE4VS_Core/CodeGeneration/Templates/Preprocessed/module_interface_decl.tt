@@ -15,7 +15,7 @@ public:
 	*
 	* @return Returns singleton instance, loading the module on demand if needed
 	*/
-	static inline <#= interface_name #>& Get()
+	static auto& Get()
 	{
 		return FModuleManager::LoadModuleChecked< <#= interface_name #> >("<#= module_name #>");
 	}
@@ -25,7 +25,7 @@ public:
 	*
 	* @return True if the module is loaded and ready to use
 	*/
-	static inline bool IsAvailable()
+	static bool IsAvailable()
 	{
 		return FModuleManager::Get().IsModuleLoaded("<#= module_name #>");
 	}

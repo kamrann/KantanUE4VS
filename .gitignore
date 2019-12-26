@@ -125,7 +125,7 @@ publish/
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
-# TODO: Comment the next line if you want to checkin your web deploy settings 
+# TODO: Comment the next line if you want to checkin your web deploy settings
 # but database connection strings (with potential passwords) will be unencrypted
 *.pubxml
 *.publishproj
@@ -231,3 +231,5 @@ $RECYCLE.BIN/
 
 .vs
 
+# Generated code for text templates
+KUE4VS_Core/CodeGeneration/Templates/Preprocessed/*.cs

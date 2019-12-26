@@ -116,7 +116,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="AddSourceTemplate" DataType="{x:Type kue4vs_ui:AddCodeElement_ViewModel}">
-		<Grid>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=ElementNameBox}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -152,7 +152,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="AddTypeTemplate" DataType="{x:Type kue4vs_ui:AddCodeElement_ViewModel}">
-		<Grid>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=ElementNameBox}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -202,7 +202,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="AddModuleTemplate" DataType="{x:Type kue4vs_ui:AddModule_ViewModel}">
-		<Grid>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=ElementNameBox}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -267,7 +267,7 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="AddPluginTemplate" DataType="{x:Type kue4vs_ui:AddCodeElement_ViewModel}">
-		<Grid>
+        <Grid FocusManager.FocusedElement="{Binding ElementName=ElementNameBox}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />

@@ -77,12 +77,6 @@ namespace KUE4VS_UI
             var selector = new CodeElementTypeTemplateSelector();
             AddElementPresenter.ContentTemplate = selector.SelectTemplate(view_model, AddElementPresenter);
             AddElementPresenter.ApplyTemplate();
-
-            var name_text_box = AddElementPresenter.ContentTemplate.FindName("ElementNameBox", AddElementPresenter) as FrameworkElement;
-            if (name_text_box != null)
-            {
-                name_text_box.Focus();
-            }
             //
 
             AddBtn.DataContext = TaskData;

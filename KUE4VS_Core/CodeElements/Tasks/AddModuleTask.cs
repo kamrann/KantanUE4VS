@@ -39,7 +39,7 @@ namespace KUE4VS
         }
 
         public bool bEnforceIWYU { get; set; }
-        public bool bSuppressUnity { get; set; }
+        public bool UseUnityOverride { get; set; }
         // todo: extra dependency modules
 
         public string DetermineDefaultInterfaceName()
@@ -54,7 +54,7 @@ namespace KUE4VS
             bCustomImplementation = false;
             PublicInterfaceName = null;
             bEnforceIWYU = true;
-            bSuppressUnity = true;
+            UseUnityOverride = true;
 
             Location = new ModuleLocation();
             ExtContext.Instance.RefreshModuleHosts();
@@ -128,7 +128,7 @@ namespace KUE4VS
                     private_deps,
                     dynamic_deps,
                     bEnforceIWYU,
-                    bSuppressUnity
+                    UseUnityOverride
                     );
                 if (contents == null)
                 {

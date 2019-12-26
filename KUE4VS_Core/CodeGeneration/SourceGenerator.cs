@@ -109,7 +109,7 @@ namespace KUE4VS.CodeGeneration
                 type_keyword = class_keyword,
                 reflected = reflected,
                 reflection_macro = reflected_macro,
-                constructor = true
+                constructor = false
             }.TransformText();
 
             string body = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.namespaced_content
@@ -195,7 +195,7 @@ namespace KUE4VS.CodeGeneration
             IEnumerable<string> private_deps,
             IEnumerable<string> dynamic_deps,
             bool enforce_iwyu,
-            bool suppress_unity
+            bool use_unity_override
             )
         {
             string cpp = new KUE4VS_Core.CodeGeneration.Templates.Preprocessed.build_cs_file
@@ -206,7 +206,7 @@ namespace KUE4VS.CodeGeneration
                 private_deps = private_deps,
                 dynamic_deps = dynamic_deps,
                 enforce_iwyu = enforce_iwyu,
-                suppress_unity = suppress_unity,
+                use_unity_override = use_unity_override,
             }.TransformText();
 
             return cpp;
@@ -234,7 +234,7 @@ namespace KUE4VS.CodeGeneration
             }.TransformText();
 
             List<string> includes = new List<string>();
-            includes.Add("ModuleManager.h");
+            includes.Add("Modules/ModuleManager.h");
             includes.AddRange(additional_includes);
 
             return GenerateHeader(file_title, file_header, includes, false, body);
@@ -273,7 +273,7 @@ namespace KUE4VS.CodeGeneration
             }
             else
             {
-                includes.Add("ModuleManager.h");
+                includes.Add("Modules/ModuleManager.h");
             }
             includes.AddRange(additional_includes);
 
@@ -323,7 +323,7 @@ namespace KUE4VS.CodeGeneration
             List<string> includes = new List<string>();
             if (!custom_impl)
             {
-                includes.Add("ModuleManager.h");
+                includes.Add("Modules/ModuleManager.h");
             }
             includes.AddRange(additional_includes);
 

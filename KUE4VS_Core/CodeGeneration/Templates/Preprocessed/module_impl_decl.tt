@@ -10,8 +10,8 @@ class F<#= module_name #>ModuleImpl : public <#= base_class #>
 {
 public:
 	/** IModuleInterface implementation */
-	virtual void StartupModule() override;
-	virtual void ShutdownModule() override;
+	void StartupModule() override;
+	void ShutdownModule() override;
 <# if (custom_base) { #>
 
 public:

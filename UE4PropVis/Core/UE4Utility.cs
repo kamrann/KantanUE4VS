@@ -20,22 +20,36 @@ namespace UE4PropVis
 		// @NOTE: Currently ignoring FName::Number, and assuming valid.
 		public static string GetFNameAsString(string expr_str, DkmVisualizedExpression context_expr)
 		{
-			var em = ExpressionManipulator.FromExpression(expr_str);
-			em = em.DirectMember(Memb.CompIndex);
-			DkmSuccessEvaluationResult comp_idx_eval = DefaultEE.DefaultEval(em.Expression, context_expr, true) as DkmSuccessEvaluationResult;
+			/*			var em = ExpressionManipulator.FromExpression(expr_str);
+						em = em.DirectMember(Memb.CompIndex);
+						DkmSuccessEvaluationResult comp_idx_eval = DefaultEE.DefaultEval(em.Expression, context_expr, true) as DkmSuccessEvaluationResult;
 
-			// @TODO: For now, to avoid requiring more lookups, we'll allow a failure and return null,
-			// and let the caller decide how to interpret it.
-			//Debug.Assert(comp_idx_eval != null);
-			if(comp_idx_eval == null)
+						// @TODO: For now, to avoid requiring more lookups, we'll allow a failure and return null,
+						// and let the caller decide how to interpret it.
+						//Debug.Assert(comp_idx_eval != null);
+						if(comp_idx_eval == null)
+						{
+							return null;
+						}
+
+						string comp_idx_str = comp_idx_eval.Value;
+			//			"((FNameEntry&)GNameBlocksDebug[Value >> FNameDebugVisualizer::OffsetBits][FNameDebugVisualizer::EntryStride * (Value & FNameDebugVisualizer::OffsetMask)])"
+			//			// @TODO: Condition = "Header.Len &gt; FNameDebugVisualizer::MaxLength" -> Illegal 
+			//			"Header.bIsWide" -> WideName,[Header.Len]su
+			//			AnsiName,[Header.Len]s
+
+						string ansi_expr_str = String.Format("((FNameEntry*)(((FNameEntry***)GFNameTableForDebuggerVisualizers_MT)[{0} / 16384][{0} % 16384]))->AnsiName", comp_idx_str);
+						var ansi_eval = DefaultEE.DefaultEval(ansi_expr_str, context_expr, true);
+						return ansi_eval.GetUnderlyingString();
+						*/
+
+			var default_eval = DefaultEE.DefaultEval(expr_str, context_expr, false /*true*/) as DkmSuccessEvaluationResult;
+			if (default_eval == null)
 			{
 				return null;
 			}
-
-			string comp_idx_str = comp_idx_eval.Value;
-			string ansi_expr_str = String.Format("((FNameEntry*)(((FNameEntry***)GFNameTableForDebuggerVisualizers_MT)[{0} / 16384][{0} % 16384]))->AnsiName", comp_idx_str);
-			var ansi_eval = DefaultEE.DefaultEval(ansi_expr_str, context_expr, true);
-			return ansi_eval.GetUnderlyingString();
+			// Remove quotes
+			return default_eval.Value.Substring(1, default_eval.Value.Length - 2);
 		}
 
 		// @TODO: Unsafe, assumes valid and non-empty.

@@ -18,6 +18,8 @@ using EnvDTE80;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 [assembly: AssemblyInformationalVersion("KUE4VS 0.6.0")]
 
@@ -40,7 +42,7 @@ namespace KUE4VSPkg
     /// To get loaded into VS, the package must be referred by &lt;Asset Type="Microsoft.VisualStudio.VsPackage" ...&gt; in .vsixmanifest file.
     /// </para>
     /// </remarks>
-    [PackageRegistration(UseManagedResourcesOnly = true)]
+    [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)] // Info on this package for Help/About
     [Guid(KantanUE4VSPkg.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
@@ -49,9 +51,9 @@ namespace KUE4VSPkg
     [ProvideOptionPage(typeof(KUE4VS.KUE4VSOptions), ExtensionName, "General", 0, 0, true)]
     [ProvideOptionPage(typeof(UE4PropVis.Config), ExtensionName, "Property Visualization", 0, 0, true)]
     // Force the package to load whenever a solution exists
-    [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
+    [ProvideAutoLoad(UIContextGuids80.SolutionExists, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class KantanUE4VSPkg :
-        Package,
+        AsyncPackage,
         KUE4VS.IExtContext,
         IVsSolutionEvents,
         IDisposable
@@ -220,39 +222,43 @@ namespace KUE4VSPkg
             // initialization is the Initialize method.
 
             AddOptionKey(CodeGenerationOptionKey);
+
+            KUE4VS.Logging.Initialize(ExtensionName, VersionString);
+            KUE4VS.Logging.WriteLine("Loading UnrealVS extension package...");
         }
 
         #region Package Members
 
         /// <summary>
-        /// Initialization of the package; this method is called right after the package is sited, so this is the place
-        /// where you can put all the initialization code that rely on services provided by VisualStudio.
+        /// Initialization of the package.
         /// </summary>
-        protected override void Initialize()
+        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            base.Initialize();
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            KUE4VS.Logging.Initialize(ExtensionName, VersionString);
-            KUE4VS.Logging.WriteLine("Loading UnrealVS extension package...");
+            //await base.InitializeAsync(cancellationToken, progress);
 
-            dte = GetGlobalService(typeof(DTE)) as DTE2;
+            dte = await GetServiceAsync(typeof(DTE)) as DTE2;
+                //GetGlobalService(typeof(DTE)) as DTE2;
 
-            sln_mgr = ServiceProvider.GlobalProvider.GetService(typeof(SVsSolution)) as IVsSolution2;
+            sln_mgr = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution2;
+            UpdateUnrealLoadedStatus();
             sln_mgr.AdviseSolutionEvents(this, out SolutionEventsHandle);
 
-            build_mgr = ServiceProvider.GlobalProvider.GetService(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager2;
+            build_mgr = await GetServiceAsync(typeof(SVsSolutionBuildManager)) as IVsSolutionBuildManager2;
 
             KUE4VS.ExtContext.Instance = this;
             PackageProvider.Pkg = this;
             UE4PropVis.Config.Instance = (UE4PropVis.Config)GetDialogPage(typeof(UE4PropVis.Config));
 
-            UpdateUnrealLoadedStatus();
 
             AddNewSourceFileCmd.Initialize(this);
             AddNewClassCmd.Initialize(this);
             AddNewModuleCmd.Initialize(this);
             AddNewPluginCmd.Initialize(this);
             AddCodeElementWindowCommand.Initialize(this);
+
+            base.Initialize();
         }
 
         private void UpdateUnrealLoadedStatus()
